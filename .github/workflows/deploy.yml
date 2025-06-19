@@ -53,7 +53,7 @@ jobs:
     name: Snyk Security Scan
     uses: ministryofjustice/laa-reusable-github-actions/.github/workflows/snyk.yml@73a98b3336f71a21c46e6b588cd3afaaab052649
     with:
-      tag: "laa-manage-your-civil-cases"
+      tag: "your-repo-name"
     secrets:
       snyk_token: ${{ secrets.SNYK_TOKEN }}
 

@@ -2,7 +2,7 @@
 These files are used to build the technical documentations using the
 [GOV.UK Tech Docs Template](https://github.com/alphagov/tech-docs-template).
 
-The published documentation can be found [here](https://ministryofjustice.github.io/laa-manage-your-civil-cases/).
+The published documentation can be found [here](https://ministryofjustice.github.io/laa-express-typescript-template/).
 
 ## How to modify the documentation
 The docs are build based on the markdown files in `/docs/source/documenation` to modify the published

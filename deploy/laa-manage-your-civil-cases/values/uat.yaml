@@ -1,4 +1,4 @@
-# Default values for laa-manage-your-civil-cases.
+# Default values for your-repo-name.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -18,7 +18,7 @@ serviceAccount:
   create: false
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: "mcc-github-action-service-account"
+  name: "your-repo-name-github-action-service-account"
 
 podAnnotations: {}
 podLabels: {}
@@ -53,7 +53,7 @@ ingress:
         - path: /
           pathType: Prefix
   annotations:
-    external-dns.alpha.kubernetes.io/set-identifier: "manage-civil-cases-laa-manage-your-civil-cases-laa-manage-your-civil-cases-uat-green"
+    external-dns.alpha.kubernetes.io/set-identifier: "manage-civil-cases-your-repo-name-your-repo-name-uat-green"
     external-dns.alpha.kubernetes.io/aws-weight: "100"
 
 resources:

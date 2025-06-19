@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "laa-manage-your-civil-cases.fullname" . }}
+  name: {{ include "your-repo-name.fullname" . }}
   labels:
-    {{- include "laa-manage-your-civil-cases.labels" . | nindent 4 }}
+    {{- include "your-repo-name.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "laa-manage-your-civil-cases.fullname" . }}
+    name: {{ include "your-repo-name.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:

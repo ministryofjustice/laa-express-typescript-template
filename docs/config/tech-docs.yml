@@ -1,9 +1,9 @@
-host: https://ministryofjustice.github.io/laa-manage-your-civil-cases
+host: https://ministryofjustice.github.io/laa-express-typescript-template
 
 # Header-related options
 show_govuk_logo: true
-service_name: Manage your Civil Cases (MCC)
-service_link: https://ministryofjustice.github.io/laa-manage-your-civil-cases
+service_name: Express with Typescript Template (ETT)
+service_link: https://ministryofjustice.github.io/laa-express-typescript-template
 phase: Alpha
 
 # Links to show on right-hand-side of header
@@ -24,8 +24,8 @@ max_toc_heading_level: 3
 prevent_indexing: true
 
 show_contribution_banner: false
-github_repo: ministryofjustice/laa-manage-your-civil-cases
+github_repo: ministryofjustice/laa-express-typescript-template
 github_branch: main
-full_service_name: Manage your Civil Cases (MCC)
+full_service_name: Express with Typescript Template (ETT)
 show_expiry: true
 show_review_banner: true

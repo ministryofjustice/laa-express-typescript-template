@@ -6,7 +6,7 @@
 Express.js is a fast, unopinionated, minimalist web framework for Node.js.
 
 ## Contents
-- [Legal Aid Agency - Manage Your Civil Cases (MCC)](#legal-aid-agency---manage-your-civil-cases-mcc)
+- [Legal Aid Agency - Express with Typescript Template (ETT)](#legal-aid-agency---express-with-typescript-template-ett)
   - [Contents](#contents)
   - [Prerequisites](#prerequisites)
     - [Installing Yarn](#installing-yarn)
@@ -135,13 +135,13 @@ Prerequisites, Docker Desktop
 - To build the docker image
 
   ```shell
-  docker build -t mcc:latest .
+  docker build -t your-repo-name:latest .
   ```
 
 - To run the docker image
 
   ```shell
-  docker run -d -p 8888:3000 mcc:latest
+  docker run -d -p 8888:3000 your-repo-name:latest
   ```
   (The application should be running at http://localhost:8888)
 

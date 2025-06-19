@@ -25,7 +25,7 @@ jobs:
           project: EL
           issuetype: Task
           summary: |
-            MCC Dependabot/Snyk: ${{ github.event.pull_request.title }}, GitHub PR#${{github.event.number}}  
+            ETT Dependabot/Snyk: ${{ github.event.pull_request.title }}, GitHub PR#${{github.event.number}}  
           description: |
             Please view the PR for further information.
             PR link: https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}

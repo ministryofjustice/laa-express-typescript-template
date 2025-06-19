@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "laa-manage-your-civil-cases.fullname" . }}-test-connection"
+  labels:
+    {{- include "laa-manage-your-civil-cases.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "laa-manage-your-civil-cases.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never

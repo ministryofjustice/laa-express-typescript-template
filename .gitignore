@@ -1,0 +1,25 @@
+# Dependency directories
+node_modules/
+
+# Yarn cache (when using corepack)
+.yarn/cache/
+.yarn/install-state.gz
+.yarn/build-state.yml
+.yarn/unplugged/
+
+# IDEA
+.idea/
+
+# Visual Studios
+.trunk/
+.DS_Store
+
+# MOJ Express Skeleton
+public/
+.env
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

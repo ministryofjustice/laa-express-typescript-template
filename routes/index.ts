@@ -11,6 +11,11 @@ router.get('/', function (req: Request, res: Response): void {
 	res.render('main/index');
 });
 
+/* GET all your new cases. */
+router.get('/cases/new', function (req: Request, res: Response): void {
+	res.render('cases/new');
+});
+
 // Make an API call with `Axios` and `middleware-axios`
 // GET users from external API
 router.get('/users', async function (req: Request, res: Response, next: NextFunction): Promise<void> {

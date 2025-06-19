@@ -51,8 +51,8 @@ jobs:
           NODE_ENV: "test"
           # Add other required environment variables
           SERVICE_NAME: "Manage your civil cases"
-          SERVICE_PHASE: "Alpha"
-          DEPARTMENT_NAME: "LAA Digital"
+          SERVICE_PHASE: "Beta"
+          DEPARTMENT_NAME: "Legal Aid Agency"
           DEPARTMENT_URL: "https://www.gov.uk/government/organisations/legal-aid-agency"
           CONTACT_EMAIL: "your-team@digital.justice.gov.uk"
           SERVICE_URL: "https://www.gov.uk/legal-aid"

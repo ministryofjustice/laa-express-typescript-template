@@ -77,10 +77,10 @@ runs:
       shell: bash
       run: |
         echo "SERVICE_NAME=${{ inputs.service_name || 'Manage your civil cases' }}" >> $GITHUB_ENV
-        echo "SERVICE_PHASE=${{ inputs.service_phase || 'Alpha' }}" >> $GITHUB_ENV
-        echo "DEPARTMENT_NAME=${{ inputs.department_name || 'LAA Digital' }}" >> $GITHUB_ENV
+        echo "SERVICE_PHASE=${{ inputs.service_phase || 'Beta' }}" >> $GITHUB_ENV
+        echo "DEPARTMENT_NAME=${{ inputs.department_name || 'Legal Aid Agency' }}" >> $GITHUB_ENV
         echo "DEPARTMENT_URL=${{ inputs.department_url || 'https://www.gov.uk/government/organisations/legal-aid-agency' }}" >> $GITHUB_ENV
-        echo "CONTACT_EMAIL=${{ inputs.contact_email || 'your-team@digital.justice.gov.uk' }}" >> $GITHUB_ENV
+        echo "CONTACT_EMAIL=${{ inputs.contact_email || 'eligibility@justice.gov.uk' }}" >> $GITHUB_ENV
         echo "CONTACT_PHONE=${{ inputs.contact_email || '' }}" >> $GITHUB_ENV
         echo "SERVICE_URL=${{ inputs.service_url || 'https://www.gov.uk/legal-aid' }}" >> $GITHUB_ENV
         echo "SESSION_SECRET=${{ inputs.sessions_secret || 'default-session-secret' }}" >> $GITHUB_ENV

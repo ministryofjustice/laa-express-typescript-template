@@ -1,20 +1,25 @@
 import { test, expect } from '@playwright/test';
 
-test('homepage should have the correct title', async ({ page }) => {
+test('homepage should have the correct title & warning text', async ({ page }) => {
 	// Navigate to the homepage
 	await page.goto('/');
 
 	// Check for the title of the application
 	await expect(page).toHaveTitle(/Manage your civil cases/);
+
+	// Check for the warning text is visible
+	await expect(page.getByText('MCC is under construction. Please stay tuned.')).toBeVisible();
 });
 
 test('homepage should display LAA header', async ({ page }) => {
+	// Navigate to the homepage
 	await page.goto('/');
 
-	// Check for the header with LAA branding
 	const header = page.getByRole('banner');
-	await expect(header).toBeVisible();
+	const signOutLink = header.getByRole('link', { name: 'Sign out' });
 
-	// Check for GOV.UK branding which is typically in the header
-	await expect(page.getByRole('link', { name: 'GOV.UK' })).toBeVisible();
+	// Check for the header with LAA branding
+	await expect(header).toBeVisible();
+	// Check sign out link in header
+  await expect(signOutLink).toBeVisible();
 });

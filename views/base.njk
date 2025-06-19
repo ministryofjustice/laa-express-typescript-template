@@ -1,29 +1,61 @@
 {% extends "govuk/template.njk" %}
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
+{% from "moj/components/header/macro.njk" import mojHeader %}
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
 
-{% set govukRebrand = false %}
+{% set govukRebrand = true %}
 
 {% block pageTitle %}{{config.SERVICE_NAME}} – GOV.UK{% endblock %}
 
 {% block head %}
-  <link rel="stylesheet" href="css/{{getAsset('main','css')}}">
-  <meta name="description" content="SERVICE_NAME">
+  <link rel="stylesheet" href="/css/{{getAsset('main','css')}}">
+  <meta name="description" content="{{config.SERVICE_NAME}}">
   <meta name="keywords" content="GOV.UK, govuk, gov, government, uk, frontend, ui, user interface, jinja, python, flask, port, template, templating, macro, component, design system, html, forms, wtf, wtforms, widget, widgets, demo, example">
-  <meta name="author" content="DEPARTMENT_NAME">
+  <meta name="author" content="{{config.DEPARTMENT_NAME}}">
   <script type="module" nonce="{{ cspNonce }}" src="/js/{{getAsset('custom','min.js')}}"></script>
 {% endblock %}
 
 {% block bodyStart %}
-  <script nonce="{{ cspNonce }}">document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');</script>
+  <script nonce="{{ cspNonce }}">
+    document.body.className += ' js-enabled' + (
+      'noModule' in HTMLScriptElement.prototype
+      ? ' govuk-frontend-supported'
+      : '');
+  </script>
   {# cookie policy #}
 {% endblock %}
 
 {% block header %}
-  {{ govukHeader({
-    homepageUrl: "#",
-    serviceName: config.SERVICE_NAME,
-    serviceUrl: "#",
-    rebrand: govukRebrand
+  {{ mojHeader({
+    organisationLabel: {
+      text: config.DEPARTMENT_NAME,
+      href: config.DEPARTMENT_URL
+    },
+    navigation: {
+      label: "Account navigation",
+      items: [{
+        text: "ramona.zoro@law.com",
+        href: "#"
+      }, {
+        html: "<strong>Sign out</strong>",
+        href: "#"
+      }]
+    }
+  }) }}
+  {{ govukServiceNavigation({
+  serviceName: config.SERVICE_NAME,
+  serviceUrl: "/cases/new",
+  navigation: [
+    {
+      href: "/cases/new",
+      text: "Your cases",
+      active: true
+    },
+    {
+      href: "/search",
+      text: "Search"
+    }
+    ]
   }) }}
 {% endblock %}
 
@@ -36,9 +68,7 @@
   }) }}
 {% endblock %}
 
-{% block content %}
-  <h1 class="govuk-heading-xl">Default page template</h1>
-{% endblock %}
+{% block content %}{% endblock %}
 
 {% block footer %}
   {{ govukFooter({
@@ -47,18 +77,29 @@
       items: [
         {
           href: "#",
+          text: "Help"
+        },
+        {
+          href: "#",
+          text: "Feedback"
+        },
+        {
+          href: "#",
+          text: "Updates"
+        },
+        {
+          href: "#",
+          text: "Privacy Policy"
+        },
+        {
+          href: "#",
+          text: "Cookie Policy"
+        },
+        {
+          href: "#",
           text: "Accessibility"
-        },
-        {
-          href: "#",
-          text: "Cookies"
-        },
-        {
-          href: "#",
-          text: "Privacy"
         }
-      ],
-      html: 'Built by <a href="' + config.DEPARTMENT_URL +'" class="govuk-footer__link">' + config.DEPARTMENT_NAME + '</a>'
+      ]
     }
   }) }}
 {% endblock %}

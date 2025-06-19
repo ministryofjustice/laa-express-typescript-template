@@ -1,0 +1,234 @@
+[
+    {
+        "fullName": "George Allen",
+        "caseReference": "PC-9159-2337",
+        "refCode": "",
+        "dateReceived": "2025-01-08T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1977-06-10"
+    },
+    {
+        "fullName": "Zoe Anderson",
+        "caseReference": "PC-1357-2468",
+        "refCode": "",
+        "dateReceived": "2025-01-12T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1984-08-22"
+    },
+    {
+        "fullName": "Jason Moore",
+        "caseReference": "PC-3571-9284",
+        "refCode": "Operator unsure of scope",
+        "dateReceived": "2025-01-19T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1982-07-04"
+    },
+    {
+        "fullName": "James Wilson",
+        "caseReference": "PC-9876-5432",
+        "refCode": "",
+        "dateReceived": "2025-01-25T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1975-11-30"
+    },
+    {
+        "fullName": "Daniel Moore",
+        "caseReference": "PC-3360-2295",
+        "refCode": "",
+        "dateReceived": "2025-01-27T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1994-08-03"
+    },
+    {
+        "fullName": "Austin Lewis",
+        "caseReference": "PC-6419-8372",
+        "refCode": "",
+        "dateReceived": "2025-02-07T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1991-04-15"
+    },
+    {
+        "fullName": "Emma Johnson",
+        "caseReference": "PC-7890-3456",
+        "refCode": "",
+        "dateReceived": "2025-02-10T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1988-05-14"
+    },
+    {
+        "fullName": "Sophia Lee",
+        "caseReference": "PC-9999-0000",
+        "refCode": "",
+        "dateReceived": "2025-02-18T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1989-07-11"
+    },
+    {
+        "fullName": "Chloe Taylor",
+        "caseReference": "PC-8642-9753",
+        "refCode": "",
+        "dateReceived": "2025-02-28T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1993-10-05"
+    },
+    {
+        "fullName": "Mary Flynn",
+        "caseReference": "PC-3630-9387",
+        "refCode": "",
+        "dateReceived": "2025-03-06T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1971-10-01"
+    },
+    {
+        "fullName": "Maya Patel",
+        "caseReference": "PC-8765-4321",
+        "refCode": "Out of scope",
+        "dateReceived": "2025-03-14T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1986-06-09"
+    },
+    {
+        "fullName": "Michael Brown",
+        "caseReference": "PC-5432-1098",
+        "refCode": "Operator unsure of scope",
+        "dateReceived": "2025-03-20T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1992-12-08"
+    },
+    {
+        "fullName": "Grace Miller",
+        "caseReference": "PC-5555-6666",
+        "refCode": "",
+        "dateReceived": "2025-03-22T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1987-12-03"
+    },
+    {
+        "fullName": "Tyler Wilson",
+        "caseReference": "PC-1593-7428",
+        "refCode": "",
+        "dateReceived": "2025-03-26T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1987-09-28"
+    },
+    {
+        "fullName": "Anna Rodriguez",
+        "caseReference": "PC-1111-2222",
+        "refCode": "",
+        "dateReceived": "2025-04-08T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1990-02-14"
+    },
+    {
+        "fullName": "Sophie Williams",
+        "caseReference": "PC-2341-8765",
+        "refCode": "",
+        "dateReceived": "2025-04-15T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1985-09-22"
+    },
+    {
+        "fullName": "Nathan Brown",
+        "caseReference": "PC-7531-9642",
+        "refCode": "",
+        "dateReceived": "2025-04-17T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1985-12-31"
+    },
+    {
+        "fullName": "Ruby Clark",
+        "caseReference": "PC-9284-3571",
+        "refCode": "",
+        "dateReceived": "2025-04-25T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1989-11-20"
+    },
+    {
+        "fullName": "Connor White",
+        "caseReference": "PC-1234-5678",
+        "refCode": "",
+        "dateReceived": "2025-04-30T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1992-01-25"
+    },
+    {
+        "fullName": "Tom Andrews",
+        "caseReference": "PC-3027-4448",
+        "refCode": "Out of scope",
+        "dateReceived": "2025-05-05T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1970-04-04"
+    },
+    {
+        "fullName": "Lily Johnson",
+        "caseReference": "PC-9642-7531",
+        "refCode": "Out of scope",
+        "dateReceived": "2025-05-08T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1990-05-13"
+    },
+    {
+        "fullName": "David Thompson",
+        "caseReference": "PC-3333-4444",
+        "refCode": "Out of scope",
+        "dateReceived": "2025-05-12T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1983-09-07"
+    },
+    {
+        "fullName": "Hazel Walker",
+        "caseReference": "PC-8372-6419",
+        "refCode": "Out of scope",
+        "dateReceived": "2025-05-19T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1986-01-08"
+    },
+    {
+        "fullName": "Ethan Davis",
+        "caseReference": "PC-2468-1357",
+        "refCode": "",
+        "dateReceived": "2025-05-25T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1991-11-16"
+    },
+    {
+        "fullName": "Lucas Martinez",
+        "caseReference": "PC-9753-8642",
+        "refCode": "Operator unsure of scope",
+        "dateReceived": "2025-06-03T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1988-03-19"
+    },
+    {
+        "fullName": "Jacob King",
+        "caseReference": "PC-8891-1836",
+        "refCode": "Out of scope",
+        "dateReceived": "2025-06-07T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1994-04-08"
+    },
+    {
+        "fullName": "Aria Smith",
+        "caseReference": "PC-7428-1593",
+        "refCode": "",
+        "dateReceived": "2025-06-11T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1994-02-17"
+    },
+    {
+        "fullName": "Ryan Garcia",
+        "caseReference": "PC-7777-8888",
+        "refCode": "Operator unsure of scope",
+        "dateReceived": "2025-06-15T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1995-04-28"
+    },
+    {
+        "fullName": "Jack Young",
+        "caseReference": "PC-1922-1879",
+        "refCode": "",
+        "dateReceived": "2025-07-06T19:00:00-05:00",
+        "caseStatus": "New",
+        "dateOfBirth": "1981-08-18"
+    }
+]

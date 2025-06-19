@@ -1,0 +1,263 @@
+[
+    {
+        "fullName": "Noah Brown",
+        "caseReference": "PC-4575-7150",
+        "refCode": "",
+        "dateReceived": "2025-01-05T19:00:00-05:00",
+        "dateClosed": "2025-01-09T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1982-09-06"
+    },
+    {
+        "fullName": "Harley Torres",
+        "caseReference": "PC-6395-8017",
+        "refCode": "Out of scope",
+        "dateReceived": "2025-01-06T19:00:00-05:00",
+        "dateClosed": "2025-01-11T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1994-07-21"
+    },
+    {
+        "fullName": "Skylar Watson",
+        "caseReference": "PC-6048-1375",
+        "refCode": "",
+        "dateReceived": "2025-01-15T19:00:00-05:00",
+        "dateClosed": "2025-01-20T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1987-11-26"
+    },
+    {
+        "fullName": "Henry Lee",
+        "caseReference": "PC-7799-8800",
+        "refCode": "",
+        "dateReceived": "2025-01-20T19:00:00-05:00",
+        "dateClosed": "2025-01-25T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1978-04-16"
+    },
+    {
+        "fullName": "Raelynn Bailey",
+        "caseReference": "PC-5734-9061",
+        "refCode": "",
+        "dateReceived": "2025-01-31T19:00:00-05:00",
+        "dateClosed": "2025-02-05T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1993-03-07"
+    },
+    {
+        "fullName": "Melody Reed",
+        "caseReference": "PC-8139-2467",
+        "refCode": "Manually allocated",
+        "dateReceived": "2025-02-05T19:00:00-05:00",
+        "dateClosed": "2025-02-10T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1984-05-31"
+    },
+    {
+        "fullName": "Alexander White",
+        "caseReference": "PC-1122-3344",
+        "refCode": "",
+        "dateReceived": "2025-02-15T19:00:00-05:00",
+        "dateClosed": "2025-02-20T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1979-07-03"
+    },
+    {
+        "fullName": "Journee Cox",
+        "caseReference": "PC-4582-1739",
+        "refCode": "",
+        "dateReceived": "2025-02-18T19:00:00-05:00",
+        "dateClosed": "2025-02-23T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1989-11-04"
+    },
+    {
+        "fullName": "Serenity Price",
+        "caseReference": "PC-7204-3519",
+        "refCode": "",
+        "dateReceived": "2025-02-24T19:00:00-05:00",
+        "dateClosed": "2025-03-01T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1988-04-15"
+    },
+    {
+        "fullName": "Adalynn Cooper",
+        "caseReference": "PC-3826-7194",
+        "refCode": "",
+        "dateReceived": "2025-03-04T19:00:00-05:00",
+        "dateClosed": "2025-03-09T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1990-12-18"
+    },
+    {
+        "fullName": "Sienna Woods",
+        "caseReference": "PC-4157-8926",
+        "refCode": "",
+        "dateReceived": "2025-03-12T19:00:00-05:00",
+        "dateClosed": "2025-03-17T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1990-09-22"
+    },
+    {
+        "fullName": "Magnolia Gray",
+        "caseReference": "PC-2946-5173",
+        "refCode": "Manually allocated",
+        "dateReceived": "2025-03-19T19:00:00-05:00",
+        "dateClosed": "2025-03-24T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1991-08-14"
+    },
+    {
+        "fullName": "Victoria Thompson",
+        "caseReference": "PC-5566-7788",
+        "refCode": "Out of scope",
+        "dateReceived": "2025-03-28T19:00:00-05:00",
+        "dateClosed": "2025-04-02T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1991-10-18"
+    },
+    {
+        "fullName": "Genesis Kelly",
+        "caseReference": "PC-9582-4760",
+        "refCode": "Out of scope",
+        "dateReceived": "2025-03-28T19:00:00-05:00",
+        "dateClosed": "2025-04-02T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1986-08-19"
+    },
+    {
+        "fullName": "Isabella Rodriguez",
+        "caseReference": "PC-3366-5577",
+        "refCode": "Manually allocated",
+        "dateReceived": "2025-04-03T19:00:00-05:00",
+        "dateClosed": "2025-04-08T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1993-06-21"
+    },
+    {
+        "fullName": "Easton Bennett",
+        "caseReference": "PC-3519-7204",
+        "refCode": "Manually allocated",
+        "dateReceived": "2025-04-09T19:00:00-05:00",
+        "dateClosed": "2025-04-14T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1992-07-30"
+    },
+    {
+        "fullName": "Kaiden Cook",
+        "caseReference": "PC-2467-8139",
+        "refCode": "",
+        "dateReceived": "2025-04-16T19:00:00-05:00",
+        "dateClosed": "2025-04-21T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1988-10-12"
+    },
+    {
+        "fullName": "Cash Ward",
+        "caseReference": "PC-1739-4582",
+        "refCode": "",
+        "dateReceived": "2025-04-23T19:00:00-05:00",
+        "dateClosed": "2025-04-28T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1986-01-17"
+    },
+    {
+        "fullName": "Karter Richardson",
+        "caseReference": "PC-7194-3826",
+        "refCode": "Manually allocated",
+        "dateReceived": "2025-05-01T19:00:00-05:00",
+        "dateClosed": "2025-05-06T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1987-06-29"
+    },
+    {
+        "fullName": "Jaxon Fisher",
+        "caseReference": "PC-8926-4157",
+        "refCode": "Out of scope",
+        "dateReceived": "2025-05-07T19:00:00-05:00",
+        "dateClosed": "2025-05-12T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1985-12-08"
+    },
+    {
+        "fullName": "William Garcia",
+        "caseReference": "PC-9900-1122",
+        "refCode": "",
+        "dateReceived": "2025-05-10T19:00:00-05:00",
+        "dateClosed": "2025-05-15T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1986-12-05"
+    },
+    {
+        "fullName": "Kameron Peterson",
+        "caseReference": "PC-8017-6395",
+        "refCode": "",
+        "dateReceived": "2025-05-15T19:00:00-05:00",
+        "dateClosed": "2025-05-20T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1983-04-08"
+    },
+    {
+        "fullName": "Braxton Sanders",
+        "caseReference": "PC-4760-9582",
+        "refCode": "",
+        "dateReceived": "2025-05-20T19:00:00-05:00",
+        "dateClosed": "2025-05-25T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1991-01-05"
+    },
+    {
+        "fullName": "Axel Brooks",
+        "caseReference": "PC-1375-6048",
+        "refCode": "",
+        "dateReceived": "2025-06-02T19:00:00-05:00",
+        "dateClosed": "2025-06-07T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1989-02-13"
+    },
+    {
+        "fullName": "Beau Rivera",
+        "caseReference": "PC-9061-5734",
+        "refCode": "Out of scope",
+        "dateReceived": "2025-06-09T19:00:00-05:00",
+        "dateClosed": "2025-06-14T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1985-09-23"
+    },
+    {
+        "fullName": "Emily Watson",
+        "caseReference": "PC-1039-3711",
+        "refCode": "Manually allocated",
+        "dateReceived": "2025-06-21T19:00:00-05:00",
+        "dateClosed": "2025-06-25T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1977-12-17"
+    },
+    {
+        "fullName": "Freddie Evans",
+        "caseReference": "PC-4831-8090",
+        "refCode": "",
+        "dateReceived": "2025-06-25T19:00:00-05:00",
+        "dateClosed": "2025-06-26T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1987-09-09"
+    },
+    {
+        "fullName": "John Smith",
+        "caseReference": "PC-7880-7835",
+        "refCode": "",
+        "dateReceived": "2025-07-05T19:00:00-05:00",
+        "dateClosed": "2025-07-09T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1982-03-06"
+    },
+    {
+        "fullName": "Nina Taylor",
+        "caseReference": "PC-4344-8239",
+        "refCode": "",
+        "dateReceived": "2025-07-06T19:00:00-05:00",
+        "dateClosed": "2025-07-10T19:00:00-05:00",
+        "caseStatus": "Closed",
+        "dateOfBirth": "1996-10-27"
+    }
+]

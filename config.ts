@@ -36,7 +36,7 @@ const config: Config = {
   app: {
     port: Number(process.env.PORT ?? DEFAULT_PORT),
     environment: process.env.NODE_ENV ?? 'development',
-    appName: process.env.SERVICE_NAME ?? 'LAA Manage Your Civil Cases',
+    appName: process.env.SERVICE_NAME ?? 'Your service name',
     useHttps: process.env.NODE_ENV === 'production' // Use HTTPS in production
   },
   csrf: {

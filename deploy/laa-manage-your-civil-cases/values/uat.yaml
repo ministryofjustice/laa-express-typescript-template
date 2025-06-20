@@ -48,12 +48,12 @@ service:
 ingress:
   enabled: true
   hosts:
-    - host: main-manage-your-civil-cases-uat.cloud-platform.service.justice.gov.uk
+    - host: your-name-uat.cloud-platform.service.justice.gov.uk
       paths:
         - path: /
           pathType: Prefix
   annotations:
-    external-dns.alpha.kubernetes.io/set-identifier: "manage-civil-cases-your-repo-name-your-repo-name-uat-green"
+    external-dns.alpha.kubernetes.io/set-identifier: "ingress-name-your-repo-name-your-repo-name-uat-green"
     external-dns.alpha.kubernetes.io/aws-weight: "100"
 
 resources:

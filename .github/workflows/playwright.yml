@@ -50,7 +50,7 @@ jobs:
           SESSION_NAME: "sessionId"
           NODE_ENV: "test"
           # Add other required environment variables
-          SERVICE_NAME: "Manage your civil cases"
+          SERVICE_NAME: "Your service name"
           SERVICE_PHASE: "Alpha"
           DEPARTMENT_NAME: "LAA Digital"
           DEPARTMENT_URL: "https://www.gov.uk/government/organisations/legal-aid-agency"

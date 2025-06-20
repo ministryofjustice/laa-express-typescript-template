@@ -36,7 +36,7 @@ deploy_branch() {
 }
 
 deploy_main() {  
-  helm upgrade manage-civil-cases ./deploy/your-repo-name/. \
+  helm upgrade your-repo-name ./deploy/your-repo-name/. \
                           --install --wait \
                           --namespace="${K8S_NAMESPACE}" \
                           --values ./deploy/your-repo-name/values/"$ENVIRONMENT".yaml \

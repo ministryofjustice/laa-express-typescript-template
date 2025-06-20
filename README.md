@@ -1,5 +1,4 @@
-# Legal Aid Agency - Manage Your Civil Cases (MCC)
-## This repository is built on the MoJ Express Frontend Skeleton
+# Legal Aid Agency - Express with Typescript Template (ETT)
 [![Standards Icon]][Standards Link]
 
 ![govuk-frontend 5.10.2](https://img.shields.io/badge/govuk--frontend%20version-5.10.2-005EA5?logo=gov.uk&style=flat)
@@ -7,8 +6,7 @@
 Express.js is a fast, unopinionated, minimalist web framework for Node.js.
 
 ## Contents
-- [Legal Aid Agency - Manage Your Civil Cases (MCC)](#legal-aid-agency---manage-your-civil-cases-mcc)
-  - [This repository is built on the MoJ Express Frontend Skeleton](#this-repository-is-built-on-the-moj-express-frontend-skeleton)
+- [Legal Aid Agency - Express with Typescript Template (ETT)](#legal-aid-agency---express-with-typescript-template-ett)
   - [Contents](#contents)
   - [Prerequisites](#prerequisites)
     - [Installing Yarn](#installing-yarn)
@@ -49,6 +47,7 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
     - [Running and debugging](#running-and-debugging)
     - [Development workflow](#development-workflow)
     - [Type definitions](#type-definitions)
+  - [GitHub Actions](#github-actions)
   - [Licence](#licence)
 
 ## Prerequisites
@@ -136,13 +135,13 @@ Prerequisites, Docker Desktop
 - To build the docker image
 
   ```shell
-  docker build -t mcc:latest .
+  docker build -t your-repo-name:latest .
   ```
 
 - To run the docker image
 
   ```shell
-  docker run -d -p 8888:3000 mcc:latest
+  docker run -d -p 8888:3000 your-repo-name:latest
   ```
   (The application should be running at http://localhost:8888)
 
@@ -481,6 +480,11 @@ This command builds the project initially and then sets up all watch processes f
 ### Type definitions
 - Type definitions for Node, Express, and other dependencies are included as dev dependencies (see `@types/*` packages in `package.json`).
 - These are required for type safety and improved autocompletion in TypeScript.
+
+
+## GitHub Actions
+- These have been disabled in this GitHub template repo. Make sure you enable them when setting up your project. 
+
 
 ## Licence
 

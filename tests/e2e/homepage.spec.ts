@@ -5,7 +5,7 @@ test('homepage should have the correct title', async ({ page }) => {
 	await page.goto('/');
 
 	// Check for the title of the application
-	await expect(page).toHaveTitle(/Manage your civil cases/);
+	await expect(page).toHaveTitle(/Your service name/);
 });
 
 test('homepage should display LAA header', async ({ page }) => {

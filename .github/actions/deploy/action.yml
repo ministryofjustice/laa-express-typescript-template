@@ -70,7 +70,7 @@ runs:
       run: |
         if [ ${{ inputs.app-environment }} == 'uat' ]
         then
-          kubectl apply --record=false -f ./infrastructure/laa-manage-your-civil-cases-uat/
+          kubectl apply --record=false -f ./infrastructure/your-repo-name-uat/
         fi
 
     - name: Set environment variables

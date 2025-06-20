@@ -82,4 +82,4 @@ jobs:
           tar -xvf artifact.tar
           npm install linkinator
           npx linkinator . --recurse --markdown \
-            --skip https://ministryofjustice.github.io/laa-manage-your-civil-cases/images/govuk-large.png
+            --skip https://ministryofjustice.github.io/laa-express-typescript-template/images/govuk-large.png

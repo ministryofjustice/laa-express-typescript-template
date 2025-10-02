@@ -20,14 +20,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: ministryofjustice/tech-docs-github-pages-publisher:v3
+      image: ghcr.io/ministryofjustice/tech-docs-github-pages-publisher:v6.0.1
     permissions:
       contents: read
     steps:
       # We only checkout the docs directory, which allows us to keep all necessary files for
       # generating the docs separate from the app.
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5 
         with:
           sparse-checkout: |
             docs
@@ -39,9 +39,9 @@ jobs:
           mv docs/* .
           rm -rf docs
       - name: Compile Markdown to HTML and create artifact
-        # Script to deploy is not in the repo, but in this image: `ministryofjustice/tech-docs-github-pages-publisher:v3`
+        # Script to deploy is not in the repo, but in this image: `ministryofjustice/tech-docs-github-pages-publisher:v6.0.1`
         run: |
-          /scripts/deploy.sh
+          /usr/local/bin/package
       - name: Upload artifact to be published
         uses: actions/upload-artifact@v4
         with:
@@ -72,7 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download a Build Artifact from build
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: github-pages
           path: github-pages
@@ -82,4 +82,8 @@ jobs:
           tar -xvf artifact.tar
           npm install linkinator
           npx linkinator . --recurse --markdown \
-            --skip https://ministryofjustice.github.io/laa-express-typescript-template/images/govuk-large.png
+            --skip https://ministryofjustice.github.io/laa-manage-your-civil-cases/images/govuk-large.png \
+            --skip javascripts/govuk_frontend.js
+            # Skip govuk_frontend.js due to MOJ Docker image template bug:
+            # The tech-docs-github-pages-publisher:v6.0.1 image generates HTML with
+            # <script src="javascripts/govuk_frontend.js"> but doesn't provide the file

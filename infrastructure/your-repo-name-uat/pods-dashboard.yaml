@@ -451,6 +451,6 @@ data:
       },
       "timezone": "browser",
       "title": "your-repo-name Pods",
-      "uid": "01dc5f55-8737-42ee-9067-89b9c4cfa3f7",
+      "uid": "your-uid",
       "version": 1
     }

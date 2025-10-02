@@ -41,6 +41,7 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
       - [Main TypeScript Configuration](#main-typescript-configuration)
       - [Test TypeScript Configuration](#test-typescript-configuration)
     - [Axios](#axios)
+    - [Yarn](#yarn)
     - [Nunjucks templating](#nunjucks-templating)
     - [Project structure and source directory](#project-structure-and-source-directory)
     - [Import paths and path aliases](#import-paths-and-path-aliases)
@@ -267,6 +268,7 @@ This provides a timeline view of the test execution with screenshots, DOM snapsh
   - [Linter](#linter)
   - [Linter for staged commits](#linter-for-staged-commits)
   - [Axios](#axios)
+  - [Yarn](#yarn)
   - [Nunjucks templating](#nunjucks-templating)
 
 ### Asset management
@@ -423,6 +425,20 @@ router.get('/users', async (req: Request, res: Response, next: NextFunction) => 
 
 export default router;
 ```
+
+### Yarn
+This project uses [Yarn](https://yarnpkg.com/) rather than the native package manager NPM to improve performance & security for more reliable dependency management.
+
+#### How to run manual updates
+Dependabot will routinely check your project packages to find any updates. However, you can use the following command to run manual updates:
+
+```shell
+yarn upgrade-interactive
+```
+
+#### Sources
+[yarn upgrade-interactive](https://yarnpkg.com/cli/upgrade-interactive#details)
+
 
 ### Nunjucks templating
 This project uses [Nunjucks](https://mozilla.github.io/nunjucks/) for server-side HTML templating. You can render Nunjucks templates from your TypeScript route handlers just as you would from JavaScript. Templates are located in the `views/` directory and are compatible with both JS and TS backends.

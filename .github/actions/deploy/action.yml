@@ -106,6 +106,6 @@ runs:
       shell: bash
       if: failure()
       run: |
-        curl -X POST -H 'Content-type: application/json' --data '{"text":"Manage Civil Cases deployment to ${{ inputs.app-environment }} failed!"}' ${{ inputs.slack_webhook_url }}
+        curl -X POST -H 'Content-type: application/json' --data '{"text":"Your-repo-name deployment to ${{ inputs.app-environment }} failed!"}' ${{ inputs.slack_webhook_url }}
       env:
         SLACK_WEBHOOK_URL: ${{ inputs.slack_webhook_url }}

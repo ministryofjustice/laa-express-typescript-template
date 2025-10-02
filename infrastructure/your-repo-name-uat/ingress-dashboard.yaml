@@ -750,7 +750,7 @@ data:
       },
       "timezone": "browser",
       "title": "your-repo-name Ingress",
-      "uid": "a2ad4e88-e130-46ee-bafa-75cf69a10e72",
+      "uid": "your-uid",
       "version": 3,
       "weekStart": ""
     }

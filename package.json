@@ -23,7 +23,7 @@
     "test:e2e": "yarn playwright test --config=playwright.config.ts"
   },
   "engines": {
-    "node": "24.2.0"
+    "node": "24.9.0"
   },
   "dependencies": {
     "@ministryofjustice/frontend": "^5.1.3",

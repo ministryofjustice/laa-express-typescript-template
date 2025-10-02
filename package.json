@@ -1,6 +1,6 @@
 {
-  "name": "moj-express-skeleton",
-  "version": "0.1.0",
+  "name": "laa-express-typescript-template",
+  "version": "1.0.1",
   "private": true,
   "license": "MIT",
   "main": "public/app.js",

@@ -20,7 +20,8 @@
     "build:ts": "tsc",
     "test": "yarn test:unit && yarn test:e2e",
     "test:unit": "mocha",
-    "test:e2e": "yarn playwright test --config=playwright.config.ts"
+    "test:e2e": "yarn playwright test --config=playwright.config.ts",
+    "semantic-release": "semantic-release"
   },
   "engines": {
     "node": "24.2.0"
@@ -51,6 +52,8 @@
   "devDependencies": {
     "@eslint/js": "^9.19.0",
     "@playwright/test": "^1.52.0",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
     "@types/chai": "^5.2.2",
     "@types/compression": "^1.7.5",
     "@types/connect-livereload": "^0.6.3",
@@ -90,6 +93,7 @@
     "rimraf": "^6.0.1",
     "sass": "^1.86.3",
     "sass-embedded": "^1.89.2",
+    "semantic-release": "^24.2.9",
     "sinon": "^21.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"

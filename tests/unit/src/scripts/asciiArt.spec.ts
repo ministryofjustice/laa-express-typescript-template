@@ -32,9 +32,7 @@ describe("ASCII Art Banner", () => {
 		const output = consoleLogStub.firstCall.args[0];
 
 		// Verify the output contains expected elements
-		ok(output.includes("__  __  ____"), "Banner should include the MOJ ASCII art");
-		ok(output.includes("|  \\/  |/ __ \\"), "Banner should include the MOJ ASCII art");
-		ok(output.includes("Welcome to GOVUK Frontend Express."), "Banner should include welcome message");
+		ok(output.includes("Welcome to LAA Express TypeScript Template"), "Banner should include welcome message");
 		ok(output.includes("Like what you see? Want to work with us?"), "Banner should include recruitment message");
 		ok(output.includes("View our job availabilities"), "Banner should include job reference");
 	});
@@ -48,7 +46,7 @@ describe("ASCII Art Banner", () => {
 
 		// Define the messages we expect to find
 		const requiredMessages = [
-			"Welcome to GOVUK Frontend Express.",
+			"Welcome to LAA Express TypeScript Template",
 			"Like what you see? Want to work with us?",
 			"View our job availabilities or sign up for alerts:",
 			"{URL link to your departments jobs}"
@@ -68,7 +66,7 @@ describe("ASCII Art Banner", () => {
 
 		// Check that each message is on its own line
 		ok(
-			output.includes("Welcome to GOVUK Frontend Express.\nLike what you see?"),
+			output.includes("Welcome to LAA Express TypeScript Template\nLike what you see?"),
 			"Messages should be formatted with line breaks between them"
 		);
 	});

@@ -41,5 +41,10 @@ export default defineConfig({
     command: 'yarn start',
     url: 'http://127.0.0.1:3000',
     reuseExistingServer: process.env.CI !== 'true',
+    env: {
+      SESSION_SECRET: 'test-secret-key-for-playwright-tests',
+      SESSION_NAME: 'test-session',
+      NODE_ENV: 'test',
+    },
   },
 });

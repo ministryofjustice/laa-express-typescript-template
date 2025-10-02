@@ -49,6 +49,7 @@
     "nunjucks": "^3.2.4"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
     "@eslint/js": "^9.19.0",
     "@playwright/test": "^1.52.0",
     "@types/chai": "^5.2.2",
@@ -85,6 +86,7 @@
     "livereload": "^0.9.3",
     "middleware-axios": "^3.0.0",
     "mocha": "^11.5.0",
+    "msw": "^2.11.3",
     "nodemon": "^3.1.9",
     "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
@@ -92,6 +94,7 @@
     "sass-embedded": "^1.89.2",
     "sinon": "^21.0.0",
     "ts-node": "^10.9.2",
+    "tsx": "^4.20.6",
     "typescript": "^5.8.3"
   },
   "husky": {

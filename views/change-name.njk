@@ -1,0 +1,67 @@
+{% extends "base.njk" %}
+
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+
+{% block pageTitle %}
+  Change name - {{ serviceName }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      
+      {% if error and error.errorSummaryList and error.errorSummaryList.length > 0 %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: error.errorSummaryList
+        }) }}
+      {% endif %}
+
+      {% if successMessage %}
+        {{ govukNotificationBanner({
+          type: "success",
+          html: "<p class=\"govuk-notification-banner__heading\">" + successMessage + "</p>"
+        }) }}
+      {% endif %}
+
+      <h1 class="govuk-heading-l">Change name</h1>
+
+      {% if currentName %}
+        <p class="govuk-body">
+          <strong>Current name:</strong> {{ currentName }}
+        </p>
+      {% endif %}
+
+      <form action="/change/name" method="post" novalidate>
+        {{ govukInput({
+          id: "fullName",
+          name: "fullName",
+          type: "text",
+          autocomplete: "name",
+          spellcheck: false,
+          label: {
+            text: "Full name",
+            classes: "govuk-label--m"
+          },
+          hint: {
+            text: "Enter your full name as you would like it to appear"
+          },
+          value: formData.fullName if formData else "",
+          errorMessage: {
+            text: error.inputErrors.fullName
+          } if error and error.inputErrors and error.inputErrors.fullName
+        }) }}
+
+        {{ govukButton({
+          text: "Save and continue"
+        }) }}
+
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+      </form>
+
+    </div>
+  </div>
+{% endblock %}

@@ -1,7 +1,7 @@
 import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
 import { validateName } from '#src/middlewares/nameSchema.js';
-import { postName } from '#src/controllers/nameController.js';
+import { getName, postName } from '#src/controllers/nameController.js';
 
 // Create a new router
 const router = express.Router();
@@ -39,14 +39,8 @@ router.get('/error', function (req: Request, res: Response): void {
 	res.set('X-Error-Tag', 'TEST_500_ALERT').status(UNSUCCESSFUL_REQUEST).send('Internal Server Error');
 });
 
-// GET endpoint to serve CSRF token for testing
-router.get('/change/name', function (req: Request, res: Response): void {
-	const csrfToken = typeof req.csrfToken === 'function' ? req.csrfToken() : undefined;
-	res.json({
-		csrfToken: csrfToken,
-		message: 'Use this CSRF token in your POST request as _csrf field'
-	});
-});
+// GET endpoint to render the name change form
+router.get('/change/name', getName);
 
 router.post('/change/name', validateName(), postName);
 

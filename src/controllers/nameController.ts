@@ -1,8 +1,32 @@
 import type { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 
+// Store the current name in memory (in a real app, this would be from a database)
+let currentStoredName = 'John Smith'; // Default name
+
 /**
- * Controller for handling name change requests
+ * GET controller for rendering the name change form
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next function
+ */
+export function getName(req: Request, res: Response, next: NextFunction): void {
+  try {
+    const csrfToken = typeof req.csrfToken === 'function' ? req.csrfToken() : undefined;
+    
+    res.render('change-name.njk', {
+      currentName: currentStoredName,
+      csrfToken: csrfToken,
+      formData: {},
+      error: null
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
+ * POST controller for handling name change requests
  * Processes validation results and formats errors for GOV.UK component display
  * @param {Request} req - Express request object
  * @param {Response} res - Express response object
@@ -10,6 +34,8 @@ import { validationResult } from 'express-validator';
  */
 export function postName(req: Request, res: Response, next: NextFunction): void {
   try {
+    const csrfToken = typeof req.csrfToken === 'function' ? req.csrfToken() : undefined;
+    
     // Check for validation errors
     const validationErrors = validationResult(req);
     
@@ -34,27 +60,30 @@ export function postName(req: Request, res: Response, next: NextFunction): void 
         });
       });
       
-      // Send JSON response with GOV.UK compatible error structure
-      res.status(400).json({
-        success: false,
-        errors: {
+      // Re-render the form with errors and preserve user input
+      res.status(400).render('change-name.njk', {
+        currentName: currentStoredName,
+        csrfToken: csrfToken,
+        formData: req.body,
+        error: {
           inputErrors,
           errorSummaryList
-        },
-        formData: req.body
+        }
       });
       return;
     }
     
-    // Success case - process the valid name
+    // Success case - update the stored name and show success
     const { fullName } = req.body;
+    currentStoredName = fullName; // Update the stored name
     
-    res.status(200).json({
-      success: true,
-      message: 'Name updated successfully',
-      data: {
-        fullName: fullName
-      }
+    // Render the form again with the updated name and success state
+    res.render('change-name.njk', {
+      currentName: currentStoredName,
+      csrfToken: csrfToken,
+      formData: { fullName: '' }, // Clear the form
+      error: null,
+      successMessage: 'Name updated successfully'
     });
     
   } catch (error) {

@@ -17,23 +17,8 @@ jobs:
         with:
           fetch-depth: 0 # Fetch all history for proper change detection
 
-      - name: Read Node version from .nvmrc
-        run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_ENV
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v5
-        with:
-          node-version: ${{ env.NODE_VERSION }} # Match project's Node version
-        env:
-          SKIP_YARN_COREPACK_CHECK: '1'
-
-      - name: Enable Corepack and prepare Yarn
-        run: |
-          corepack enable
-          corepack prepare yarn@4.9.2 --activate
-
-      - name: Install dependencies
-        run: yarn install --immutable
+      - name: Setup Node and Dependencies
+        uses: ./.github/actions/setup-node
 
       - name: Build application
         run: yarn build

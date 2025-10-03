@@ -1,4 +1,4 @@
-# Default values for your-repo-name.
+# Default values for laa-manage-your-civil-cases.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -20,7 +20,7 @@ serviceAccount:
   create: false
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: "your-repo-name-github-action-service-account"
+  name: "your-github-action-service-account"
 
 podAnnotations: {}
 podLabels: {}
@@ -44,31 +44,29 @@ securityContext:
     type: RuntimeDefault
 
 env:
-  # These will be overridden by deploy.sh with values from GitHub vars/secrets
-  SERVICE_NAME: ""
-  SERVICE_PHASE: ""
-  DEPARTMENT_NAME: ""
-  DEPARTMENT_URL: ""
-  CONTACT_EMAIL: ""
+  SERVICE_NAME: "Express TypeScript Template"
+  SERVICE_PHASE: "Beta"
+  DEPARTMENT_NAME: "Legal Aid Agency"
+  DEPARTMENT_URL: "https://www.gov.uk/government/organisations/legal-aid-agency"
+  CONTACT_EMAIL: "eligibility@justice.gov.uk"
   CONTACT_PHONE: ""
-  SERVICE_URL: ""
-  SESSION_SECRET: ""
-  SESSION_NAME: ""
-  RATELIMIT_HEADERS_ENABLED: ""
+  SERVICE_URL: "https://www.gov.uk/legal-aid"
+  SESSION_NAME: "sessionId"
+  RATELIMIT_HEADERS_ENABLED: true
   RATELIMIT_STORAGE_URI: ""
-  RATE_LIMIT_MAX: ""
-  RATE_WINDOW_MS: ""
-  NODE_ENV: ""
+  RATE_LIMIT_MAX: 100
+  RATE_WINDOW_MS: 900000
+  NODE_ENV: "production"
 
 ingress:
   enabled: true
   hosts:
-    - host: your-name.cloud-platform.service.justice.gov.uk
+    - host: your-production-namespace.cloud-platform.service.justice.gov.uk
       paths:
         - path: /
           pathType: Prefix
   annotations:
-    external-dns.alpha.kubernetes.io/set-identifier: "ingress-name-your-repo-name-your-repo-name-production-green"
+    external-dns.alpha.kubernetes.io/set-identifier: "dns-identifier-for-production"
     external-dns.alpha.kubernetes.io/aws-weight: "100"
 
 service:

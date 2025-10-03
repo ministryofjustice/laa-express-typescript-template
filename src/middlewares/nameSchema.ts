@@ -10,9 +10,6 @@ export const validateName = (): ReturnType<typeof checkSchema> =>
     fullName: {
       in: ['body'],
       trim: true,
-      isString: {
-        errorMessage: 'Name must be a string'
-      },
       notEmpty: {
         errorMessage: 'Enter your full name'
       },

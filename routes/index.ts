@@ -1,5 +1,7 @@
 import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
+import { validateName } from '#src/middlewares/nameSchema.js';
+import { postName } from '#src/controllers/nameController.js';
 
 // Create a new router
 const router = express.Router();
@@ -36,5 +38,8 @@ router.get('/error', function (req: Request, res: Response): void {
 	// Simulate an error
 	res.set('X-Error-Tag', 'TEST_500_ALERT').status(UNSUCCESSFUL_REQUEST).send('Internal Server Error');
 });
+
+router.post('/change/name', validateName(), postName);
+
 
 export default router;

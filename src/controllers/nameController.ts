@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
+import { formatValidationErrors } from '../helpers/ValidationErrorHelpers.js';
 
 // Store the current name in memory (in a real app, this would be from a database)
 let currentStoredName = 'John Smith'; // Default name
@@ -40,25 +41,8 @@ export function postName(req: Request, res: Response, next: NextFunction): void 
     const validationErrors = validationResult(req);
     
     if (!validationErrors.isEmpty()) {
-      const rawErrors = validationErrors.array();
-      
-      // Format errors for GOV.UK error summary and field display
-      const inputErrors: Record<string, string> = {};
-      const errorSummaryList: Array<{ text: string; href: string }> = [];
-      
-      rawErrors.forEach((error) => {
-        const fieldName = 'path' in error && typeof error.path === 'string' ? error.path : 'fullName';
-        const errorMessage = typeof error.msg === 'string' ? error.msg : 'Invalid value';
-        
-        // Store field-level error for inline display
-        inputErrors[fieldName] = errorMessage;
-        
-        // Store summary error for error summary component
-        errorSummaryList.push({
-          text: errorMessage,
-          href: `#${fieldName}`
-        });
-      });
+      // Use the new formatValidationErrors helper
+      const { inputErrors, errorSummaryList } = formatValidationErrors(validationErrors);
       
       // Re-render the form with errors and preserve user input
       res.status(400).render('change-name.njk', {

@@ -1,4 +1,5 @@
 import { checkSchema } from 'express-validator';
+import { TypedValidationError } from '../helpers/ValidationErrorHelpers.js';
 
 /**
  * Validation middleware for name input.
@@ -11,7 +12,14 @@ export const validateName = (): ReturnType<typeof checkSchema> =>
       in: ['body'],
       trim: true,
       notEmpty: {
-        errorMessage: 'Enter your full name'
+        /**
+         * Custom error message for empty name field
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+         */
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: 'Enter your full name',
+          inlineMessage: 'Enter your full name'
+        })
       },
     }
   });

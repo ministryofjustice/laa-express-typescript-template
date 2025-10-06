@@ -6,7 +6,7 @@
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 
 {% block pageTitle %}
-  Change name - {{ serviceName }}
+  Change person - {{ serviceName }}
 {% endblock %}
 
 {% block content %}
@@ -27,7 +27,7 @@
         }) }}
       {% endif %}
 
-      <h1 class="govuk-heading-l">Change name</h1>
+      <h1 class="govuk-heading-l">Change person</h1>
 
       {% if currentName %}
         <p class="govuk-body">
@@ -35,7 +35,7 @@
         </p>
       {% endif %}
 
-      <form action="/change/name" method="post" novalidate>
+      <form action="/change/person" method="post" novalidate>
         {{ govukInput({
           id: "fullName",
           name: "fullName",

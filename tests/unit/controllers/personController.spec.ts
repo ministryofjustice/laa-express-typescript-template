@@ -14,10 +14,10 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import type { Request, Response, NextFunction } from 'express';
 import * as expressValidator from 'express-validator';
-import { getName, postName } from '#src/controllers/nameController.js';
+import { getPerson, postPerson } from '#src/controllers/personController.js';
 import * as validationHelpers from '#src/helpers/ValidationErrorHelpers.js';
 
-// Extend Request interface for tests
+// Extend Request interface for testsx
 interface TestRequest extends Request {
   csrfToken?: () => string;
 }
@@ -65,9 +65,9 @@ describe('Name Controller', () => {
     sinon.restore();
   });
 
-  describe('getName', () => {
+  describe('getPerson', () => {
     it('should render the change-name template with correct data', () => {
-      getName(req as TestRequest, res as Response, next);
+      getPerson(req as TestRequest, res as Response, next);
 
       expect(renderStub.calledOnce).to.be.true;
       expect(renderStub.firstCall.args[0]).to.equal('change-name.njk');
@@ -85,7 +85,7 @@ describe('Name Controller', () => {
     });
 
     it('should handle CSRF token generation correctly', () => {
-      getName(req as TestRequest, res as Response, next);
+      getPerson(req as TestRequest, res as Response, next);
 
       expect(csrfTokenStub.calledOnce).to.be.true;
       
@@ -96,7 +96,7 @@ describe('Name Controller', () => {
     it('should handle missing CSRF token function gracefully', () => {
       req.csrfToken = undefined;
 
-      getName(req as TestRequest, res as Response, next);
+      getPerson(req as TestRequest, res as Response, next);
 
       const templateData = renderStub.firstCall.args[1];
       expect(templateData.csrfToken).to.be.undefined;
@@ -106,7 +106,7 @@ describe('Name Controller', () => {
       const error = new Error('Test error');
       renderStub.throws(error);
 
-      getName(req as TestRequest, res as Response, next);
+      getPerson(req as TestRequest, res as Response, next);
 
       expect(next.calledOnce).to.be.true;
       expect(next.firstCall.args[0]).to.equal(error);

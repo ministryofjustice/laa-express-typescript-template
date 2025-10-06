@@ -16,11 +16,11 @@ let currentStoredName = 'John Smith'; // Default name
  * @param {Response} res - Express response object
  * @param {NextFunction} next - Express next function
  */
-export function getName(req: RequestWithCSRF, res: Response, next: NextFunction): void {
+export function getPerson(req: RequestWithCSRF, res: Response, next: NextFunction): void {
   try {
     const csrfToken = typeof req.csrfToken === 'function' ? req.csrfToken() : undefined;
     
-    res.render('change-name.njk', {
+    res.render('change-person.njk', {
       currentName: currentStoredName,
       csrfToken: csrfToken,
       formData: {},
@@ -38,7 +38,7 @@ export function getName(req: RequestWithCSRF, res: Response, next: NextFunction)
  * @param {Response} res - Express response object
  * @param {NextFunction} next - Express next function
  */
-export function postName(req: RequestWithCSRF, res: Response, next: NextFunction): void {
+export function postPerson(req: RequestWithCSRF, res: Response, next: NextFunction): void {
   try {
     const csrfToken = typeof req.csrfToken === 'function' ? req.csrfToken() : undefined;
     
@@ -50,7 +50,7 @@ export function postName(req: RequestWithCSRF, res: Response, next: NextFunction
       const { inputErrors, errorSummaryList } = formatValidationErrors(validationErrors);
       
       // Re-render the form with errors and preserve user input
-      res.status(400).render('change-name.njk', {
+      res.status(400).render('change-person.njk', {
         currentName: currentStoredName,
         csrfToken: csrfToken,
         formData: req.body,
@@ -67,7 +67,7 @@ export function postName(req: RequestWithCSRF, res: Response, next: NextFunction
     currentStoredName = fullName; // Update the stored name
     
     // Render the form again with the updated name and success state
-    res.render('change-name.njk', {
+    res.render('change-person.njk', {
       currentName: currentStoredName,
       csrfToken: csrfToken,
       formData: { fullName: '' }, // Clear the form

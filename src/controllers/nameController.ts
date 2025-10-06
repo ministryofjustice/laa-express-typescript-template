@@ -2,16 +2,21 @@ import type { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 import { formatValidationErrors } from '../helpers/ValidationErrorHelpers.js';
 
+// Extend Request interface for CSRF token support
+interface RequestWithCSRF extends Request {
+  csrfToken?: () => string;
+}
+
 // Store the current name in memory (in a real app, this would be from a database)
 let currentStoredName = 'John Smith'; // Default name
 
 /**
  * GET controller for rendering the name change form
- * @param {Request} req - Express request object
+ * @param {RequestWithCSRF} req - Express request object
  * @param {Response} res - Express response object
  * @param {NextFunction} next - Express next function
  */
-export function getName(req: Request, res: Response, next: NextFunction): void {
+export function getName(req: RequestWithCSRF, res: Response, next: NextFunction): void {
   try {
     const csrfToken = typeof req.csrfToken === 'function' ? req.csrfToken() : undefined;
     
@@ -29,11 +34,11 @@ export function getName(req: Request, res: Response, next: NextFunction): void {
 /**
  * POST controller for handling name change requests
  * Processes validation results and formats errors for GOV.UK component display
- * @param {Request} req - Express request object
+ * @param {RequestWithCSRF} req - Express request object
  * @param {Response} res - Express response object
  * @param {NextFunction} next - Express next function
  */
-export function postName(req: Request, res: Response, next: NextFunction): void {
+export function postName(req: RequestWithCSRF, res: Response, next: NextFunction): void {
   try {
     const csrfToken = typeof req.csrfToken === 'function' ? req.csrfToken() : undefined;
     

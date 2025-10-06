@@ -10,6 +10,19 @@ export const validateName = (): ReturnType<typeof checkSchema> =>
   checkSchema({
     fullName: {
       in: ['body'],
+      customSanitizer: {
+        options: (value: any) => {
+          // Preserve undefined and null to allow proper validation
+          if (value === undefined || value === null) {
+            return value;
+          }
+          // Convert any non-string value to string for consistent processing
+          if (typeof value !== 'string') {
+            return String(value);
+          }
+          return value;
+        }
+      },
       trim: true,
       notEmpty: {
         /**

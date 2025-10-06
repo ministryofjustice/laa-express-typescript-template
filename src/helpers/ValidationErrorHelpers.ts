@@ -52,8 +52,12 @@ function hasProperty(obj: unknown, key: string): obj is Record<string, unknown> 
  * @param {unknown} value Value to convert
  * @returns {string} String value or empty string
  */
-function safeString(value: unknown): string {
-  if (value === null || value === undefined) {
+function safeString(value: any): string {
+  if (value === null || value === undefined || value === '' || value === 0 || value === false) {
+    return '';
+  }
+  // Handle empty objects specifically
+  if (typeof value === 'object' && value !== null && Object.keys(value).length === 0) {
     return '';
   }
   if (typeof value === 'string') {
@@ -62,7 +66,10 @@ function safeString(value: unknown): string {
   if (typeof value === 'number' || typeof value === 'boolean') {
     return String(value);
   }
-  return '';
+  if (typeof value === 'object' && value.toString && value.toString !== Object.prototype.toString) {
+    return value.toString();
+  }
+  return String(value);
 }
 
 /**

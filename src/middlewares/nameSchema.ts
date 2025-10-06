@@ -1,5 +1,6 @@
 import { checkSchema } from 'express-validator';
 import { TypedValidationError } from '../helpers/ValidationErrorHelpers.js';
+import { t } from '#src/scripts/helpers/i18nLoader.js';
 
 /**
  * Validation middleware for name input.
@@ -26,12 +27,12 @@ export const validateName = (): ReturnType<typeof checkSchema> =>
       trim: true,
       notEmpty: {
         /**
-         * Custom error message for empty name field
+         * Custom error message for empty name field using i18n
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'Enter your full name',
-          inlineMessage: 'Enter your full name'
+          summaryMessage: t('forms.name.validationError.notEmpty'),
+          inlineMessage: t('forms.name.validationError.notEmpty')
         })
       },
     }

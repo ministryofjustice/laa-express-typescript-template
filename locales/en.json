@@ -75,11 +75,66 @@
         "1966": "1966"
       }
     },
+    "changeName": {
+      "title": "Change your name",
+      "pageTitle": "Change your name – {serviceName} – GOV.UK",
+      "currentName": "Current name",
+      "newName": "New name",
+      "button": "Continue"
+    },
     "error": {
       "pageTitle": "Sorry, there is a problem with the service – {SERVICE_NAME} – GOV.UK"
     }
   },
   "forms": {
+    "name": {
+      "label": "Full name",
+      "title": "Change your name",
+      "pageTitle": "Change your name – {serviceName} – GOV.UK",
+      "validationError": {
+        "notEmpty": "Enter your full name",
+        "notChanged": "Change your full name, or select 'Cancel'"
+      }
+    },
+    "address": {
+      "label": "Address",
+      "title": "Address",
+      "validationError": {
+        "notEmpty": "Enter your address"
+      }
+    },
+    "dateOfBirth": {
+      "label": "Date of birth",
+      "title": "Date of birth",
+      "hint": "For example, 27 3 1986",
+      "validationError": {
+        "day": {
+          "notEmpty": "Date of birth must include a day",
+          "isInt": "Day must be a number between 1 and 31"
+        },
+        "month": {
+          "notEmpty": "Date of birth must include a month",
+          "isInt": "Month must be a number between 1 and 12"
+        },
+        "year": {
+          "notEmpty": "Date of birth must include a year",
+          "isLength": "Year must be 4 numbers",
+          "isInt": "Year must be a valid number"
+        },
+        "validDate": "Enter a real date of birth"
+      }
+    },
+    "clientDetails": {
+      "name": {
+        "label": "Name", 
+        "title": "Client name",
+        "pageTitle": "Client name – {caseReference} – {serviceName} – GOV.UK",
+        "validationError": {
+          "notEmpty": "Enter the client name",
+          "notChanged": "Change the client name, or select 'Cancel'"
+        }
+      }
+    },
     "home": {
       "validationError": {}
     }

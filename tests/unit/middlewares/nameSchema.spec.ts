@@ -10,11 +10,12 @@
  * Dependencies: express-validator, ValidationErrorHelpers
  */
 
-import { describe, it } from 'mocha';
+import { describe, it, before } from 'mocha';
 import { expect } from 'chai';
 import { validateName } from '#src/middlewares/nameSchema.js';
 import { validationResult } from 'express-validator';
 import { formatValidationError } from '#src/helpers/ValidationErrorHelpers.js';
+import { initializeI18nextSync } from '#src/scripts/helpers/i18nLoader.js';
 import type { Request } from 'express';
 
 // Mock Express request object for testing
@@ -25,6 +26,11 @@ function createMockRequest(bodyData: Record<string, unknown>): Partial<Request> 
 }
 
 describe('Name Schema Validation', () => {
+  before(() => {
+    // Initialize i18next for tests
+    initializeI18nextSync();
+  });
+
   describe('validateName', () => {
     it('should create validation schema without throwing an error', () => {
       expect(() => validateName()).to.not.throw();

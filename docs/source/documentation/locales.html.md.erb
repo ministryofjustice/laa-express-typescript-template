@@ -1,3 +1,9 @@
+---
+title: Locales
+last_reviewed_on: 2025-10-02
+review_in: 6 weeks
+---
+
 # Centralised Locale System
 
 This application uses a centralized internationalization system powered by **i18next** for managing all translatable text. The system provides type-safe, globally accessible locale data across the entire application with support for namespaces, interpolation, and graceful fallbacks.
@@ -11,7 +17,6 @@ All translatable text is stored in JSON files in the `locales/` directory:
 ```bash
 locales/
 ├── en.json
-└── README.md
 ```
 
 ### 2. i18n Loader (`src/scripts/helpers/i18nLoader.ts`)
@@ -163,8 +168,8 @@ t('messages.welcome', { name: 'John' });
 // Result: "Welcome, John!"
 
 // Multiple variables
-t('pages.title', { pageTitle: 'Case Details', serviceName: 'LAA Portal' });
-// Result: "Case Details – LAA Portal – GOV.UK"
+t('pages.title', { pageTitle: 'Case Details', serviceName: 'LAA SiLAS' });
+// Result: "Case Details – LAA SiLAS – GOV.UK"
 
 // In templates
 {{ t('messages.itemCount', { count: cases.length }) }}

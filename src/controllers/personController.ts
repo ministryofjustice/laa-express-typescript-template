@@ -7,11 +7,12 @@ interface RequestWithCSRF extends Request {
   csrfToken?: () => string;
 }
 
-// Store the current name in memory (in a real app, this would be from a database)
+// Store the current person data in memory (in a real app, this would be from a database)
 let currentStoredName = 'John Smith'; // Default name
+let currentStoredAddress = '123 Example Street\nExample City\nEX1 2MP'; // Default address
 
 /**
- * GET controller for rendering the name change form
+ * GET controller for rendering the person change form
  * @param {RequestWithCSRF} req - Express request object
  * @param {Response} res - Express response object
  * @param {NextFunction} next - Express next function
@@ -22,6 +23,7 @@ export function getPerson(req: RequestWithCSRF, res: Response, next: NextFunctio
     
     res.render('change-person.njk', {
       currentName: currentStoredName,
+      currentAddress: currentStoredAddress,
       csrfToken: csrfToken,
       formData: {},
       error: null
@@ -32,7 +34,7 @@ export function getPerson(req: RequestWithCSRF, res: Response, next: NextFunctio
 }
 
 /**
- * POST controller for handling name change requests
+ * POST controller for handling person change requests
  * Processes validation results and formats errors for GOV.UK component display
  * @param {RequestWithCSRF} req - Express request object
  * @param {Response} res - Express response object
@@ -52,6 +54,7 @@ export function postPerson(req: RequestWithCSRF, res: Response, next: NextFuncti
       // Re-render the form with errors and preserve user input
       res.status(400).render('change-person.njk', {
         currentName: currentStoredName,
+        currentAddress: currentStoredAddress,
         csrfToken: csrfToken,
         formData: req.body,
         error: {
@@ -62,17 +65,19 @@ export function postPerson(req: RequestWithCSRF, res: Response, next: NextFuncti
       return;
     }
     
-    // Success case - update the stored name and show success
-    const { fullName } = req.body;
+    // Success case - update the stored person data and show success
+    const { fullName, address } = req.body;
     currentStoredName = fullName; // Update the stored name
+    currentStoredAddress = address; // Update the stored address
     
-    // Render the form again with the updated name and success state
+    // Render the form again with the updated data and success state
     res.render('change-person.njk', {
       currentName: currentStoredName,
+      currentAddress: currentStoredAddress,
       csrfToken: csrfToken,
-      formData: { fullName: '' }, // Clear the form
+      formData: { fullName: '', address: '' }, // Clear the form
       error: null,
-      successMessage: 'Name updated successfully'
+      successMessage: 'Person details updated successfully'
     });
     
   } catch (error) {

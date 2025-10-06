@@ -1,6 +1,7 @@
 {% extends "base.njk" %}
 
 {% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
@@ -29,13 +30,13 @@
 
       <h1 class="govuk-heading-l">Change person</h1>
 
-      {% if currentName %}
-        <p class="govuk-body">
-          <strong>Current name:</strong> {{ currentName }}
-        </p>
-      {% endif %}
-
       <form action="/change/person" method="post" novalidate>
+        {% if currentName %}
+          <p class="govuk-body govuk-!-margin-bottom-2">
+            <strong>Current name:</strong> {{ currentName }}
+          </p>
+        {% endif %}
+
         {{ govukInput({
           id: "fullName",
           name: "fullName",
@@ -53,6 +54,30 @@
           errorMessage: {
             text: error.inputErrors.fullName
           } if error and error.inputErrors and error.inputErrors.fullName
+        }) }}
+
+        {% if currentAddress %}
+          <p class="govuk-body govuk-!-margin-bottom-2">
+            <strong>Current address:</strong><br>
+            {{ currentAddress | replace('\n', '<br>') | safe }}
+          </p>
+        {% endif %}
+
+        {{ govukTextarea({
+          id: "address",
+          name: "address",
+          label: {
+            text: "Address",
+            classes: "govuk-label--m"
+          },
+          hint: {
+            text: "Enter your full address including postcode"
+          },
+          value: formData.address if formData else "123 Example Street\nExample City\nEX1 2MP",
+          rows: 5,
+          errorMessage: {
+            text: error.inputErrors.address
+          } if error and error.inputErrors and error.inputErrors.address
         }) }}
 
         {{ govukButton({

@@ -3,9 +3,10 @@ import express from 'express';
 import chalk from 'chalk';
 import morgan from 'morgan';
 import compression from 'compression';
-import { setupCsrf, setupMiddlewares, setupConfig } from '#middleware/index.js';
+import { setupCsrf, setupMiddlewares, setupConfig, setupLocaleMiddleware } from '#middleware/index.js';
 import session from 'express-session';
 import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner } from '#utils/index.js';
+import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
 import config from '#config.js';
 import indexRouter from '#routes/index.js';
 import livereload from 'connect-livereload';
@@ -16,9 +17,12 @@ const TRUST_FIRST_PROXY = 1;
  * Creates and configures an Express application.
  * Then starts the server listening on the configured port.
  *
- * @returns {import('express').Application} The configured Express application
+ * @returns {Promise<import('express').Application>} The configured Express application
  */
 const createApp = (): express.Application => {
+	// Initialize i18next synchronously before setting up the app
+	initializeI18nextSync();
+
 	const app = express();
 
 	// Set up common middleware for handling cookies, body parsing, etc.
@@ -56,6 +60,9 @@ const createApp = (): express.Application => {
 
 	// Set up Cross-Site Request Forgery (CSRF) protection
 	setupCsrf(app);
+
+	// Set up locale middleware for internationalization
+	app.use(setupLocaleMiddleware);
 
 	// Set up Nunjucks as the template engine
 	nunjucksSetup(app);
@@ -95,7 +102,7 @@ const createApp = (): express.Application => {
 };
 
 // Self-execute the app directly to allow app.js to be executed directly
-createApp();
+void createApp();
 
 // Export the createApp function for testing/import purposes
 export default createApp;

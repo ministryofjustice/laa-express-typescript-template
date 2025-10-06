@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 import { formatValidationErrors } from '../helpers/ValidationErrorHelpers.js';
+import { extractFormFields } from '../helpers/dataTransformers.js';
 
 // Extend Request interface for CSRF token support
 interface RequestWithCSRF extends Request {
@@ -44,6 +45,9 @@ export function postPerson(req: RequestWithCSRF, res: Response, next: NextFuncti
   try {
     const csrfToken = typeof req.csrfToken === 'function' ? req.csrfToken() : undefined;
     
+    // Extract form fields for consistent handling
+    const formFields = extractFormFields(req.body, ['fullName', 'address']);
+    
     // Check for validation errors
     const validationErrors = validationResult(req);
     
@@ -56,7 +60,7 @@ export function postPerson(req: RequestWithCSRF, res: Response, next: NextFuncti
         currentName: currentStoredName,
         currentAddress: currentStoredAddress,
         csrfToken: csrfToken,
-        formData: req.body,
+        formData: formFields,
         error: {
           inputErrors,
           errorSummaryList
@@ -66,9 +70,8 @@ export function postPerson(req: RequestWithCSRF, res: Response, next: NextFuncti
     }
     
     // Success case - update the stored person data and show success
-    const { fullName, address } = req.body;
-    currentStoredName = fullName; // Update the stored name
-    currentStoredAddress = address; // Update the stored address
+    currentStoredName = String(formFields.fullName); // Update the stored name
+    currentStoredAddress = String(formFields.address); // Update the stored address
     
     // Render the form again with the updated data and success state
     res.render('change-person.njk', {

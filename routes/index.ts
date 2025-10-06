@@ -1,6 +1,6 @@
 import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
-import { validateName } from '#src/middlewares/nameSchema.js';
+import { validatePerson } from '#src/middlewares/personSchema.js';
 import { getPerson, postPerson } from '#src/controllers/personController.js';
 
 // Create a new router
@@ -42,7 +42,7 @@ router.get('/error', function (req: Request, res: Response): void {
 // GET endpoint to render the person change form
 router.get('/change/person', getPerson);
 
-router.post('/change/person', validateName(), postPerson);
+router.post('/change/person', validatePerson(), postPerson);
 
 
 export default router;

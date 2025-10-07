@@ -3,7 +3,7 @@
     "public/app.js",
     "locales/**/*.json"
   ],
-  "ext": "js, json",
+  "ext": "js,json",
   "ignore": [
     "public/assets/**/*",
     "public/css/**/*",

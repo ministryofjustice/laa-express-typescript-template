@@ -19,7 +19,7 @@
     "tsc": "tsc --noEmit",
     "build:ts": "tsc",
     "test": "yarn test:unit && yarn test:e2e",
-    "test:unit": "mocha",
+    "test:unit": "./node_modules/.bin/mocha",
     "test:e2e": "yarn playwright test --config=playwright.config.ts"
   },
   "engines": {
@@ -39,7 +39,7 @@
     "express-rate-limit": "^7.5.0",
     "express-session": "^1.18.0",
     "express-validator": "^7.2.1",
-    "figlet": "^1.8.1",
+    "figlet": "^1.9.3",
     "fs-extra": "^11.3.0",
     "govuk-frontend": "^5.10.2",
     "helmet": "^8.1.0",
@@ -93,6 +93,7 @@
     "sass-embedded": "^1.89.2",
     "sinon": "^21.0.0",
     "ts-node": "^10.9.2",
+    "tsx": "^4.20.6",
     "typescript": "^5.8.3"
   },
   "husky": {

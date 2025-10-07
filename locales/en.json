@@ -112,6 +112,15 @@
         "notChanged": "Change your contact preference, or select 'Cancel'"
       }
     },
+    "priority": {
+      "label": "Priority level",
+      "title": "Priority level",
+      "validationError": {
+        "notEmpty": "Select a priority level",
+        "invalidOption": "Select a valid priority level",
+        "notChanged": "Change the priority level, or select 'Cancel'"
+      }
+    },
     "dateOfBirth": {
       "label": "Date of birth",
       "title": "Date of birth",

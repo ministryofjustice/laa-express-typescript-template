@@ -15,6 +15,7 @@ interface PersonBody {
   fullName: string;
   address: string;
   contactPreference: string;
+  priority: string;
   'dateOfBirth-day': string;
   'dateOfBirth-month': string;
   'dateOfBirth-year': string;
@@ -30,6 +31,7 @@ function isPersonBody(body: unknown): body is PersonBody {
     hasProperty(body, 'fullName') &&
     hasProperty(body, 'address') &&
     hasProperty(body, 'contactPreference') &&
+    hasProperty(body, 'priority') &&
     hasProperty(body, 'dateOfBirth-day') &&
     hasProperty(body, 'dateOfBirth-month') &&
     hasProperty(body, 'dateOfBirth-year');
@@ -149,6 +151,62 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
         errorMessage: () => new TypedValidationError({
           summaryMessage: t('forms.contactPreference.validationError.notChanged'),
           inlineMessage: t('forms.contactPreference.validationError.notChanged')
+        })
+      }
+    },
+    priority: {
+      in: ['body'],
+      notEmpty: {
+        /**
+         * Custom error message for empty priority field using i18n
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+         */
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: t('forms.priority.validationError.notEmpty'),
+          inlineMessage: t('forms.priority.validationError.notEmpty')
+        })
+      },
+      isIn: {
+        options: [['low', 'medium', 'high', 'urgent']],
+        /**
+         * Custom error message for invalid priority using i18n
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+         */
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: t('forms.priority.validationError.invalidOption'),
+          inlineMessage: t('forms.priority.validationError.invalidOption')
+        })
+      },
+      custom: {
+        /**
+         * Validates that the priority has been changed from the original value
+         * Following MCC pattern for change validation
+         * @param {string} value - The priority value from the form
+         * @param {Meta} meta - express-validator metadata containing request object
+         * @returns {boolean} True if the value has changed from original or no original exists
+         */
+        options: (value: string, { req }: Meta): boolean => {
+          // Get original form data from session
+          const originalData = req.session?.personOriginal;
+          if (!originalData || typeof originalData !== 'object') {
+            return true; // No original data to compare against
+          }
+          
+          const originalPriority = originalData.priority;
+          if (!originalPriority) {
+            return true; // No original priority to compare against
+          }
+          
+          // Return true if the value has changed, false if it's the same
+          return value !== originalPriority;
+        },
+        /**
+         * Custom error message for unchanged priority using i18n
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+         */
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: t('forms.priority.validationError.notChanged'),
+          inlineMessage: t('forms.priority.validationError.notChanged')
         })
       }
     },

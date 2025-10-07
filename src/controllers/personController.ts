@@ -14,6 +14,7 @@ const DEFAULT_PERSON_DATA = {
   fullName: 'John Smith',
   address: '123 Example Street\nExample City\nEX1 2MP',
   contactPreference: 'email',
+  priority: 'medium',
   dateOfBirth: { day: '27', month: '3', year: '1986' }
 };
 
@@ -29,6 +30,7 @@ function getCurrentPersonData(req: Request): typeof DEFAULT_PERSON_DATA {
       fullName: sessionData.fullName || DEFAULT_PERSON_DATA.fullName,
       address: sessionData.address || DEFAULT_PERSON_DATA.address,
       contactPreference: sessionData.contactPreference || DEFAULT_PERSON_DATA.contactPreference,
+      priority: sessionData.priority || DEFAULT_PERSON_DATA.priority,
       dateOfBirth: {
         day: sessionData['dateOfBirth-day'] || DEFAULT_PERSON_DATA.dateOfBirth.day,
         month: sessionData['dateOfBirth-month'] || DEFAULT_PERSON_DATA.dateOfBirth.month,
@@ -55,6 +57,7 @@ export function getPerson(req: RequestWithCSRF, res: Response, next: NextFunctio
       fullName: currentPersonData.fullName,
       address: currentPersonData.address,
       contactPreference: currentPersonData.contactPreference,
+      priority: currentPersonData.priority,
       'dateOfBirth-day': currentPersonData.dateOfBirth.day,
       'dateOfBirth-month': currentPersonData.dateOfBirth.month,
       'dateOfBirth-year': currentPersonData.dateOfBirth.year
@@ -65,6 +68,7 @@ export function getPerson(req: RequestWithCSRF, res: Response, next: NextFunctio
       currentName: currentPersonData.fullName,
       currentAddress: currentPersonData.address,
       currentContactPreference: currentPersonData.contactPreference,
+      currentPriority: currentPersonData.priority,
       currentDateOfBirth: currentPersonData.dateOfBirth,
       csrfToken: csrfToken,
       formData: {},
@@ -91,6 +95,7 @@ export function postPerson(req: RequestWithCSRF, res: Response, next: NextFuncti
       'fullName', 
       'address', 
       'contactPreference',
+      'priority',
       'dateOfBirth-day', 
       'dateOfBirth-month', 
       'dateOfBirth-year'
@@ -109,6 +114,7 @@ export function postPerson(req: RequestWithCSRF, res: Response, next: NextFuncti
         currentName: currentPersonData.fullName,
         currentAddress: currentPersonData.address,
         currentContactPreference: currentPersonData.contactPreference,
+        currentPriority: currentPersonData.priority,
         currentDateOfBirth: currentPersonData.dateOfBirth,
         csrfToken: csrfToken,
         formData: formFields,
@@ -141,12 +147,14 @@ export function postPerson(req: RequestWithCSRF, res: Response, next: NextFuncti
       currentName: currentPersonData.fullName,
       currentAddress: currentPersonData.address,
       currentContactPreference: currentPersonData.contactPreference,
+      currentPriority: currentPersonData.priority,
       currentDateOfBirth: currentPersonData.dateOfBirth,
       csrfToken: csrfToken,
       formData: { 
         fullName: '', 
         address: '',
         contactPreference: '',
+        priority: '',
         'dateOfBirth-day': '',
         'dateOfBirth-month': '',
         'dateOfBirth-year': ''

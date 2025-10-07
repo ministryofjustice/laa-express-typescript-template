@@ -4,6 +4,7 @@
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
@@ -119,6 +120,54 @@
           errorMessage: {
             text: error.inputErrors.contactPreference
           } if error and error.inputErrors and error.inputErrors.contactPreference
+        }) }}
+
+        {% if currentPriority %}
+          <p class="govuk-body govuk-!-margin-bottom-2">
+            <strong>Current priority level:</strong> {{ currentPriority | title }}
+          </p>
+        {% endif %}
+
+        {{ govukSelect({
+          id: "priority",
+          name: "priority",
+          label: {
+            text: "Priority level",
+            classes: "govuk-label--m"
+          },
+          hint: {
+            text: "Select the priority level for this case"
+          },
+          items: [
+            {
+              value: "",
+              text: "Choose priority level",
+              selected: false
+            },
+            {
+              value: "low",
+              text: "Low priority",
+              selected: (formData.priority == "low") if formData and formData.priority else (currentPriority == "low")
+            },
+            {
+              value: "medium",
+              text: "Medium priority",
+              selected: (formData.priority == "medium") if formData and formData.priority else (currentPriority == "medium")
+            },
+            {
+              value: "high",
+              text: "High priority",
+              selected: (formData.priority == "high") if formData and formData.priority else (currentPriority == "high")
+            },
+            {
+              value: "urgent",
+              text: "Urgent priority",
+              selected: (formData.priority == "urgent") if formData and formData.priority else (currentPriority == "urgent")
+            }
+          ],
+          errorMessage: {
+            text: error.inputErrors.priority
+          } if error and error.inputErrors and error.inputErrors.priority
         }) }}
 
         {% if currentDateOfBirth %}

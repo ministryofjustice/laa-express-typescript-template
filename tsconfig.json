@@ -25,6 +25,7 @@
 		"middleware/**/*",
 		"utils/**/*.ts",
 		"routes/**/*",
+		"scripts/**/*.ts",
 		"index.ts",
 		"esbuild.ts",
 		"start-server.ts",
@@ -32,6 +33,7 @@
 		"types/**/*.ts",
 		"playwright.config.ts",
 		"tests/**/*.spec.ts",
+		"tests/**/*.ts"
 	],
 	"exclude": [
 		"node_modules",

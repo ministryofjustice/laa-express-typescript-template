@@ -3,7 +3,7 @@
 
 ![govuk-frontend 5.10.2](https://img.shields.io/badge/govuk--frontend%20version-5.10.2-005EA5?logo=gov.uk&style=flat)
 
-Express.js is a fast, unopinionated, minimalist web framework for Node.js.
+Express.js is a fast, minimalist, and unopinionated web framework for Node.js. This template integrates TypeScript to provide strong typing, improved developer productivity, and enhanced code reliability for building scalable server-side applications.
 
 ## Contents
 - [Legal Aid Agency - Express with Typescript Template (ETT)](#legal-aid-agency---express-with-typescript-template-ett)

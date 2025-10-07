@@ -11,6 +11,7 @@ interface RequestWithCSRF extends Request {
 // Store the current person data in memory (in a real app, this would be from a database)
 let currentStoredName = 'John Smith'; // Default name
 let currentStoredAddress = '123 Example Street\nExample City\nEX1 2MP'; // Default address
+let currentStoredContactPreference = 'email'; // Default contact preference
 let currentStoredDateOfBirth = { day: '27', month: '3', year: '1986' }; // Default date of birth
 
 /**
@@ -26,6 +27,7 @@ export function getPerson(req: RequestWithCSRF, res: Response, next: NextFunctio
     res.render('change-person.njk', {
       currentName: currentStoredName,
       currentAddress: currentStoredAddress,
+      currentContactPreference: currentStoredContactPreference,
       currentDateOfBirth: currentStoredDateOfBirth,
       csrfToken: csrfToken,
       formData: {},
@@ -51,6 +53,7 @@ export function postPerson(req: RequestWithCSRF, res: Response, next: NextFuncti
     const formFields = extractFormFields(req.body, [
       'fullName', 
       'address', 
+      'contactPreference',
       'dateOfBirth-day', 
       'dateOfBirth-month', 
       'dateOfBirth-year'
@@ -67,6 +70,7 @@ export function postPerson(req: RequestWithCSRF, res: Response, next: NextFuncti
       res.status(400).render('change-person.njk', {
         currentName: currentStoredName,
         currentAddress: currentStoredAddress,
+        currentContactPreference: currentStoredContactPreference,
         currentDateOfBirth: currentStoredDateOfBirth,
         csrfToken: csrfToken,
         formData: formFields,
@@ -81,6 +85,7 @@ export function postPerson(req: RequestWithCSRF, res: Response, next: NextFuncti
     // Success case - update the stored person data and show success
     currentStoredName = String(formFields.fullName); // Update the stored name
     currentStoredAddress = String(formFields.address); // Update the stored address
+    currentStoredContactPreference = String(formFields.contactPreference); // Update the stored contact preference
     currentStoredDateOfBirth = {
       day: String(formFields['dateOfBirth-day']),
       month: String(formFields['dateOfBirth-month']),
@@ -91,11 +96,13 @@ export function postPerson(req: RequestWithCSRF, res: Response, next: NextFuncti
     res.render('change-person.njk', {
       currentName: currentStoredName,
       currentAddress: currentStoredAddress,
+      currentContactPreference: currentStoredContactPreference,
       currentDateOfBirth: currentStoredDateOfBirth,
       csrfToken: csrfToken,
       formData: { 
         fullName: '', 
         address: '',
+        contactPreference: '',
         'dateOfBirth-day': '',
         'dateOfBirth-month': '',
         'dateOfBirth-year': ''

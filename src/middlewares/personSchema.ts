@@ -14,6 +14,7 @@ const YEAR_LENGTH = 4;
 interface PersonBody {
   fullName: string;
   address: string;
+  contactPreference: string;
   'dateOfBirth-day': string;
   'dateOfBirth-month': string;
   'dateOfBirth-year': string;
@@ -28,6 +29,7 @@ function isPersonBody(body: unknown): body is PersonBody {
   return isRecord(body) &&
     hasProperty(body, 'fullName') &&
     hasProperty(body, 'address') &&
+    hasProperty(body, 'contactPreference') &&
     hasProperty(body, 'dateOfBirth-day') &&
     hasProperty(body, 'dateOfBirth-month') &&
     hasProperty(body, 'dateOfBirth-year');
@@ -93,6 +95,30 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           inlineMessage: t('forms.address.validationError.notEmpty')
         })
       },
+    },
+    contactPreference: {
+      in: ['body'],
+      notEmpty: {
+        /**
+         * Custom error message for empty contact preference field using i18n
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+         */
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: t('forms.contactPreference.validationError.notEmpty'),
+          inlineMessage: t('forms.contactPreference.validationError.notEmpty')
+        })
+      },
+      isIn: {
+        options: [['email', 'phone', 'post']],
+        /**
+         * Custom error message for invalid contact preference using i18n
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+         */
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: t('forms.contactPreference.validationError.invalidOption'),
+          inlineMessage: t('forms.contactPreference.validationError.invalidOption')
+        })
+      }
     },
     'dateOfBirth-day': {
       in: ['body'],

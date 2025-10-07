@@ -3,6 +3,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
@@ -79,6 +80,39 @@
           errorMessage: {
             text: error.inputErrors.address
           } if error and error.inputErrors and error.inputErrors.address
+        }) }}
+
+        {{ govukRadios({
+          name: "contactPreference",
+          fieldset: {
+            legend: {
+              text: "How would you prefer to be contacted?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: "Select your preferred method of contact"
+          },
+          items: [
+            {
+              value: "email",
+              text: "Email",
+              checked: formData.contactPreference == "email" if formData
+            },
+            {
+              value: "phone",
+              text: "Phone",
+              checked: formData.contactPreference == "phone" if formData
+            },
+            {
+              value: "post",
+              text: "Post",
+              checked: formData.contactPreference == "post" if formData
+            }
+          ],
+          errorMessage: {
+            text: error.inputErrors.contactPreference
+          } if error and error.inputErrors and error.inputErrors.contactPreference
         }) }}
 
         {% if currentDateOfBirth %}

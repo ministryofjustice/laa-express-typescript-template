@@ -103,6 +103,14 @@
         "notEmpty": "Enter your address"
       }
     },
+    "contactPreference": {
+      "label": "Contact preference",
+      "title": "How would you prefer to be contacted?",
+      "validationError": {
+        "notEmpty": "Select how you would prefer to be contacted",
+        "invalidOption": "Select a valid contact preference"
+      }
+    },
     "dateOfBirth": {
       "label": "Date of birth",
       "title": "Date of birth",

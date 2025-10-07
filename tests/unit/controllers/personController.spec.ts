@@ -66,11 +66,11 @@ describe('Name Controller', () => {
   });
 
   describe('getPerson', () => {
-    it('should render the change-name template with correct data', () => {
+    it('should render the change-person template with correct data', () => {
       getPerson(req as TestRequest, res as Response, next);
 
       expect(renderStub.calledOnce).to.be.true;
-      expect(renderStub.firstCall.args[0]).to.equal('change-name.njk');
+      expect(renderStub.firstCall.args[0]).to.equal('change-person.njk');
       
       const templateData = renderStub.firstCall.args[1];
       expect(templateData).to.have.property('currentName');

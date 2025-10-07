@@ -2,6 +2,7 @@
 
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
@@ -78,6 +79,49 @@
           errorMessage: {
             text: error.inputErrors.address
           } if error and error.inputErrors and error.inputErrors.address
+        }) }}
+
+        {% if currentDateOfBirth %}
+          <p class="govuk-body govuk-!-margin-bottom-2">
+            <strong>Current date of birth:</strong> {{ currentDateOfBirth.day }}/{{ currentDateOfBirth.month }}/{{ currentDateOfBirth.year }}
+          </p>
+        {% endif %}
+
+        {{ govukDateInput({
+          id: "dateOfBirth",
+          namePrefix: "dateOfBirth",
+          fieldset: {
+            legend: {
+              text: "Date of birth",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: "For example, 27 3 1986"
+          },
+          errorMessage: {
+            text: error.inputErrors.validDate or error.inputErrors['dateOfBirth-day'] or error.inputErrors['dateOfBirth-month'] or error.inputErrors['dateOfBirth-year']
+          } if error and error.inputErrors and (error.inputErrors.validDate or error.inputErrors['dateOfBirth-day'] or error.inputErrors['dateOfBirth-month'] or error.inputErrors['dateOfBirth-year']),
+          items: [
+            {
+              name: "day",
+              label: "Day",
+              value: formData['dateOfBirth-day'] if formData else "",
+              classes: "govuk-input--width-2" + (" govuk-input--error" if error and error.inputErrors and (error.inputErrors.validDate or error.inputErrors['dateOfBirth-day']) else "")
+            },
+            {
+              name: "month", 
+              label: "Month",
+              value: formData['dateOfBirth-month'] if formData else "",
+              classes: "govuk-input--width-2" + (" govuk-input--error" if error and error.inputErrors and (error.inputErrors.validDate or error.inputErrors['dateOfBirth-month']) else "")
+            },
+            {
+              name: "year",
+              label: "Year", 
+              value: formData['dateOfBirth-year'] if formData else "",
+              classes: "govuk-input--width-4" + (" govuk-input--error" if error and error.inputErrors and (error.inputErrors.validDate or error.inputErrors['dateOfBirth-year']) else "")
+            }
+          ]
         }) }}
 
         {{ govukButton({

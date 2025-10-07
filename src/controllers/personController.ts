@@ -11,6 +11,7 @@ interface RequestWithCSRF extends Request {
 // Store the current person data in memory (in a real app, this would be from a database)
 let currentStoredName = 'John Smith'; // Default name
 let currentStoredAddress = '123 Example Street\nExample City\nEX1 2MP'; // Default address
+let currentStoredDateOfBirth = { day: '27', month: '3', year: '1986' }; // Default date of birth
 
 /**
  * GET controller for rendering the person change form
@@ -25,6 +26,7 @@ export function getPerson(req: RequestWithCSRF, res: Response, next: NextFunctio
     res.render('change-person.njk', {
       currentName: currentStoredName,
       currentAddress: currentStoredAddress,
+      currentDateOfBirth: currentStoredDateOfBirth,
       csrfToken: csrfToken,
       formData: {},
       error: null
@@ -46,7 +48,13 @@ export function postPerson(req: RequestWithCSRF, res: Response, next: NextFuncti
     const csrfToken = typeof req.csrfToken === 'function' ? req.csrfToken() : undefined;
     
     // Extract form fields for consistent handling
-    const formFields = extractFormFields(req.body, ['fullName', 'address']);
+    const formFields = extractFormFields(req.body, [
+      'fullName', 
+      'address', 
+      'dateOfBirth-day', 
+      'dateOfBirth-month', 
+      'dateOfBirth-year'
+    ]);
     
     // Check for validation errors
     const validationErrors = validationResult(req);
@@ -59,6 +67,7 @@ export function postPerson(req: RequestWithCSRF, res: Response, next: NextFuncti
       res.status(400).render('change-person.njk', {
         currentName: currentStoredName,
         currentAddress: currentStoredAddress,
+        currentDateOfBirth: currentStoredDateOfBirth,
         csrfToken: csrfToken,
         formData: formFields,
         error: {
@@ -72,13 +81,25 @@ export function postPerson(req: RequestWithCSRF, res: Response, next: NextFuncti
     // Success case - update the stored person data and show success
     currentStoredName = String(formFields.fullName); // Update the stored name
     currentStoredAddress = String(formFields.address); // Update the stored address
+    currentStoredDateOfBirth = {
+      day: String(formFields['dateOfBirth-day']),
+      month: String(formFields['dateOfBirth-month']),
+      year: String(formFields['dateOfBirth-year'])
+    }; // Update the stored date of birth
     
     // Render the form again with the updated data and success state
     res.render('change-person.njk', {
       currentName: currentStoredName,
       currentAddress: currentStoredAddress,
+      currentDateOfBirth: currentStoredDateOfBirth,
       csrfToken: csrfToken,
-      formData: { fullName: '', address: '' }, // Clear the form
+      formData: { 
+        fullName: '', 
+        address: '',
+        'dateOfBirth-day': '',
+        'dateOfBirth-month': '',
+        'dateOfBirth-year': ''
+      }, // Clear the form
       error: null,
       successMessage: 'Person details updated successfully'
     });

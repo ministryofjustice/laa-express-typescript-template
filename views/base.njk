@@ -32,12 +32,12 @@
     tag: {
       text: config.SERVICE_PHASE
     },
-    html: 'This is a new service. Help us improve it and <a class="govuk-link" href="#">give your feedback by email</a>.'
+    html: t('components.phaseBanner.feedbackText') + t('components.phaseBanner.feedbackLinkTextHTML')
   }) }}
 {% endblock %}
 
 {% block content %}
-  <h1 class="govuk-heading-xl">Default page template</h1>
+  <h1 class="govuk-heading-xl">{{ t('pages.home.defaultHeading') }}</h1>
 {% endblock %}
 
 {% block footer %}
@@ -47,15 +47,15 @@
       items: [
         {
           href: "#",
-          text: "Accessibility"
+          text: t('navigation.footer.accessibility')
         },
         {
           href: "#",
-          text: "Cookies"
+          text: t('navigation.footer.cookiePolicy')
         },
         {
           href: "#",
-          text: "Privacy"
+          text: t('navigation.footer.privacyPolicy')
         }
       ],
       html: 'Built by <a href="' + config.DEPARTMENT_URL +'" class="govuk-footer__link">' + config.DEPARTMENT_NAME + '</a>'

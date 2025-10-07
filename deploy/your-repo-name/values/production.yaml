@@ -1,4 +1,4 @@
-# Default values for laa-manage-your-civil-cases.
+# Default values for your-repo-name.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -66,7 +66,7 @@ ingress:
         - path: /
           pathType: Prefix
   annotations:
-    external-dns.alpha.kubernetes.io/set-identifier: "dns-identifier-for-production"
+    external-dns.alpha.kubernetes.io/set-identifier: "ingress-name-your-repo-name-your-repo-name-production-green"
     external-dns.alpha.kubernetes.io/aws-weight: "100"
 
 service:

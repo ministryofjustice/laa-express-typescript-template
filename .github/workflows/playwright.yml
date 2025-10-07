@@ -42,20 +42,15 @@ jobs:
           SESSION_NAME: "sessionId"
           NODE_ENV: "test"
           # Add other required environment variables
-          SERVICE_NAME: "Manage your civil cases"
-          SERVICE_PHASE: "Beta"
-          DEPARTMENT_NAME: "Legal Aid Agency"
+          SERVICE_NAME: "Your Service Name"
+          SERVICE_PHASE: "Alpha"
+          DEPARTMENT_NAME: "LAA Digital"
           DEPARTMENT_URL: "https://www.gov.uk/government/organisations/legal-aid-agency"
           CONTACT_EMAIL: "your-team@digital.justice.gov.uk"
           SERVICE_URL: "https://www.gov.uk/legal-aid"
           RATELIMIT_HEADERS_ENABLED: "true"
           RATE_LIMIT_MAX: "100"
           RATE_WINDOW_MS: "900000"
-          # API configuration for testing - use local mock for CI since VPN is not available
-          API_URL: "http://localhost:3001"
-          # Flag to indicate to use mock API
-          API_PREFIX: "/mock-api"
-          USE_MOCK_API: "true"
       - name: Upload trace artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -119,18 +114,15 @@ jobs:
           SESSION_SECRET: "accessibility-test-secret"
           SESSION_NAME: "sessionId"
           NODE_ENV: "test"
-          SERVICE_NAME: "Manage your civil cases"
-          SERVICE_PHASE: "Beta"
-          DEPARTMENT_NAME: "Legal Aid Agency"
+          SERVICE_NAME: "Your Service Name"
+          SERVICE_PHASE: "Alpha"
+          DEPARTMENT_NAME: "LAA Digital"
           DEPARTMENT_URL: "https://www.gov.uk/government/organisations/legal-aid-agency"
           CONTACT_EMAIL: "your-team@digital.justice.gov.uk"
           SERVICE_URL: "https://www.gov.uk/legal-aid"
           RATELIMIT_HEADERS_ENABLED: "true"
           RATE_LIMIT_MAX: "100"
           RATE_WINDOW_MS: "900000"
-          API_URL: "http://localhost:3001"
-          API_PREFIX: "/mock-api"
-          USE_MOCK_API: "true"
 
       - name: Upload Accessibility Report
         if: always()

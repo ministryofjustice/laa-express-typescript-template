@@ -1,5 +1,5 @@
 import nunjucks from 'nunjucks';
-import path from 'path';
+import path from 'node:path';
 import type { Application } from 'express';
 import { getLatestBuildFile } from './buildHelper.js';
 import { nunjucksT } from '#src/scripts/helpers/index.js';

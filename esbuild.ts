@@ -1,9 +1,9 @@
 import esbuild from 'esbuild';
 import { sassPlugin } from 'esbuild-sass-plugin';
-import { builtinModules } from 'module';
+import { builtinModules } from 'node:module';
 import dotenv from 'dotenv';
 import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 import chokidar from 'chokidar';
 import { getBuildNumber } from './utils/buildHelper.js';
 import type { SassPluginOptions } from './types/sass-plugin-types.js';

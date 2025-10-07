@@ -108,7 +108,8 @@
       "title": "How would you prefer to be contacted?",
       "validationError": {
         "notEmpty": "Select how you would prefer to be contacted",
-        "invalidOption": "Select a valid contact preference"
+        "invalidOption": "Select a valid contact preference",
+        "notChanged": "Change your contact preference, or select 'Cancel'"
       }
     },
     "dateOfBirth": {

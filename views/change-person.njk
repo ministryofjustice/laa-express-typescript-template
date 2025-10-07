@@ -82,6 +82,12 @@
           } if error and error.inputErrors and error.inputErrors.address
         }) }}
 
+        {% if currentContactPreference %}
+          <p class="govuk-body govuk-!-margin-bottom-2">
+            <strong>Current contact preference:</strong> {{ currentContactPreference | title }}
+          </p>
+        {% endif %}
+
         {{ govukRadios({
           name: "contactPreference",
           fieldset: {
@@ -97,17 +103,17 @@
             {
               value: "email",
               text: "Email",
-              checked: formData.contactPreference == "email" if formData
+              checked: (formData.contactPreference == "email") if formData and formData.contactPreference else (currentContactPreference == "email")
             },
             {
               value: "phone",
               text: "Phone",
-              checked: formData.contactPreference == "phone" if formData
+              checked: (formData.contactPreference == "phone") if formData and formData.contactPreference else (currentContactPreference == "phone")
             },
             {
               value: "post",
               text: "Post",
-              checked: formData.contactPreference == "post" if formData
+              checked: (formData.contactPreference == "post") if formData and formData.contactPreference else (currentContactPreference == "post")
             }
           ],
           errorMessage: {

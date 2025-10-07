@@ -118,6 +118,38 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           summaryMessage: t('forms.contactPreference.validationError.invalidOption'),
           inlineMessage: t('forms.contactPreference.validationError.invalidOption')
         })
+      },
+      custom: {
+        /**
+         * Validates that the contact preference has been changed from the original value
+         * Following MCC pattern for change validation
+         * @param {string} value - The contact preference value from the form
+         * @param {Meta} meta - express-validator metadata containing request object
+         * @returns {boolean} True if the value has changed from original or no original exists
+         */
+        options: (value: string, { req }: Meta): boolean => {
+          // Get original form data from session
+          const originalData = req.session?.personOriginal;
+          if (!originalData || typeof originalData !== 'object') {
+            return true; // No original data to compare against
+          }
+          
+          const originalContactPreference = originalData.contactPreference;
+          if (!originalContactPreference) {
+            return true; // No original contact preference to compare against
+          }
+          
+          // Return true if the value has changed, false if it's the same
+          return value !== originalContactPreference;
+        },
+        /**
+         * Custom error message for unchanged contact preference using i18n
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+         */
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: t('forms.contactPreference.validationError.notChanged'),
+          inlineMessage: t('forms.contactPreference.validationError.notChanged')
+        })
       }
     },
     'dateOfBirth-day': {

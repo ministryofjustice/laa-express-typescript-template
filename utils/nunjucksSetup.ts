@@ -2,6 +2,7 @@ import nunjucks from 'nunjucks';
 import path from 'path';
 import type { Application } from 'express';
 import { getLatestBuildFile } from './buildHelper.js';
+import { nunjucksT } from '#src/scripts/helpers/index.js';
 
 /**
  * Sets up Nunjucks as the template engine for the given Express application.
@@ -32,7 +33,7 @@ export const nunjucksSetup = (app: Application): void => {
   };
 
   // Tell Nunjucks where to look for njk files
-  nunjucks.configure(
+  const nunjucksEnv = nunjucks.configure(
     [
       path.join(path.resolve(), 'views'), // Main views directory
       'node_modules/govuk-frontend/dist', // GOV.UK Frontend templates
@@ -45,4 +46,7 @@ export const nunjucksSetup = (app: Application): void => {
       watch: true, // Watch for changes in template files during development
     }
   );
+
+  // Add global variables
+  nunjucksEnv.addGlobal('t', nunjucksT);
 };

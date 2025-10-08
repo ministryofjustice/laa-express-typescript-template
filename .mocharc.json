@@ -3,7 +3,7 @@
 		"no-warnings",
 		"loader=ts-node/esm"
 	],
-	"require": "ts-node/register",
+	"loader": "ts-node/esm",
 	"extensions": [
 		"ts",
 		"tsx"

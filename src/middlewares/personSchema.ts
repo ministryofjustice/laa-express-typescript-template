@@ -213,7 +213,6 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
     'dateOfBirth-day': {
       in: ['body'],
       trim: true,
-      optional: { options: { values: 'falsy' } }, // Allow empty values
       custom: {
         options: (value: string, { req }: Meta): boolean => {
           // If any date field is provided, all must be provided
@@ -263,7 +262,6 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
     'dateOfBirth-month': {
       in: ['body'],
       trim: true,
-      optional: { options: { values: 'falsy' } }, // Allow empty values
       custom: {
         options: (value: string, { req }: Meta): boolean => {
           // If any date field is provided, all must be provided
@@ -313,7 +311,6 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
     'dateOfBirth-year': {
       in: ['body'],
       trim: true,
-      optional: { options: { values: 'falsy' } }, // Allow empty values
       custom: {
         options: (value: string, { req }: Meta): boolean => {
           // If any date field is provided, all must be provided

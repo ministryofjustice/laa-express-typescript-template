@@ -97,7 +97,7 @@ export { i18next };
  */
 export const t = (key: string, options?: Record<string, unknown>): string => {
   // Ensure i18next is initialized before calling translation
-  if (!i18next.isInitialized) {
+  if (!(i18next as any).isInitialized) {
     console.warn(`i18next not initialized when translating: ${key}`);
     return key; // Return the key as fallback
   }

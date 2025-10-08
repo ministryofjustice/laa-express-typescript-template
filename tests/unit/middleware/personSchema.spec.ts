@@ -50,7 +50,9 @@ describe('Person Schema Validation', () => {
           const schema = validatePerson();
           const req = createMockRequest({
             fullName,
-            address: '123 Test Street'
+            address: '123 Test Street',
+            contactPreference: 'email',
+            priority: 'medium'
           });
 
           await Promise.all(schema.map((validation: any) => validation.run(req as Request)));
@@ -164,7 +166,9 @@ describe('Person Schema Validation', () => {
           const schema = validatePerson();
           const req = createMockRequest({
             fullName: 'John Smith',
-            address
+            address,
+            contactPreference: 'email',
+            priority: 'medium'
           });
 
           await Promise.all(schema.map((validation: any) => validation.run(req as Request)));
@@ -266,11 +270,13 @@ describe('Person Schema Validation', () => {
     });
 
     describe('combined field validation', () => {
-      it('should pass validation when both fields are valid', async () => {
+      it('should pass validation when all fields are valid', async () => {
         const schema = validatePerson();
         const req = createMockRequest({
           fullName: 'John Smith',
-          address: '123 Main Street\nLondon\nSW1A 1AA'
+          address: '123 Main Street\nLondon\nSW1A 1AA',
+          contactPreference: 'email',
+          priority: 'medium'
         });
 
         await Promise.all(schema.map((validation: any) => validation.run(req as Request)));
@@ -279,11 +285,16 @@ describe('Person Schema Validation', () => {
         expect(errors.isEmpty()).to.be.true;
       });
 
-      it('should fail validation when both fields are empty', async () => {
+      it('should fail validation when all required fields are empty', async () => {
         const schema = validatePerson();
         const req = createMockRequest({
           fullName: '',
-          address: ''
+          address: '',
+          contactPreference: '',
+          priority: '',
+          'dateOfBirth-day': '',
+          'dateOfBirth-month': '',
+          'dateOfBirth-year': ''
         });
 
         await Promise.all(schema.map((validation: any) => validation.run(req as Request)));
@@ -292,7 +303,7 @@ describe('Person Schema Validation', () => {
         expect(errors.isEmpty()).to.be.false;
 
         const errorArray = errors.array();
-        expect(errorArray).to.have.length(2);
+        expect(errorArray).to.have.length(6); // Expecting 6 errors: 2 for contactPreference, 2 for priority, 1 for fullName, 1 for address
 
         const nameError = errorArray.find((error: any) => 
           error.summaryMessage && error.summaryMessage.includes('Enter your full name')

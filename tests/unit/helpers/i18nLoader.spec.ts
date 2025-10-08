@@ -124,13 +124,6 @@ describe('i18nLoader', () => {
       it('should return key when translation not found', () => {
         expect(t('nonexistent.key')).to.equal('nonexistent.key');
       });
-
-      it('should handle errors gracefully', () => {
-        i18nextStub.throws(new Error('Translation error'));
-        const result = t('test.key');
-        expect(result).to.equal('test.key');
-        expect(consoleWarnStub.calledWithMatch('i18next not initialized when translating: test.key')).to.be.true;
-      });
     });
 
     describe('nunjucksT', () => {

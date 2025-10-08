@@ -3,14 +3,24 @@ import { validationResult, type ValidationChain } from 'express-validator';
 import type { Request } from 'express';
 import { validatePerson } from '../../../src/middlewares/personSchema.js';
 import { formatValidationError } from '../../../src/helpers/ValidationErrorHelpers.js';
+import { initializeI18nextSync } from '../../../src/scripts/helpers/i18nLoader.js';
 
 interface TestRequest extends Partial<Request> {
   body: Record<string, any>;
 }
 
 function createMockRequest(body: Record<string, any>): TestRequest {
+  // Ensure all required fields are present with defaults
+  const completeBody = {
+    fullName: 'John Smith',
+    address: '123 Test Street',
+    contactPreference: 'email',
+    priority: 'medium',
+    ...body // Override with provided values
+  };
+  
   return {
-    body: body,
+    body: completeBody,
     get: (name: string) => undefined,
     header: (name: string) => undefined,
     headers: {},
@@ -21,15 +31,18 @@ function createMockRequest(body: Record<string, any>): TestRequest {
 }
 
 describe('Date of Birth Validation', () => {
+  before(() => {
+    // Initialize i18next for translations to work in tests
+    initializeI18nextSync();
+  });
+
   describe('validatePerson - Date of Birth Fields', () => {
     
     describe('when no date fields are provided', () => {
       it('should pass validation', async () => {
         const schema = validatePerson();
         const req = createMockRequest({
-          fullName: 'John Smith',
-          address: '123 Test Street'
-          // No date fields provided
+          // No date fields provided - using defaults for required fields
         });
 
         await Promise.all(schema.map((validation: ValidationChain) => validation.run(req as Request)));
@@ -43,8 +56,6 @@ describe('Date of Birth Validation', () => {
       it('should fail validation when only day is provided', async () => {
         const schema = validatePerson();
         const req = createMockRequest({
-          fullName: 'John Smith',
-          address: '123 Test Street',
           'dateOfBirth-day': '15',
           'dateOfBirth-month': '',
           'dateOfBirth-year': ''
@@ -69,8 +80,6 @@ describe('Date of Birth Validation', () => {
       it('should fail validation when only month is provided', async () => {
         const schema = validatePerson();
         const req = createMockRequest({
-          fullName: 'John Smith',
-          address: '123 Test Street',
           'dateOfBirth-day': '',
           'dateOfBirth-month': '3',
           'dateOfBirth-year': ''
@@ -95,8 +104,6 @@ describe('Date of Birth Validation', () => {
       it('should fail validation when only year is provided', async () => {
         const schema = validatePerson();
         const req = createMockRequest({
-          fullName: 'John Smith',
-          address: '123 Test Street',
           'dateOfBirth-day': '',
           'dateOfBirth-month': '',
           'dateOfBirth-year': '1986'
@@ -131,8 +138,6 @@ describe('Date of Birth Validation', () => {
         for (const dateData of validDates) {
           const schema = validatePerson();
           const req = createMockRequest({
-            fullName: 'John Smith',
-            address: '123 Test Street',
             'dateOfBirth-day': dateData.day,
             'dateOfBirth-month': dateData.month,
             'dateOfBirth-year': dateData.year
@@ -156,8 +161,6 @@ describe('Date of Birth Validation', () => {
         for (const dateData of invalidDates) {
           const schema = validatePerson();
           const req = createMockRequest({
-            fullName: 'John Smith',
-            address: '123 Test Street',
             'dateOfBirth-day': dateData.day,
             'dateOfBirth-month': dateData.month,
             'dateOfBirth-year': dateData.year
@@ -178,8 +181,6 @@ describe('Date of Birth Validation', () => {
         for (const day of invalidDays) {
           const schema = validatePerson();
           const req = createMockRequest({
-            fullName: 'John Smith',
-            address: '123 Test Street',
             'dateOfBirth-day': day,
             'dateOfBirth-month': '6',
             'dateOfBirth-year': '1990'
@@ -206,8 +207,6 @@ describe('Date of Birth Validation', () => {
         for (const day of invalidDays) {
           const schema = validatePerson();
           const req = createMockRequest({
-            fullName: 'John Smith',
-            address: '123 Test Street',
             'dateOfBirth-day': day,
             'dateOfBirth-month': '6',
             'dateOfBirth-year': '1990'
@@ -236,8 +235,6 @@ describe('Date of Birth Validation', () => {
         for (const month of invalidMonths) {
           const schema = validatePerson();
           const req = createMockRequest({
-            fullName: 'John Smith',
-            address: '123 Test Street',
             'dateOfBirth-day': '15',
             'dateOfBirth-month': month,
             'dateOfBirth-year': '1990'
@@ -264,8 +261,6 @@ describe('Date of Birth Validation', () => {
         for (const month of invalidMonths) {
           const schema = validatePerson();
           const req = createMockRequest({
-            fullName: 'John Smith',
-            address: '123 Test Street',
             'dateOfBirth-day': '15',
             'dateOfBirth-month': month,
             'dateOfBirth-year': '1990'
@@ -294,8 +289,6 @@ describe('Date of Birth Validation', () => {
         for (const year of invalidYears) {
           const schema = validatePerson();
           const req = createMockRequest({
-            fullName: 'John Smith',
-            address: '123 Test Street',
             'dateOfBirth-day': '15',
             'dateOfBirth-month': '6',
             'dateOfBirth-year': year
@@ -323,8 +316,6 @@ describe('Date of Birth Validation', () => {
         for (const year of invalidYears) {
           const schema = validatePerson();
           const req = createMockRequest({
-            fullName: 'John Smith',
-            address: '123 Test Street',
             'dateOfBirth-day': '15',
             'dateOfBirth-month': '6',
             'dateOfBirth-year': year
@@ -351,8 +342,6 @@ describe('Date of Birth Validation', () => {
       it('should trim whitespace from date fields', async () => {
         const schema = validatePerson();
         const req = createMockRequest({
-          fullName: 'John Smith',
-          address: '123 Test Street',
           'dateOfBirth-day': '  15  ',
           'dateOfBirth-month': '  6  ',
           'dateOfBirth-year': '  1990  '

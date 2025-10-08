@@ -16,11 +16,11 @@ import { validationResult, checkSchema } from 'express-validator';
 import type { Request } from 'express';
 import {
   TypedValidationError,
-  ValidationErrorData,
   formatValidationError,
   formatValidationErrors,
   createChangeDetectionValidator
 } from '#src/helpers/ValidationErrorHelpers.js';
+import type { ValidationErrorData } from '#src/helpers/ValidationErrorHelpers.js';
 
 // Mock request object factory
 function createMockRequest(body: any): Partial<Request> {

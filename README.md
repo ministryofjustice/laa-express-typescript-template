@@ -24,6 +24,10 @@ Express.js is a fast, minimalist, and unopinionated web framework for Node.js. T
     - [E2E Testing with Playwright](#e2e-testing-with-playwright)
       - [Running Tests Locally](#running-tests-locally)
       - [Configuration](#configuration)
+      - [Page Object Pattern](#page-object-pattern)
+      - [API Mocking with MSW](#api-mocking-with-msw)
+      - [Accessibility Testing](#accessibility-testing)
+      - [Route Coverage Analysis](#route-coverage-analysis)
       - [CI/CD Integration](#cicd-integration)
       - [Debugging Failed Tests](#debugging-failed-tests)
   - [Features](#features)
@@ -199,9 +203,9 @@ yarn test:unit
 ```
 
 ### E2E Testing with Playwright
-This project uses [Playwright](https://playwright.dev/) for end-to-end testing. Playwright provides reliable end-to-end testing for modern web apps.
+This project uses [Playwright](https://playwright.dev/) for end-to-end testing with advanced features including page objects, API mocking, accessibility testing, and route coverage analysis.
 
-- E2E tests run from the `tests/e2e/` directory
+- E2E tests run from the `tests/playwright/` directory
 - Run E2E tests with `yarn test:e2e`
 
 #### Running Tests Locally
@@ -213,21 +217,124 @@ To run the E2E tests locally:
 yarn test:e2e
 
 # Run specific test file
-yarn playwright test tests/e2e/specific-test.spec.ts
+yarn playwright test tests/playwright/tests/specific-test.spec.ts --config=tests/playwright/playwright.config.ts
 
 # Run in UI mode with Playwright Test Explorer
-yarn playwright test --ui
+yarn playwright test --ui --config=tests/playwright/playwright.config.ts
 ```
 
 #### Configuration
 
-The project uses Chromium for testing to ensure consistency with our production environment. The configuration can be found in `playwright.config.ts`.
+The project uses Chromium for testing to ensure consistency with our production environment. The configuration can be found in `tests/playwright/playwright.config.ts`.
 
 Key configuration points:
-- Tests are located in `tests/e2e/` directory
+- Tests are located in `tests/playwright/tests/` directory
 - Only Chromium browser is used for testing
 - Test retries are enabled in CI environments (2 retries)
 - Traces are automatically captured on test failures for debugging
+- MSW (Mock Service Worker) integration for API mocking
+- Custom fixtures for accessibility testing and page objects
+
+#### Page Object Pattern
+
+The project implements the Page Object Model for maintainable and reusable test code:
+
+```typescript
+// Example usage in tests
+import { test, expect } from '../fixtures/index.js';
+
+test('home page test', async ({ page, pages }) => {
+  const homePage = pages.homePage;
+  await homePage.navigate();
+  await expect(homePage.heading).toBeVisible();
+});
+```
+
+**Page Object Structure:**
+- `tests/playwright/pages/PageFactory.ts` - Factory for creating page objects
+- `tests/playwright/pages/HomePage.ts` - Home page implementation
+- Centralized element selectors and page interactions
+- Type-safe page methods and properties
+
+#### API Mocking with MSW
+
+Mock Service Worker (MSW) is integrated for reliable API testing:
+
+```typescript
+// Example MSW handler
+import { http, HttpResponse } from 'msw';
+
+export const apiHandlers = [
+  http.get('https://jsonplaceholder.typicode.com/users', () => {
+    return HttpResponse.json([
+      { id: 1, name: 'Alice Johnson', email: 'alice@example.com' }
+    ]);
+  })
+];
+```
+
+**MSW Features:**
+- `tests/playwright/factories/handlers/api.ts` - API request handlers
+- `tests/playwright/factories/setup.ts` - MSW server configuration
+- `tests/playwright/scripts/test-server-with-msw.ts` - Test server with MSW integration
+- Intercepts outbound API requests for consistent test data
+- Data factories for generating test fixtures
+
+#### Accessibility Testing
+
+Automated accessibility testing using axe-core is built into the test framework:
+
+```typescript
+// Accessibility testing in action
+test('page accessibility', async ({ page, checkAccessibility }) => {
+  await page.goto('/');
+  await checkAccessibility(); // Runs WCAG 2.2 Level A compliance checks
+});
+```
+
+**Accessibility Features:**
+- WCAG 2.2 Level A compliance testing
+- Integrated with `@axe-core/playwright`
+- Custom fixture: `checkAccessibility`
+- Automatic violation detection and reporting
+- Built into existing functional tests
+
+#### Route Coverage Analysis
+
+Comprehensive route coverage analysis tools help identify untested endpoints:
+
+```shell
+# Run route coverage analysis
+./scripts/e2e_coverage/route-coverage-analysis.sh
+
+# Skip tests and analyze routes only
+./scripts/e2e_coverage/route-coverage-analysis.sh --skip-tests
+```
+
+**Coverage Analysis Features:**
+- `scripts/e2e_coverage/listRoutes.js` - Extracts all Express routes
+- `scripts/e2e_coverage/extract-urls.sh` - Parses test logs for visited routes
+- `scripts/e2e_coverage/route-coverage-analysis.sh` - Full coverage report
+- Color-coded output showing tested vs untested routes
+- Coverage percentage calculation
+- Identifies priority routes needing test coverage
+
+**Example Coverage Output:**
+```
+📊 COVERAGE SUMMARY
+==================
+Total Express routes: 5
+Routes with tests: 2
+Routes without tests: 3
+Coverage percentage: 40%
+
+System Routes:
+  ✓ GET /
+  ✗ GET /error
+  ✗ GET /health
+  ✗ GET /status
+  ✓ GET /users
+```
 
 #### CI/CD Integration
 
@@ -236,6 +343,8 @@ The tests are automatically run in our GitHub Actions workflow (`.github/workflo
 - The workflow installs only the Chromium browser to optimize CI runtime
 - Traces are captured for all test runs in CI for easier debugging
 - Test artifacts (traces, videos) are preserved for 14 days in GitHub Actions
+- MSW handlers provide consistent test data across environments
+- Accessibility violations fail the build to ensure compliance
 
 #### Debugging Failed Tests
 
@@ -255,6 +364,12 @@ When tests fail in CI:
    Upload the trace.zip file to https://trace.playwright.dev/ - this allows sharing traces with team members without requiring local Playwright installation
 
 This provides a timeline view of the test execution with screenshots, DOM snapshots, and network requests to help diagnose issues.
+
+**Additional Debugging Tools:**
+- MSW request logs show intercepted API calls
+- Page object methods include built-in waiting strategies
+- Accessibility violation details with specific WCAG rule references
+- Route coverage reports help identify missing test scenarios
 
 ## Features
   - [Asset management](#asset-management)

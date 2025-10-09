@@ -1,11 +1,6 @@
 name: Mocha Unit tests
 on:
   workflow_dispatch: # Allow manual triggering only
-    inputs:
-    environment:
-      description: 'Deployment environment'
-      required: false
-      default: 'uat'
   workflow_call: # Allow this workflow to be called by other workflows
 
 jobs:
@@ -14,18 +9,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Node and Dependencies
+        uses: ./.github/actions/setup-node
+
+      - name: Run Mocha unit tests & c8 code coverage
+        run: yarn c8 yarn test:unit --check-coverage
+        env:
+          CI: true
+          # Add session-related environment variables for unit tests
+          SESSION_SECRET: "mocha-test-secret" # Use a simple test secret for Mocha unit tests
+          SESSION_NAME: "sessionId"
+
+      - name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          node-version: '24.2.0'
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Run Mocha unit tests
-        run: yarn test:unit
+          name: code-coverage-report
+          path: coverage/

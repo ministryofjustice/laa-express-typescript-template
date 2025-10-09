@@ -20,9 +20,9 @@ jobs:
     steps:
       - name: Checkout code
         id: checkout
-        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
       - name: Dependency Review
-        uses: actions/dependency-review-action@v4.7.1 # v4.7.1
+        uses: actions/dependency-review-action@v4.8.0
         with:
           fail-on-severity: critical

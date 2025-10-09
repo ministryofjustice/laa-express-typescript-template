@@ -6,7 +6,7 @@
  */
 
 import { setupServer } from 'msw/node';
-import { handlers } from '../factories/handlers/index.js';
+import { handlers } from '../tests/playwright/factories/handlers/index.js';
 
 // Initialize MSW before importing the app
 const mswServer = setupServer(...handlers);
@@ -16,22 +16,30 @@ const TEST_PORT = '3000';
 const SUCCESS_EXIT_CODE = 0;
 const ERROR_EXIT_CODE = 1;
 
-// Enable request interception with warning for unhandled requests
+// Enable request interception with simple warning for unhandled requests
 mswServer.listen({ 
-  onUnhandledRequest: 'warn' as const
+  /**
+   * Handler for unhandled requests to provide warning feedback
+   * @param {Request} req - The unhandled request
+   * @param {object} print - Logging utilities with warning method
+   * @param {Function} print.warning - Warning logging function
+   * @returns {void}
+   */
+  onUnhandledRequest: (req: Request, print: { warning: () => void }): void => {
+    print.warning();
+  }
 });
-
 console.log('🎭 MSW server started - intercepting outbound requests');
 
 // Set environment variables for the Express app
 process.env.NODE_ENV = 'test';
 process.env.PORT = TEST_PORT;
-process.env.SESSION_SECRET = process.env.SESSION_SECRET || 'test-secret-key';
-process.env.SESSION_NAME = process.env.SESSION_NAME || 'test-session';
-process.env.SERVICE_NAME = process.env.SERVICE_NAME || 'Test Express Template';
+process.env.SESSION_SECRET ??= 'test-secret-key';
+process.env.SESSION_NAME ??= 'test-session';
+process.env.SERVICE_NAME ??= 'Test Express Template';
 
 // Now import and start the actual Express application
-const appModulePath = '../../../public/app.js';
+const appModulePath = '../public/app.js';
 
 import(appModulePath)
   .then(() => {
@@ -45,6 +53,11 @@ import(appModulePath)
   });
 
 // Graceful shutdown
+/**
+ * Handles graceful shutdown of the server when receiving termination signals
+ * @param {string} signal - The termination signal received (SIGTERM, SIGINT, etc.)
+ * @returns {void}
+ */
 const gracefulShutdown = (signal: string): void => {
   console.log(`\n🛑 Received ${signal}, shutting down gracefully...`);
   

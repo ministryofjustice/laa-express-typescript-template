@@ -36,7 +36,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'yarn tsx tests/playwright/scripts/test-server-with-msw.ts',
+    command: 'yarn tsx scripts/test-server-with-msw.js',
     url: 'http://127.0.0.1:3000',
     reuseExistingServer: process.env.CI !== 'true',
     stdout: 'pipe',

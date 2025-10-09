@@ -14,7 +14,7 @@ node_modules/
 .trunk/
 .DS_Store
 
-# MOJ Express Skeleton
+# LAA Express Typescript Template
 public/
 .env
 
@@ -22,4 +22,7 @@ public/
 /test-results/
 /playwright-report/
 /blob-report/
-/playwright/.cache/
+/tests/playwright/.cache/
+
+# Code coverage
+coverage/

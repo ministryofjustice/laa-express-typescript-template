@@ -198,7 +198,7 @@ const buildCustomJs = async (watch = false): Promise<esbuild.BuildContext | unde
 const buildFrontendPackages = async (watch = false): Promise<esbuild.BuildContext | undefined> => {
 	const options: esbuild.BuildOptions = {
 		entryPoints: [
-			'src/scripts/frontend-packages-entry.ts'
+			'src/scripts/frontendPackagesEntry.ts'
 		],
 		bundle: true,
 		platform: 'browser',

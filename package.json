@@ -19,8 +19,8 @@
     "tsc": "tsc --noEmit",
     "build:ts": "tsc",
     "test": "yarn test:unit && yarn test:e2e",
-    "test:unit": "mocha",
-    "test:e2e": "yarn playwright test --config=playwright.config.ts",
+    "test:unit": "./node_modules/.bin/mocha",
+    "test:e2e": "yarn playwright test --config=tests/playwright/playwright.config.ts",
     "coverage": "c8 yarn test:unit --check-coverage"
   },
   "engines": {

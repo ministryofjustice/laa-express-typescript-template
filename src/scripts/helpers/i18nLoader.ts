@@ -89,19 +89,20 @@ export function initializeI18nextSync(): void {
 export { i18next };
 
 /**
- * Translation function wrapper that provides translation functionality
+ * Translation function wrapper that ensures i18next is ready
  * Usage: t("common.back") or t("pages.caseDetails.tabs.clientDetails")
  * @param {string} key - Translation key with dot notation for namespaces
  * @param {Record<string, unknown>} [options] - Optional interpolation values
  * @returns {string} The translated string
  */
 export const t = (key: string, options?: Record<string, unknown>): string => {
-  try {
-    return i18next.t(key, options);
-  } catch (error) {
-    console.warn(`Translation failed for key: ${key}`, error);
+  // Ensure i18next is initialized before calling translation
+  if (!i18next.isInitialized) {
+    console.warn(`i18next not initialized when translating: ${key}`);
     return key; // Return the key as fallback
   }
+
+  return i18next.t(key, options);
 };
 
 /**

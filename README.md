@@ -1,4 +1,4 @@
-# Legal Aid Agency - Express with Typescript Template (ETT)
+# Legal Aid Agency - Express with TypeScript Template (ETT)
 [![Standards Icon]][Standards Link]
 
 ![govuk-frontend 5.10.2](https://img.shields.io/badge/govuk--frontend%20version-5.10.2-005EA5?logo=gov.uk&style=flat)

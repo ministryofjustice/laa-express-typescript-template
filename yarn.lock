@@ -70,24 +70,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bundled-es-modules/cookie@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "@bundled-es-modules/cookie@npm:2.0.1"
-  dependencies:
-    cookie: "npm:^0.7.2"
-  checksum: 10c0/dfac5e36127e827c5557b8577f17a8aa94c057baff6d38555917927b99da0ecf0b1357e7fedadc8853ecdbd4a8a7fa1f5e64111b2a656612f4a36376f5bdbe8d
-  languageName: node
-  linkType: hard
-
-"@bundled-es-modules/statuses@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "@bundled-es-modules/statuses@npm:1.0.1"
-  dependencies:
-    statuses: "npm:^2.0.1"
-  checksum: 10c0/c1a8ede3efa8da61ccda4b98e773582a9733edfbeeee569d4630785f8e018766202edb190a754a3ec7a7f6bd738e857829affc2fdb676b6dab4db1bb44e62785
-  languageName: node
-  linkType: hard
-
 "@cspotcode/source-map-support@npm:^0.8.0":
   version: 0.8.1
   resolution: "@cspotcode/source-map-support@npm:0.8.1"
@@ -1009,13 +991,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/cookie@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "@types/cookie@npm:0.6.0"
-  checksum: 10c0/5b326bd0188120fb32c0be086b141b1481fec9941b76ad537f9110e10d61ee2636beac145463319c71e4be67a17e85b81ca9e13ceb6e3bb63b93d16824d6c149
-  languageName: node
-  linkType: hard
-
 "@types/cookiejar@npm:^2.1.5":
   version: 2.1.5
   resolution: "@types/cookiejar@npm:2.1.5"
@@ -1174,11 +1149,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*, @types/node@npm:^24.6.1":
-  version: 24.7.0
-  resolution: "@types/node@npm:24.7.0"
+  version: 24.7.1
+  resolution: "@types/node@npm:24.7.1"
   dependencies:
     undici-types: "npm:~7.14.0"
-  checksum: 10c0/f036c78062cb3a0d5c6586bf2dac347ed3f4af121cef4ab92c85c44e32be1c50aab5ba96955842b7f8165f0e0f1c8066d1813ae259372df6c0fa9fadb1116a3e
+  checksum: 10c0/2525f2aa865d78b1c75faaf8c6bf2af51c930962d8078306620d9a76eafcbbea035142cf2cdc2fcf1b4010cd3958a1c6c59b67aba1ac205dc1e5f895ef6af673
   languageName: node
   linkType: hard
 
@@ -1702,7 +1677,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axe-core@npm:^4.10.3, axe-core@npm:~4.10.3":
+"axe-core@npm:^4.10.3":
+  version: 4.11.0
+  resolution: "axe-core@npm:4.11.0"
+  checksum: 10c0/7d7020a568a824c303711858c2fcfe56d001d27e46c0c2ff75dc31b436cfddfd4857a301e70536cc9e64829d25338f7fb782102d23497ebdc66801e9900fc895
+  languageName: node
+  linkType: hard
+
+"axe-core@npm:~4.10.3":
   version: 4.10.3
   resolution: "axe-core@npm:4.10.3"
   checksum: 10c0/1b1c24f435b2ffe89d76eca0001cbfff42dbf012ad9bd37398b70b11f0d614281a38a28bc3069e8972e3c90ec929a8937994bd24b0ebcbaab87b8d1e241ab0c7
@@ -2201,10 +2183,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie@npm:0.7.2, cookie@npm:^0.7.1, cookie@npm:^0.7.2":
+"cookie@npm:0.7.2, cookie@npm:^0.7.1":
   version: 0.7.2
   resolution: "cookie@npm:0.7.2"
   checksum: 10c0/9596e8ccdbf1a3a88ae02cf5ee80c1c50959423e1022e4e60b91dd87c622af1da309253d8abdb258fb5e3eacb4f08e579dc58b4897b8087574eee0fd35dfa5d2
+  languageName: node
+  linkType: hard
+
+"cookie@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "cookie@npm:1.0.2"
+  checksum: 10c0/fd25fe79e8fbcfcaf6aa61cd081c55d144eeeba755206c058682257cb38c4bd6795c6620de3f064c740695bb65b7949ebb1db7a95e4636efb8357a335ad3f54b
   languageName: node
   linkType: hard
 
@@ -3592,11 +3581,11 @@ __metadata:
   linkType: hard
 
 "get-tsconfig@npm:^4.7.5, get-tsconfig@npm:^4.8.1":
-  version: 4.11.0
-  resolution: "get-tsconfig@npm:4.11.0"
+  version: 4.12.0
+  resolution: "get-tsconfig@npm:4.12.0"
   dependencies:
     resolve-pkg-maps: "npm:^1.0.0"
-  checksum: 10c0/cccf65c8434cecbf24cf581a2d40f635c7bbf98e4bc241abd39d8a9990f2053bb5e8ed41496ed445a3a073a33ff716b531d99a71330e56cfac593e42d6adbd17
+  checksum: 10c0/3438106bd46bfc6595fce6117190f1ac0998de2e6916b40ec23b20c784b0b47e79ea2b920895b9ed26029b1f80b8867626fb24795d5f45abbdab716a4ba1ef92
   languageName: node
   linkType: hard
 
@@ -4543,7 +4532,6 @@ __metadata:
     husky: "npm:^9.1.7"
     i18next: "npm:^25.5.3"
     jsdom: "npm:^27.0.0"
-    libphonenumber-js: "npm:^1.12.23"
     lint-staged: "npm:^16.2.3"
     livereload: "npm:^0.10.2"
     middleware-axios: "npm:^3.0.0"
@@ -4563,6 +4551,7 @@ __metadata:
     ts-node: "npm:^10.9.2"
     tsx: "npm:^4.20.6"
     typescript: "npm:^5.9.3"
+    validator: "npm:^13.15.15"
   languageName: unknown
   linkType: soft
 
@@ -4573,13 +4562,6 @@ __metadata:
     prelude-ls: "npm:^1.2.1"
     type-check: "npm:~0.4.0"
   checksum: 10c0/effb03cad7c89dfa5bd4f6989364bfc79994c2042ec5966cb9b95990e2edee5cd8969ddf42616a0373ac49fac1403437deaf6e9050fbbaa3546093a59b9ac94e
-  languageName: node
-  linkType: hard
-
-"libphonenumber-js@npm:^1.12.23":
-  version: 1.12.23
-  resolution: "libphonenumber-js@npm:1.12.23"
-  checksum: 10c0/56ebabdcae6cb4a4da536788c52c231858532e9cc729a0d5dd24d7cd0610f8baf09ed240b9f60fd108d73e54ea1d094f6e90f2a887c0c2c08af2bc53039753fc
   languageName: node
   linkType: hard
 
@@ -5016,16 +4998,14 @@ __metadata:
   linkType: hard
 
 "msw@npm:^2.11.3":
-  version: 2.11.3
-  resolution: "msw@npm:2.11.3"
+  version: 2.11.5
+  resolution: "msw@npm:2.11.5"
   dependencies:
-    "@bundled-es-modules/cookie": "npm:^2.0.1"
-    "@bundled-es-modules/statuses": "npm:^1.0.1"
     "@inquirer/confirm": "npm:^5.0.0"
     "@mswjs/interceptors": "npm:^0.39.1"
     "@open-draft/deferred-promise": "npm:^2.2.0"
-    "@types/cookie": "npm:^0.6.0"
     "@types/statuses": "npm:^2.0.4"
+    cookie: "npm:^1.0.2"
     graphql: "npm:^16.8.1"
     headers-polyfill: "npm:^4.0.2"
     is-node-process: "npm:^1.2.0"
@@ -5033,6 +5013,7 @@ __metadata:
     path-to-regexp: "npm:^6.3.0"
     picocolors: "npm:^1.1.1"
     rettime: "npm:^0.7.0"
+    statuses: "npm:^2.0.2"
     strict-event-emitter: "npm:^0.5.1"
     tough-cookie: "npm:^6.0.0"
     type-fest: "npm:^4.26.1"
@@ -5045,7 +5026,7 @@ __metadata:
       optional: true
   bin:
     msw: cli/index.js
-  checksum: 10c0/847cb0e66152328d898474cd12e2ea0b9c11ed997b3a1129018a99afd7ff1134e45aed7158d0a57a1052b7a80b241e91952285f915142bd70c905316dbe9a49d
+  checksum: 10c0/6e7bf559e7da85996df063e5cdc1befea5ab253e6b49d9a7910952b76cc28a53f0ed3581e4deb15b05b282289337cae13abc6a75e8273b017e916ee003dfd15a
   languageName: node
   linkType: hard
 
@@ -6416,7 +6397,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"statuses@npm:^2.0.1":
+"statuses@npm:^2.0.1, statuses@npm:^2.0.2":
   version: 2.0.2
   resolution: "statuses@npm:2.0.2"
   checksum: 10c0/a9947d98ad60d01f6b26727570f3bcceb6c8fa789da64fe6889908fe2e294d57503b14bf2b5af7605c2d36647259e856635cd4c49eab41667658ec9d0080ec3f
@@ -6685,21 +6666,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tldts-core@npm:^7.0.16":
-  version: 7.0.16
-  resolution: "tldts-core@npm:7.0.16"
-  checksum: 10c0/f9a8eee2c061d2defc5ba8e9f46a0b0657a07f15761ad129e930523ce9d6ef283a86ab9b38e01d113eb77c5b005820cbff0270d2a601190e71342a1e0bb9ea12
+"tldts-core@npm:^7.0.17":
+  version: 7.0.17
+  resolution: "tldts-core@npm:7.0.17"
+  checksum: 10c0/39dd6f5852f241c88391dc462dd236fa8241309a76dbf2486afdba0f172358260b16b98c126d1d06e1d9ee9015d83448ed7c4e2885e5e5c06c368f6503bb6a97
   languageName: node
   linkType: hard
 
 "tldts@npm:^7.0.5":
-  version: 7.0.16
-  resolution: "tldts@npm:7.0.16"
+  version: 7.0.17
+  resolution: "tldts@npm:7.0.17"
   dependencies:
-    tldts-core: "npm:^7.0.16"
+    tldts-core: "npm:^7.0.17"
   bin:
     tldts: bin/cli.js
-  checksum: 10c0/cc354744c5603a7886b6e8894e5716a6a6d8904ecefe708443a099db649bbeb1aa098625ed533c9a4250253eeb53d262797b032c00d2d97713830eea6f98b997
+  checksum: 10c0/0ef2a40058a11c27a5b310489009002e57cd0789c2cf383c04ecf808e1523d442d9d9688ac0337c64b261609478b7fd85ddcd692976c8f763747a5e1c7c1c451
   languageName: node
   linkType: hard
 
@@ -7082,6 +7063,13 @@ __metadata:
     "@types/istanbul-lib-coverage": "npm:^2.0.1"
     convert-source-map: "npm:^2.0.0"
   checksum: 10c0/968bcf1c7c88c04df1ffb463c179558a2ec17aa49e49376120504958239d9e9dad5281aa05f2a78542b8557f2be0b0b4c325710262f3b838b40d703d5ed30c23
+  languageName: node
+  linkType: hard
+
+"validator@npm:^13.15.15":
+  version: 13.15.15
+  resolution: "validator@npm:13.15.15"
+  checksum: 10c0/f5349d1fbb9cc36f9f6c5dab1880764ddad1d0d2b084e2a71e5964f7de1635d20e406611559df9a3db24828ce775cbee5e3b6dd52f0d555a61939ed7ea5990bd
   languageName: node
   linkType: hard
 

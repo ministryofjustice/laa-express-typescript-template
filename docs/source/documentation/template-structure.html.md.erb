@@ -1,0 +1,74 @@
+---
+title: Template structure
+last_reviewed_on: 2025-10-02
+review_in: 6 weeks
+---
+
+# Template structure
+
+## Routing
+This template uses the built-in Express JS routing. 
+
+A route is a section of Express code that associates an HTTP verb (`GET`, `POST`, `PUT`, `DELETE`, etc.), with a URL path/pattern, and a function that is called to handle that pattern.
+
+[You can find further documentation here](https://expressjs.com/en/guide/routing.html).
+
+## Template structure and source directory
+
+- Template-specific TypeScript code should go in `src/scripts/`.
+- Other source TypeScript files are located in `src/`, `middleware/`, `routes/`, and `utils/`.
+- Compiled JavaScript output is placed in the `public/` directory.
+- Do not edit files in `public/` directly; always edit the `.ts` source files.
+
+## Import paths and path aliases
+- The template uses path aliases (see `tsconfig.json`), such as `import foo from '#utils/foo'`.
+- Ensure your editor/IDE is configured to recognize these aliases for best developer experience.
+
+## Running and debugging
+- The app is started using the compiled JS in `public/` (see `yarn dev` and `yarn start`).
+- If you want to run TypeScript directly (e.g., for debugging), consider using `ts-node` or a similar tool, but this is not the default workflow.
+
+## Development workflow
+The template uses ESBuild for fast compilation and bundling with watch mode for automatic rebuilds during development. The development workflow is managed through the `yarn dev` script which concurrently runs:
+
+1. **TypeScript compilation in watch mode** - Monitors TypeScript source files for changes
+2. **ESBuild bundling in watch mode** - Handles SCSS, JavaScript bundling, and asset copying
+3. **Nodemon for server restarts** - Automatically restarts the Express server when compiled files change
+
+The watch system monitors:
+
+- TypeScript source files (`src/**/*.ts`) for compilation
+- SCSS files (`src/scss/**/*.scss`) for CSS bundling
+- Asset files from GOV.UK Frontend and MOJ Frontend packages
+- The compiled output in the `public/` directory for server restarts
+
+Nodemon configuration (`nodemon.json`):
+
+```json
+{
+  "watch": ["public"],
+  "ext": "js,json",
+  "ignore": ["public/assets/"],
+  "delay": "500ms"
+}
+```
+
+This configuration:
+
+- Watches the `public` directory for changes in compiled output
+- Only monitors changes in `.js` and `.json` files
+- Ignores the `public/assets/` directory (managed by ESBuild)
+- Adds a 500ms delay before restarting to avoid excessive restarts during rapid file changes
+
+The development workflow is started with:
+
+```shell
+yarn dev
+```
+
+This command builds the template initially and then sets up all watch processes for continuous development.
+
+
+## GitHub Actions
+
+- These have been disabled in this GitHub template repo. Make sure you enable them when setting up your project. 

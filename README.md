@@ -3,65 +3,18 @@
 
 ![govuk-frontend 5.10.2](https://img.shields.io/badge/govuk--frontend%20version-5.10.2-005EA5?logo=gov.uk&style=flat)
 
-Express.js is a fast, minimalist, and unopinionated web framework for Node.js. This template integrates TypeScript to provide strong typing, improved developer productivity, and enhanced code reliability for building scalable server-side applications.
+## Full technical documentation
 
-## Contents
-- [Legal Aid Agency - Express with Typescript Template (ETT)](#legal-aid-agency---express-with-typescript-template-ett)
-  - [Contents](#contents)
-  - [Prerequisites](#prerequisites)
-    - [Installing Yarn](#installing-yarn)
-  - [Getting started](#getting-started)
-    - [Set local environment variables](#set-local-environment-variables)
-    - [Align to the Node Version specified for this project](#align-to-the-node-version-specified-for-this-project)
-    - [Install dependencies and run application for development](#install-dependencies-and-run-application-for-development)
-    - [Install dependencies and run application for production](#install-dependencies-and-run-application-for-production)
-      - [Node Version Manager](#node-version-manager)
-    - [Running locally with docker](#running-locally-with-docker)
-  - [Routing](#routing)
-  - [Testing](#testing)
-    - [Running All Tests](#running-all-tests)
-    - [Unit/Integration Testing frameworks](#unitintegration-testing-frameworks)
-    - [E2E Testing with Playwright](#e2e-testing-with-playwright)
-      - [Running Tests Locally](#running-tests-locally)
-      - [Configuration](#configuration)
-      - [Page Object Pattern](#page-object-pattern)
-      - [API Mocking with MSW](#api-mocking-with-msw)
-      - [Accessibility Testing](#accessibility-testing)
-      - [Route Coverage Analysis](#route-coverage-analysis)
-      - [CI/CD Integration](#cicd-integration)
-      - [Debugging Failed Tests](#debugging-failed-tests)
-  - [Features](#features)
-    - [Asset management](#asset-management)
-    - [Cache busting](#cache-busting)
-    - [Form validation](#form-validation)
-    - [CSRF protection](#csrf-protection)
-    - [Content Security Policy (CSP)](#content-security-policy-csp)
-    - [Response compression](#response-compression)
-    - [Rate limiting](#rate-limiting)
-    - [Linter](#linter)
-      - [Ignore Configuration](#ignore-configuration)
-    - [Linter for staged commits](#linter-for-staged-commits)
-    - [TypeScript](#typescript)
-      - [Main TypeScript Configuration](#main-typescript-configuration)
-      - [Test TypeScript Configuration](#test-typescript-configuration)
-    - [Axios](#axios)
-    - [Yarn](#yarn)
-    - [Nunjucks templating](#nunjucks-templating)
-    - [Project structure and source directory](#project-structure-and-source-directory)
-    - [Import paths and path aliases](#import-paths-and-path-aliases)
-    - [Running and debugging](#running-and-debugging)
-    - [Development workflow](#development-workflow)
-    - [Type definitions](#type-definitions)
-  - [GitHub Actions](#github-actions)
-  - [Licence](#licence)
+View the [full technical documentation here](https://ministryofjustice.github.io/laa-express-typescript-template/)
 
-## Prerequisites
+## Get Started
+### Prerequisites
 
 - node stable version [24.2.0](https://nodejs.org/en/blog/release/v24.2.0/)
 - [Yarn 4.9.2](https://yarnpkg.com/) package manager (see installation instructions below)
 - TypeScript 5.8.3
 
-### Installing Yarn
+#### Installing Yarn
 
 This project uses Yarn 4.9.2 managed by corepack (built into Node.js 16.10+). To ensure all team members use the same version, follow these installation steps:
 
@@ -89,9 +42,9 @@ This project uses Yarn 4.9.2 managed by corepack (built into Node.js 16.10+). To
 - Corepack is the preferred `yarn` way, to install the package manager, instead of `npm install -g yarn` in your ci/cd pipeline
 - `yarn install --immutable` ensures that the lockfile (`yarn.lock`) is not modified during the installation process
 
-## Getting started
+### Start the application
 
-### Set local environment variables
+#### Set local environment variables
 
 Create your local config file `.env` from the template file:
 
@@ -99,7 +52,7 @@ Create your local config file `.env` from the template file:
 cp .env.example .env
 ```
 
-### Align to the Node Version specified for this project
+#### Align to the Node Version specified for this project
 
 If using Node Version Manager (nvm), use the following command to switch to the correct version:
 
@@ -108,7 +61,7 @@ nvm use
 nvm install
 ```
 
-### Install dependencies and run application for development
+#### Install dependencies and run application for development
 
 ```shell
 yarn install
@@ -118,14 +71,14 @@ yarn dev
 
 Then, load http://localhost:3000/ in your browser to access the app.
 
-### Install dependencies and run application for production
+#### Install dependencies and run application for production
 ```shell
 yarn install
 yarn build
 yarn start
 ```
 
-#### Node Version Manager
+##### Node Version Manager
 
 You may have to tell your local machine to use the latest version of node already installed on your device, before installing and running the application. Use the following command.
 
@@ -133,7 +86,7 @@ You may have to tell your local machine to use the latest version of node alread
 nvm install node
 ```
 
-#### Running locally with docker
+##### Running locally with docker
 
 Prerequisites, Docker Desktop
 
@@ -161,463 +114,10 @@ Prerequisites, Docker Desktop
   docker stop {container_id}
   ```
 
-## Routing
-This template uses the built-in Express JS routing. 
-
-A route is a section of Express code that associates an HTTP verb (`GET`, `POST`, `PUT`, `DELETE`, etc.), with a URL path/pattern, and a function that is called to handle that pattern.
-
-[You can find further documentation here](https://expressjs.com/en/guide/routing.html).
-
-## Testing
-There are many frameworks to test your Express.js application (a few of these frameworks will be signposted below), but you will want to split out your test suite to cover:
-
-- Unit Tests - test individual code components to ensure each function operates as intended.
-- Integration Tests - assess the coherence of the entire application, ensuring smooth interactions between various parts.
-- End-to-end (E2E) Tests - assess the entire software system, from the user interface to the database.
-
-### Running All Tests
-
-To run both unit and end-to-end tests with a single command:
-
-```shell
-yarn test
-```
-
-This command will first run the unit tests with Mocha and then run the end-to-end tests with Playwright.
-
-### Unit/Integration Testing frameworks
-- We use [Mocha](https://mochajs.org/) as our unit testing framework. It is a widely-used JavaScript testing framework that works well with TypeScript projects and integrates with CI pipelines.
-- We also use [chai](https://www.chaijs.com/) to help with our test assertions, in mocha.
-- Unit tests run from the `tests/unit/` directory
-- Run unit tests with `yarn test:unit`
-
-**To set-up locally**
-- Install all the dependencies:
-```shell
-yarn install
-```
-
-- run unit test's:
-```shell
-yarn test:unit
-```
-
-### E2E Testing with Playwright
-This project uses [Playwright](https://playwright.dev/) for end-to-end testing with advanced features including page objects, API mocking, accessibility testing, and route coverage analysis.
-
-- E2E tests run from the `tests/playwright/` directory
-- Run E2E tests with `yarn test:e2e`
-
-#### Running Tests Locally
-
-To run the E2E tests locally:
-
-```shell
-# Run all tests
-yarn test:e2e
-
-# Run specific test file
-yarn playwright test tests/playwright/tests/specific-test.spec.ts --config=tests/playwright/playwright.config.ts
-
-# Run in UI mode with Playwright Test Explorer
-yarn playwright test --ui --config=tests/playwright/playwright.config.ts
-```
-
-#### Configuration
-
-The project uses Chromium for testing to ensure consistency with our production environment. The configuration can be found in `tests/playwright/playwright.config.ts`.
-
-Key configuration points:
-- Tests are located in `tests/playwright/tests/` directory
-- Only Chromium browser is used for testing
-- Test retries are enabled in CI environments (2 retries)
-- Traces are automatically captured on test failures for debugging
-- MSW (Mock Service Worker) integration for API mocking
-- Custom fixtures for accessibility testing and page objects
-
-#### Page Object Pattern
-
-The project implements the Page Object Model for maintainable and reusable test code:
-
-```typescript
-// Example usage in tests
-import { test, expect } from '../fixtures/index.js';
-
-test('home page test', async ({ page, pages }) => {
-  const homePage = pages.homePage;
-  await homePage.navigate();
-  await expect(homePage.heading).toBeVisible();
-});
-```
-
-**Page Object Structure:**
-- `tests/playwright/pages/PageFactory.ts` - Factory for creating page objects
-- `tests/playwright/pages/HomePage.ts` - Home page implementation
-- Centralized element selectors and page interactions
-- Type-safe page methods and properties
-
-#### API Mocking with MSW
-
-Mock Service Worker (MSW) is integrated for reliable API testing:
-
-```typescript
-// Example MSW handler
-import { http, HttpResponse } from 'msw';
-
-export const apiHandlers = [
-  http.get('https://jsonplaceholder.typicode.com/users', () => {
-    return HttpResponse.json([
-      { id: 1, name: 'Alice Johnson', email: 'alice@example.com' }
-    ]);
-  })
-];
-```
-
-**MSW Features:**
-- `tests/playwright/factories/handlers/api.ts` - API request handlers
-- `tests/playwright/factories/setup.ts` - MSW server configuration
-- `tests/playwright/scripts/test-server-with-msw.ts` - Test server with MSW integration
-- Intercepts outbound API requests for consistent test data
-- Data factories for generating test fixtures
-
-#### Accessibility Testing
-
-Automated accessibility testing using axe-core is built into the test framework:
-
-```typescript
-// Accessibility testing in action
-test('page accessibility', async ({ page, checkAccessibility }) => {
-  await page.goto('/');
-  await checkAccessibility(); // Runs WCAG 2.2 Level A compliance checks
-});
-```
-
-**Accessibility Features:**
-- WCAG 2.2 Level A compliance testing
-- Integrated with `@axe-core/playwright`
-- Custom fixture: `checkAccessibility`
-- Automatic violation detection and reporting
-- Built into existing functional tests
-
-#### Route Coverage Analysis
-
-Comprehensive route coverage analysis tools help identify untested endpoints:
-
-```shell
-# Run route coverage analysis
-./scripts/e2e_coverage/route-coverage-analysis.sh
-
-# Skip tests and analyze routes only
-./scripts/e2e_coverage/route-coverage-analysis.sh --skip-tests
-```
-
-**Coverage Analysis Features:**
-- `scripts/e2e_coverage/listRoutes.js` - Extracts all Express routes
-- `scripts/e2e_coverage/extract-urls.sh` - Parses test logs for visited routes
-- `scripts/e2e_coverage/route-coverage-analysis.sh` - Full coverage report
-- Color-coded output showing tested vs untested routes
-- Coverage percentage calculation
-- Identifies priority routes needing test coverage
-
-**Example Coverage Output:**
-```
-📊 COVERAGE SUMMARY
-==================
-Total Express routes: 5
-Routes with tests: 2
-Routes without tests: 3
-Coverage percentage: 40%
-
-System Routes:
-  ✓ GET /
-  ✗ GET /error
-  ✗ GET /health
-  ✗ GET /status
-  ✓ GET /users
-```
-
-#### CI/CD Integration
-
-The tests are automatically run in our GitHub Actions workflow (`.github/workflows/playwright.yml`) during pull requests and deployments to UAT.
-
-- The workflow installs only the Chromium browser to optimize CI runtime
-- Traces are captured for all test runs in CI for easier debugging
-- Test artifacts (traces, videos) are preserved for 14 days in GitHub Actions
-- MSW handlers provide consistent test data across environments
-- Accessibility violations fail the build to ensure compliance
-
-#### Debugging Failed Tests
-
-When tests fail in CI:
-1. Check the error message in the GitHub Actions log
-2. Download the trace artifacts (named `playwright-traces.zip`) from GitHub Actions
-3. Extract the downloaded ZIP file - inside you'll find folders organized by test name
-4. Locate the `trace.zip` file within the specific test folder you want to debug
-5. Open traces using one of the following methods:
-
-   **With local Trace Viewer:**
-   ```shell
-   yarn playwright show-trace path/to/extracted/test-folder/trace.zip
-   ```
-
-   **With online Trace Viewer:**
-   Upload the trace.zip file to https://trace.playwright.dev/ - this allows sharing traces with team members without requiring local Playwright installation
-
-This provides a timeline view of the test execution with screenshots, DOM snapshots, and network requests to help diagnose issues.
-
-**Additional Debugging Tools:**
-- MSW request logs show intercepted API calls
-- Page object methods include built-in waiting strategies
-- Accessibility violation details with specific WCAG rule references
-- Route coverage reports help identify missing test scenarios
-
-## Features
-  - [Asset management](#asset-management)
-  - [Cache busting](#cache-busting)
-  - [Form validation](#form-validation)
-  - [CSRF protection](#csrf-protection)
-  - [Content Security Policy (CSP)](#content-security-policy-csp)
-  - [Response compression](#response-compression)
-  - [Rate limiting](#rate-limiting)
-  - [TypeScript](#typescript)
-  - [Linter](#linter)
-  - [Linter for staged commits](#linter-for-staged-commits)
-  - [Axios](#axios)
-  - [Yarn](#yarn)
-  - [Nunjucks templating](#nunjucks-templating)
-
-### Asset management
-This project uses [ESBuild](https://esbuild.github.io/) for asset bundling and management, providing fast builds and efficient handling of JavaScript, TypeScript, and SCSS files.
-
-### Cache busting
-Caching allows Express.js applications to store and serve frequently requested data efficiently, reducing the strain on servers and minimizing latency. This template improves caching through:
-- intelligent browser caching, when using the template for development of an application
-- employing a package management tool, to improve the caching process of installing, upgrading, configuring, and removing software from your application
-
-### Form validation
-This template app contains a basic demo for form validation, when running this app locally. You can find further information on the validation used, by searching in the [Express documentation](https://www.npmjs.com/package/express-validator)
-
-
-### CSRF protection
-The template uses the [csrf-sync](https://www.npmjs.com/package/csrf-sync/v/1.0.2) middleware, to help keep your app secure.
-
-### Content Security Policy (CSP)
-This app uses [helmet.js](https://helmetjs.github.io/) to help secure this Express.js template app by setting HTTP response headers, which includes your CSP. 
-
-### Response compression
-The app uses a Node.js compression middleware called [compression](https://www.npmjs.com/package/compression). The middleware will attempt to compress response bodies for all request that traverse through the middleware, based on the given options.
-
-
-### Rate limiting
-This template uses a basic rate-limiting middleware for Express.js, called `express-rate-limit`. It is used to limit repeated requests to public APIs and/or endpoints such as password reset. 
-
-For further information please [visit the documentation here](https://www.npmjs.com/package/express-rate-limit?activeTab=readme).
-
-### Linter
-ESLint is a static code analysis tool for identifying and fixing problems in JavaScript and TypeScript code. It helps maintain code quality and consistency across a project by enforcing a set of coding standards and best practices. ESLint can catch syntax errors, stylistic issues, and potential bugs before they become actual problems.
-
-The project has TypeScript support through the `@typescript-eslint/eslint-plugin` and `@typescript-eslint/parser` packages installed as dev dependencies.
-
-To run ESLint:
-
-```shell
-yarn lint
-```
-
-This will run ESLint on all TypeScript files in your project, ignoring specific files and directories.
-
-#### Ignore Configuration
-
-The project configures ESLint to ignore certain files directly in the `eslint.config.js` file:
-
-```javascript
-{
-  ignores: [
-    'node_modules/*',
-    'public/*',
-    'tests/**/*.spec.ts'
-  ],
-}
-```
-
-This configuration:
-- Ignores the `node_modules` directory
-- Ignores the `public` directory (generated output)
-- Ignores all test specification files (`*.spec.ts`) in any subdirectory of the `tests` folder
-
-### Linter for staged commits
-We use [husky](https://github.com/typicode/husky) & [lint-staged](https://github.com/lint-staged/lint-staged) to run ESLint on all our staged git commits. This ensures that TypeScript files are linted before they're committed to the repository.
-
-- `husky` - helps us with our Git hooks
-- `lint-staged` - helps us run a linter on our staged commits (configured in package.json to target both .js and .ts files)
-
-
-**To set-up locally**
-- Install all the dependencies:
-```shell
-yarn install
-```
-
-- Initialise `husky`:
-```shell
-yarn husky install
-```
-
-- To help debug, run the command when you have a staged commit:
-```shell
-yarn lint-staged --debug
-```
-
-### TypeScript
-This project uses TypeScript to provide static type checking, improving code quality and developer experience. TypeScript helps catch errors during development rather than at runtime and provides better IDE support through enhanced autocompletion and navigation.
-
-#### Main TypeScript Configuration
-The TypeScript configuration is defined in `tsconfig.json` with the following key settings:
-- Target: ES2022
-- Module System: NodeNext
-- Strict Type Checking: Enabled
-- Source Maps: Generated for debugging
-
-#### Test TypeScript Configuration
-The project uses a separate TypeScript configuration for tests in `tsconfig.test.json`, which extends the main configuration:
-
-```json
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "allowImportingTsExtensions": true,
-    "noEmit": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext"
-  },
-  "include": ["tests/**/*.spec.ts", "routes/**/*.ts", "src/**/*.ts", "middleware/**/*.ts", "utils/**/*.ts"]
-}
-```
-
-This configuration:
-- Extends the main `tsconfig.json`
-- Allows importing TypeScript files with extensions (`.ts`)
-- Doesn't emit compiled output files when running tests
-- Includes all test files (`*.spec.ts`) in all test subdirectories
-- Includes source files from routes, src, middleware, and utils directories that tests may need to reference
-
-To compile TypeScript files:
-```shell
-yarn build:ts
-```
-
-To run type checking without emitting files:
-```shell
-yarn tsc
-```
-
-### Axios
-Within this template [axios](https://github.com/axios/axios) with [middleware-axios](https://github.com/krutoo/middleware-axios) (used as a utility `../utils/axiosSetup.ts`, and can be extended with further middleware) is set up and ready to use out of the box.
-
-Below is an example of implementation of how to use the Axios middleware in your TypeScript routes to make server/API calls:
-
-```typescript
-// routes/index.ts
-import express, { Request, Response, NextFunction } from 'express';
-const router = express.Router();
-
-/* GET home page. */
-router.get('/', (req: Request, res: Response, next: NextFunction) => {
-  res.render('main/index', { title: 'Express' });
-});
-
-// Make an API call with `Axios` and `middleware-axios`
-// GET users from external API
-router.get('/users', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    // Use the wrapped Axios instance attached to the request object (via middleware-axios)
-    const response = await req.axiosMiddleware.get('https://jsonplaceholder.typicode.com/users');
-    res.json(response.data);
-  } catch (error) {
-    next(error);
-  }
-});
-
-export default router;
-```
-
-### Yarn
-This project uses [Yarn](https://yarnpkg.com/) rather than the native package manager NPM to improve performance & security for more reliable dependency management.
-
-#### How to run manual updates
-Dependabot will routinely check your project packages to find any updates. However, you can use the following command to run manual updates:
-
-```shell
-yarn upgrade-interactive
-```
-
-#### Sources
-[yarn upgrade-interactive](https://yarnpkg.com/cli/upgrade-interactive#details)
-
-
-### Nunjucks templating
-This project uses [Nunjucks](https://mozilla.github.io/nunjucks/) for server-side HTML templating. You can render Nunjucks templates from your TypeScript route handlers just as you would from JavaScript. Templates are located in the `views/` directory and are compatible with both JS and TS backends.
-
-### Project structure and source directory
-- Project-specific TypeScript code should go in `src/scripts/`.
-- Other source TypeScript files are located in `src/`, `middleware/`, `routes/`, and `utils/`.
-- Compiled JavaScript output is placed in the `public/` directory.
-- Do not edit files in `public/` directly; always edit the `.ts` source files.
-
-### Import paths and path aliases
-- The project uses path aliases (see `tsconfig.json`), such as `import foo from '#utils/foo'`.
-- Ensure your editor/IDE is configured to recognize these aliases for best developer experience.
-
-### Running and debugging
-- The app is started using the compiled JS in `public/` (see `yarn dev` and `yarn start`).
-- If you want to run TypeScript directly (e.g., for debugging), consider using `ts-node` or a similar tool, but this is not the default workflow.
-
-### Development workflow
-The project uses ESBuild for fast compilation and bundling with watch mode for automatic rebuilds during development. The development workflow is managed through the `yarn dev` script which concurrently runs:
-
-1. **TypeScript compilation in watch mode** - Monitors TypeScript source files for changes
-2. **ESBuild bundling in watch mode** - Handles SCSS, JavaScript bundling, and asset copying
-3. **Nodemon for server restarts** - Automatically restarts the Express server when compiled files change
-
-The watch system monitors:
-- TypeScript source files (`src/**/*.ts`) for compilation
-- SCSS files (`src/scss/**/*.scss`) for CSS bundling
-- Asset files from GOV.UK Frontend and MOJ Frontend packages
-- The compiled output in the `public/` directory for server restarts
-
-Nodemon configuration (`nodemon.json`):
-```json
-{
-  "watch": ["public"],
-  "ext": "js,json",
-  "ignore": ["public/assets/"],
-  "delay": "500ms"
-}
-```
-
-This configuration:
-- Watches the `public` directory for changes in compiled output
-- Only monitors changes in `.js` and `.json` files
-- Ignores the `public/assets/` directory (managed by ESBuild)
-- Adds a 500ms delay before restarting to avoid excessive restarts during rapid file changes
-
-The development workflow is started with:
-```shell
-yarn dev
-```
-
-This command builds the project initially and then sets up all watch processes for continuous development.
-
-### Type definitions
-- Type definitions for Node, Express, and other dependencies are included as dev dependencies (see `@types/*` packages in `package.json`).
-- These are required for type safety and improved autocompletion in TypeScript.
-
-
-## GitHub Actions
+### GitHub Actions
 - These have been disabled in this GitHub template repo. Make sure you enable them when setting up your project. 
 
-
-## Licence
+### Licence
 
 [Licence](./LICENSE)
 

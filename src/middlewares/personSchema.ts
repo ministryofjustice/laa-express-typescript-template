@@ -316,7 +316,7 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           const month = req.body['dateOfBirth-month']?.trim();
           const year = req.body['dateOfBirth-year']?.trim();
           
-          const hasAnyDateField = day || month || year;
+          const hasAnyDateField = (day !== '' && day !== undefined) || (month !== '' && month !== undefined) || (year !== '' && year !== undefined);
           
           if (!hasAnyDateField) return true; // All empty is fine
           
@@ -377,7 +377,7 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           const month = req.body['dateOfBirth-month']?.trim();
           const year = req.body['dateOfBirth-year']?.trim();
           
-          const hasAnyDateField = day || month || year;
+          const hasAnyDateField = (day !== '' && day !== undefined) || (month !== '' && month !== undefined) || (year !== '' && year !== undefined);
           
           if (!hasAnyDateField) return true; // All empty is fine
           

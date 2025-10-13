@@ -22,10 +22,14 @@ import type { AxiosResponse } from 'axios';
  * Template users can use this as a starting point for their own API services.
  */
 export class ExampleApiService extends BaseApiService {
+  /**
+   * Initialize ExampleApiService with JSONPlaceholder configuration
+   */
   constructor() {
+    const EXAMPLE_TIMEOUT_MS = 10000;
     super({
-      baseUrl: process.env.EXAMPLE_API_URL || 'https://jsonplaceholder.typicode.com',
-      timeout: 10000,
+      baseUrl: process.env.EXAMPLE_API_URL ?? 'https://jsonplaceholder.typicode.com',
+      timeout: EXAMPLE_TIMEOUT_MS,
       apiPrefix: '', // JSONPlaceholder doesn't use a prefix
       enableLogging: true
     });
@@ -34,43 +38,43 @@ export class ExampleApiService extends BaseApiService {
   /**
    * Get users from API - minimal example
    * 
-   * @param axiosMiddleware - Axios middleware from request
-   * @param params - Query parameters
-   * @returns Promise resolving to raw axios response
+   * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+   * @param {Record<string, string | number | boolean>} params - Query parameters
+   * @returns {Promise<AxiosResponse>} Promise resolving to raw axios response
    */
   async getUsers(
     axiosMiddleware: AxiosInstanceWrapper,
     params: Record<string, string | number | boolean> = {}
   ): Promise<AxiosResponse> {
-    return this.get(axiosMiddleware, '/users', params);
+    return await this.get(axiosMiddleware, '/users', params);
   }
 
   /**
    * Get single user by ID - minimal example
    * 
-   * @param axiosMiddleware - Axios middleware from request
-   * @param userId - User ID to retrieve
-   * @returns Promise resolving to raw axios response
+   * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+   * @param {string | number} userId - User ID to retrieve
+   * @returns {Promise<AxiosResponse>} Promise resolving to raw axios response
    */
   async getUserById(
     axiosMiddleware: AxiosInstanceWrapper,
     userId: string | number
   ): Promise<AxiosResponse> {
-    return this.get(axiosMiddleware, `/users/${userId}`);
+    return await this.get(axiosMiddleware, `/users/${userId}`);
   }
 
   /**
    * Create a new user - minimal example
    * 
-   * @param axiosMiddleware - Axios middleware from request
-   * @param userData - User data to create
-   * @returns Promise resolving to raw axios response
+   * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+   * @param {unknown} userData - User data to create
+   * @returns {Promise<AxiosResponse>} Promise resolving to raw axios response
    */
   async createUser(
     axiosMiddleware: AxiosInstanceWrapper,
     userData: unknown
   ): Promise<AxiosResponse> {
-    return this.post(axiosMiddleware, '/users', userData);
+    return await this.post(axiosMiddleware, '/users', userData);
   }
 }
 

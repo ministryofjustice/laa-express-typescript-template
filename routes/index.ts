@@ -17,8 +17,8 @@ router.get('/users', async function (req: Request, res: Response, next: NextFunc
 	try {
 		// Use the BaseApiService - returns raw axios response (no domain transformation)
 		const response = await exampleApiService.getUsers(req.axiosMiddleware, {
-			_page: req.query.page as string || '1',
-			_limit: req.query.limit as string || '10'
+			_page: typeof req.query.page === 'string' ? req.query.page : '1',
+			_limit: typeof req.query.limit === 'string' ? req.query.limit : '10'
 		});
 
 		// Template users add their own response handling here

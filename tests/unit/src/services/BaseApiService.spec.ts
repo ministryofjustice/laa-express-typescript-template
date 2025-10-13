@@ -30,7 +30,7 @@ class TestApiService extends BaseApiService {
   }
 
   public testHandleApiError(error: unknown, context: string) {
-    return this.handleApiError(error, context);
+    return BaseApiService.handleApiError(error, context);
   }
 
   public testBuildEndpoint(endpoint: string) {

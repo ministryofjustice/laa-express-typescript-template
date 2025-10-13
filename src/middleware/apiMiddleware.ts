@@ -30,8 +30,8 @@ export interface ApiMiddlewareConfig {
 
 // Auth service interface - compatible with MCC's auth service
 export interface AuthServiceInterface {
-  getAuthHeader(): Promise<string>;
-  clearTokens(): void;
+  getAuthHeader: () => Promise<string>;
+  clearTokens: () => void;
 }
 
 // Extend Express Request to include our axiosMiddleware
@@ -45,8 +45,8 @@ declare global {
 
 /**
  * Convert unknown error to Error instance
- * @param error Error to convert
- * @returns Error instance
+ * @param {unknown} error Error to convert
+ * @returns {Error} Error instance
  */
 function toError(error: unknown): Error {
   return error instanceof Error ? error : new Error(String(error));
@@ -54,8 +54,8 @@ function toError(error: unknown): Error {
 
 /**
  * Type guard for axios error with response
- * @param error Error to check
- * @returns True if error has response with status
+ * @param {unknown} error Error to check
+ * @returns {boolean} True if error has response with status
  */
 function isAxiosErrorWithResponse(error: unknown): error is AxiosError & { response: { status: number } } {
   return error !== null &&
@@ -69,8 +69,8 @@ function isAxiosErrorWithResponse(error: unknown): error is AxiosError & { respo
 
 /**
  * Create API middleware with configuration
- * @param config Configuration for the API middleware
- * @returns Express middleware function
+ * @param {ApiMiddlewareConfig} config Configuration for the API middleware
+ * @returns {Function} Express middleware function
  */
 export function createApiMiddleware(config: ApiMiddlewareConfig = {}) {
   const {
@@ -94,7 +94,7 @@ export function createApiMiddleware(config: ApiMiddlewareConfig = {}) {
     if (enableLogging) {
       axiosWrapper.axiosInstance.interceptors.request.use(
         (config: InternalAxiosRequestConfig) => {
-          devLog(`API Request: ${config.method?.toUpperCase()} ${config.baseURL || ''}${config.url || ''}`);
+          devLog(`API Request: ${config.method?.toUpperCase()} ${config.baseURL ?? ''}${config.url ?? ''}`);
           return config;
         },
         async (error: unknown) => {
@@ -115,7 +115,7 @@ export function createApiMiddleware(config: ApiMiddlewareConfig = {}) {
           } else {
             devError(`API Network Error: ${toError(error).message}`);
           }
-          return await Promise.reject(error);
+          return await Promise.reject(toError(error));
         }
       );
     }

@@ -47,6 +47,11 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
     fullName: {
       in: ['body'],
       customSanitizer: {
+        /**
+         * Custom sanitizer for fullName field - preserves null/undefined for validation
+         * @param {any} value - The input value to sanitize
+         * @returns {any} Sanitized value
+         */
         options: (value: any) => {
           // Preserve undefined and null to allow proper validation
           if (value === undefined || value === null) {
@@ -74,6 +79,11 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
     address: {
       in: ['body'],
       customSanitizer: {
+        /**
+         * Custom sanitizer for address field - preserves null/undefined for validation
+         * @param {any} value - The input value to sanitize
+         * @returns {any} Sanitized value
+         */
         options: (value: any) => {
           // Preserve undefined and null to allow proper validation
           if (value === undefined || value === null) {
@@ -214,6 +224,10 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
       in: ['body'],
       isArray: {
         options: { min: 1 },
+        /**
+         * Custom error message for empty communication methods array using i18n
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+         */
         errorMessage: () => new TypedValidationError({
           summaryMessage: t('forms.communicationMethods.validationError.notEmpty'),
           inlineMessage: t('forms.communicationMethods.validationError.notEmpty'),
@@ -224,6 +238,13 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
       in: ['body'],
       trim: true,
       custom: {
+        /**
+         * Validates dateOfBirth day field - requires all date fields if any are provided
+         * @param {string} value - The day value from the form
+         * @param {object} root0 - Meta object from express-validator
+         * @param {object} root0.req - Express request object
+         * @returns {boolean} True if validation passes, false otherwise
+         */
         options: (value: string, { req }: Meta): boolean => {
           // If any date field is provided, all must be provided
           if (!isPersonBody(req.body)) return true;
@@ -236,18 +257,25 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           
           if (!hasAnyDateField) return true; // All empty is fine
           
-          if (!value || !value.trim()) {
+          if (!value?.trim()) {
             return false; // Day is required if any date field is provided
           }
           
           const dayNum = parseInt(value.trim());
           return !isNaN(dayNum) && dayNum >= MIN_DAY && dayNum <= MAX_DAY;
         },
+        /**
+         * Custom error message for dateOfBirth day field validation
+         * @param {string} value - The day value from the form
+         * @param {object} root0 - Meta object from express-validator
+         * @param {object} root0.req - Express request object
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+         */
         errorMessage: (value: string, { req }: Meta) => {
-          if (!isPersonBody(req.body)) return new TypedValidationError({
+          if (!isPersonBody(req.body)) {return new TypedValidationError({
             summaryMessage: t('forms.dateOfBirth.validationError.day.notEmpty'),
             inlineMessage: t('forms.dateOfBirth.validationError.day.notEmpty'),
-          });
+          });}
           
           const day = req.body['dateOfBirth-day']?.trim();
           const month = req.body['dateOfBirth-month']?.trim();
@@ -255,7 +283,7 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           
           const hasAnyDateField = day || month || year;
           
-          if (hasAnyDateField && (!value || !value.trim())) {
+          if (hasAnyDateField && (!value?.trim())) {
             return new TypedValidationError({
               summaryMessage: t('forms.dateOfBirth.validationError.day.notEmpty'),
               inlineMessage: t('forms.dateOfBirth.validationError.day.notEmpty'),
@@ -273,6 +301,13 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
       in: ['body'],
       trim: true,
       custom: {
+        /**
+         * Validates dateOfBirth month field - requires all date fields if any are provided
+         * @param {string} value - The month value from the form
+         * @param {object} root0 - Meta object from express-validator
+         * @param {object} root0.req - Express request object
+         * @returns {boolean} True if validation passes, false otherwise
+         */
         options: (value: string, { req }: Meta): boolean => {
           // If any date field is provided, all must be provided
           if (!isPersonBody(req.body)) return true;
@@ -285,18 +320,24 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           
           if (!hasAnyDateField) return true; // All empty is fine
           
-          if (!value || !value.trim()) {
+          if (!value?.trim()) {
             return false; // Month is required if any date field is provided
           }
           
           const monthNum = parseInt(value.trim());
           return !isNaN(monthNum) && monthNum >= MIN_MONTH && monthNum <= MAX_MONTH;
         },
+        /**
+         *
+         * @param value
+         * @param root0
+         * @param root0.req
+         */
         errorMessage: (value: string, { req }: Meta) => {
-          if (!isPersonBody(req.body)) return new TypedValidationError({
+          if (!isPersonBody(req.body)) {return new TypedValidationError({
             summaryMessage: t('forms.dateOfBirth.validationError.month.notEmpty'),
             inlineMessage: t('forms.dateOfBirth.validationError.month.notEmpty'),
-          });
+          });}
           
           const day = req.body['dateOfBirth-day']?.trim();
           const month = req.body['dateOfBirth-month']?.trim();
@@ -304,7 +345,7 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           
           const hasAnyDateField = day || month || year;
           
-          if (hasAnyDateField && (!value || !value.trim())) {
+          if (hasAnyDateField && (!value?.trim())) {
             return new TypedValidationError({
               summaryMessage: t('forms.dateOfBirth.validationError.month.notEmpty'),
               inlineMessage: t('forms.dateOfBirth.validationError.month.notEmpty'),
@@ -322,6 +363,12 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
       in: ['body'],
       trim: true,
       custom: {
+        /**
+         *
+         * @param value
+         * @param root0
+         * @param root0.req
+         */
         options: (value: string, { req }: Meta): boolean => {
           // If any date field is provided, all must be provided
           if (!isPersonBody(req.body)) return true;
@@ -334,7 +381,7 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           
           if (!hasAnyDateField) return true; // All empty is fine
           
-          if (!value || !value.trim()) {
+          if (!value?.trim()) {
             return false; // Year is required if any date field is provided
           }
           
@@ -344,11 +391,17 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           const yearNum = parseInt(yearStr);
           return !isNaN(yearNum);
         },
+        /**
+         *
+         * @param value
+         * @param root0
+         * @param root0.req
+         */
         errorMessage: (value: string, { req }: Meta) => {
-          if (!isPersonBody(req.body)) return new TypedValidationError({
+          if (!isPersonBody(req.body)) {return new TypedValidationError({
             summaryMessage: t('forms.dateOfBirth.validationError.year.notEmpty'),
             inlineMessage: t('forms.dateOfBirth.validationError.year.notEmpty'),
-          });
+          });}
           
           const day = req.body['dateOfBirth-day']?.trim();
           const month = req.body['dateOfBirth-month']?.trim();
@@ -356,7 +409,7 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           
           const hasAnyDateField = day || month || year;
           
-          if (hasAnyDateField && (!value || !value.trim())) {
+          if (hasAnyDateField && (!value?.trim())) {
             return new TypedValidationError({
               summaryMessage: t('forms.dateOfBirth.validationError.year.notEmpty'),
               inlineMessage: t('forms.dateOfBirth.validationError.year.notEmpty'),

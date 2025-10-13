@@ -1,0 +1,211 @@
+---
+title: Testing
+last_reviewed_on: 2025-10-13
+review_in: 6 weeks
+---
+
+# Testing
+
+There are many frameworks to test your Express.js application (a few of these frameworks will be signposted below), but you will want to split out your test suite to cover:
+
+- Unit Tests - test individual code components to ensure each function operates as intended.
+- Integration Tests - assess the coherence of the entire application, ensuring smooth interactions between various parts.
+- End-to-end (E2E) Tests - assess the entire software system, from the user interface to the database.
+
+## Running All Tests
+
+To run both unit and end-to-end tests with a single command:
+
+```shell
+yarn test
+```
+
+This command will first run the unit tests with Mocha and then run the end-to-end tests with Playwright.
+
+## Unit/Integration Testing frameworks
+
+- We use [Mocha](https://mochajs.org/) as our unit testing framework. It is a widely-used JavaScript testing framework that works well with TypeScript projects and integrates with CI pipelines.
+- We also use [chai](https://www.chaijs.com/) to help with our test assertions, in mocha.
+- Unit tests run from the `tests/unit/` directory
+- Run unit tests with `yarn test:unit`
+
+**To set-up locally**
+- Install all the dependencies:
+```shell
+yarn install
+```
+
+- run unit test's:
+```shell
+yarn test:unit
+```
+
+## E2E Testing with Playwright
+
+This project uses [Playwright](https://playwright.dev/) for end-to-end testing with advanced features including page objects, API mocking, accessibility testing, and route coverage analysis.
+
+- E2E tests run from the `tests/playwright/` directory
+- Run E2E tests with `yarn test:e2e`
+
+### Running Tests Locally
+
+To run the E2E tests locally:
+
+```shell
+# Run all tests
+yarn test:e2e
+
+# Run specific test file
+yarn playwright test tests/playwright/tests/specific-test.spec.ts --config=tests/playwright/playwright.config.ts
+
+# Run in UI mode with Playwright Test Explorer
+yarn playwright test --ui --config=tests/playwright/playwright.config.ts
+```
+
+### Configuration
+
+The project uses Chromium for testing to ensure consistency with our production environment. The configuration can be found in `tests/playwright/playwright.config.ts`.
+
+Key configuration points:
+- Tests are located in `tests/playwright/tests/` directory
+- Only Chromium browser is used for testing
+- Test retries are enabled in CI environments (2 retries)
+- Traces are automatically captured on test failures for debugging
+- MSW (Mock Service Worker) integration for API mocking
+- Custom fixtures for accessibility testing and page objects
+
+### Page Object Pattern
+
+The project implements the Page Object Model for maintainable and reusable test code:
+
+```typescript
+// Example usage in tests
+import { test, expect } from '../fixtures/index.js';
+
+test('home page test', async ({ page, pages }) => {
+  const homePage = pages.homePage;
+  await homePage.navigate();
+  await expect(homePage.heading).toBeVisible();
+});
+```
+
+**Page Object Structure:**
+- `tests/playwright/pages/PageFactory.ts` - Factory for creating page objects
+- `tests/playwright/pages/HomePage.ts` - Home page implementation
+- Centralized element selectors and page interactions
+- Type-safe page methods and properties
+
+### API Mocking with MSW
+
+Mock Service Worker (MSW) is integrated for reliable API testing:
+
+```typescript
+// Example MSW handler
+import { http, HttpResponse } from 'msw';
+
+export const apiHandlers = [
+  http.get('https://jsonplaceholder.typicode.com/users', () => {
+    return HttpResponse.json([
+      { id: 1, name: 'Alice Johnson', email: 'alice@example.com' }
+    ]);
+  })
+];
+```
+
+**MSW Features:**
+- `tests/playwright/factories/handlers/api.ts` - API request handlers
+- `tests/playwright/factories/setup.ts` - MSW server configuration
+- `tests/playwright/scripts/test-server-with-msw.ts` - Test server with MSW integration
+- Intercepts outbound API requests for consistent test data
+- Data factories for generating test fixtures
+
+### Accessibility Testing
+
+Automated accessibility testing using axe-core is built into the test framework:
+
+```typescript
+// Accessibility testing in action
+test('page accessibility', async ({ page, checkAccessibility }) => {
+  await page.goto('/');
+  await checkAccessibility(); // Runs WCAG 2.2 Level A compliance checks
+});
+```
+
+**Accessibility Features:**
+- WCAG 2.2 Level A compliance testing
+- Integrated with `@axe-core/playwright`
+- Custom fixture: `checkAccessibility`
+- Automatic violation detection and reporting
+- Built into existing functional tests
+
+### Route Coverage Analysis
+
+Comprehensive route coverage analysis tools help identify untested endpoints:
+
+```shell
+# Run route coverage analysis
+./scripts/e2e_coverage/route-coverage-analysis.sh
+
+# Skip tests and analyze routes only
+./scripts/e2e_coverage/route-coverage-analysis.sh --skip-tests
+```
+
+**Coverage Analysis Features:**
+- `scripts/e2e_coverage/listRoutes.js` - Extracts all Express routes
+- `scripts/e2e_coverage/extract-urls.sh` - Parses test logs for visited routes
+- `scripts/e2e_coverage/route-coverage-analysis.sh` - Full coverage report
+- Color-coded output showing tested vs untested routes
+- Coverage percentage calculation
+- Identifies priority routes needing test coverage
+
+**Example Coverage Output:**
+```
+📊 COVERAGE SUMMARY
+==================
+Total Express routes: 5
+Routes with tests: 2
+Routes without tests: 3
+Coverage percentage: 40%
+
+System Routes:
+  ✓ GET /
+  ✗ GET /error
+  ✗ GET /health
+  ✗ GET /status
+  ✓ GET /users
+```
+
+### CI/CD Integration
+
+The tests are automatically run in our GitHub Actions workflow (`.github/workflows/playwright.yml`) during pull requests and deployments to UAT.
+
+- The workflow installs only the Chromium browser to optimize CI runtime
+- Traces are captured for all test runs in CI for easier debugging
+- Test artifacts (traces, videos) are preserved for 14 days in GitHub Actions
+- MSW handlers provide consistent test data across environments
+- Accessibility violations fail the build to ensure compliance
+
+### Debugging Failed Tests
+
+When tests fail in CI:
+1. Check the error message in the GitHub Actions log
+2. Download the trace artifacts (named `playwright-traces.zip`) from GitHub Actions
+3. Extract the downloaded ZIP file - inside you'll find folders organized by test name
+4. Locate the `trace.zip` file within the specific test folder you want to debug
+5. Open traces using one of the following methods:
+
+   **With local Trace Viewer:**
+   ```shell
+   yarn playwright show-trace path/to/extracted/test-folder/trace.zip
+   ```
+
+   **With online Trace Viewer:**
+   Upload the trace.zip file to https://trace.playwright.dev/ - this allows sharing traces with team members without requiring local Playwright installation
+
+This provides a timeline view of the test execution with screenshots, DOM snapshots, and network requests to help diagnose issues.
+
+**Additional Debugging Tools:**
+- MSW request logs show intercepted API calls
+- Page object methods include built-in waiting strategies
+- Accessibility violation details with specific WCAG rule references
+- Route coverage reports help identify missing test scenarios

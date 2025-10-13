@@ -1,4 +1,4 @@
-# Legal Aid Agency - Express with Typescript Template (ETT)
+# Legal Aid Agency - Express with TypeScript template (ETT)
 [![Standards Icon]][Standards Link]
 
 ![govuk-frontend 5.10.2](https://img.shields.io/badge/govuk--frontend%20version-5.10.2-005EA5?logo=gov.uk&style=flat)
@@ -62,7 +62,6 @@ Express.js is a fast, minimalist, and unopinionated web framework for Node.js. T
 - **Security** - CSRF protection, CSP headers, rate limiting
 - **Development** - Hot reload, ESBuild bundling, path aliases
 - **Localization** - Centralized i18n system with namespace support
-
 
 ## 🏗️ Template Usage
 

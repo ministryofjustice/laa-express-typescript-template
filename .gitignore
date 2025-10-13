@@ -14,7 +14,7 @@ node_modules/
 .trunk/
 .DS_Store
 
-# LAA Express Typescript Template
+# LAA Express TypeScript Template
 public/
 .env
 

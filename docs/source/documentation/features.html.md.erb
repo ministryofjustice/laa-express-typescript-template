@@ -1,277 +1,552 @@
-------
+---<<<<<<< HEAD
 
-title: Features and Architecturetitle: Features
+title: Features and Architecture------
+
+last_reviewed_on: 2025-10-13
+
+review_in: 6 weekstitle: Features and Architecturetitle: Features
+
+---
 
 last_reviewed_on: 2025-10-13last_reviewed_on: 2025-10-02
 
+# Features and Architecture
+
 review_in: 6 weeksreview_in: 6 weeks
+
+This template provides a comprehensive set of features for building secure, maintainable Express.js applications with TypeScript.
 
 ------
 
+## Core Features
 
+
+
+### Routing
 
 # Features and Architecture# Features
 
+This template uses the built-in Express JS routing. 
 
 
-This template provides a comprehensive set of features for building secure, maintainable Express.js applications with TypeScript.## Asset management
-
-This template uses [ESBuild](https://esbuild.github.io/) for asset bundling and management, providing fast builds and efficient handling of JavaScript, TypeScript, and SCSS files.
-
-## Core Features
-
-## Cache busting
-
-### RoutingCaching allows Express applications to store and serve frequently requested data efficiently, reducing the strain on servers and minimizing latency. This template improves caching through:
-
-
-
-This template uses the built-in Express JS routing. - intelligent browser caching, when using the template for development of an application
-
-- employing a package management tool, to improve the caching process of installing, upgrading, configuring, and removing software from your application
 
 A route is a section of Express code that associates an HTTP verb (`GET`, `POST`, `PUT`, `DELETE`, etc.), with a URL path/pattern, and a function that is called to handle that pattern.
 
-## Form validation
+This template provides a comprehensive set of features for building secure, maintainable Express.js applications with TypeScript.## Asset management
 
-[You can find further documentation here](https://expressjs.com/en/guide/routing.html).This template app contains a basic demo for form validation, when running this app locally. You can find further information on the validation used, by searching in the [Express documentation](https://www.npmjs.com/package/express-validator)
+[You can find further documentation here](https://expressjs.com/en/guide/routing.html).
 
+This template uses [ESBuild](https://esbuild.github.io/) for asset bundling and management, providing fast builds and efficient handling of JavaScript, TypeScript, and SCSS files.
 
+### Asset management
 
-### Asset management## CSRF protection
-
-The template uses the [csrf-sync](https://www.npmjs.com/package/csrf-sync/v/1.0.2) middleware, to help keep your app secure.
+## Core Features
 
 This project uses [ESBuild](https://esbuild.github.io/) for asset bundling and management, providing fast builds and efficient handling of JavaScript, TypeScript, and SCSS files.
 
-## Content Security Policy (CSP)
+## Cache busting
 
-### Cache bustingThis template uses [helmet.js](https://helmetjs.github.io/) to help secure this Express template app by setting HTTP response headers, which includes your CSP. 
+### Cache busting
 
+### RoutingCaching allows Express applications to store and serve frequently requested data efficiently, reducing the strain on servers and minimizing latency. This template improves caching through:
 
+Caching allows Express.js applications to store and serve frequently requested data efficiently, reducing the strain on servers and minimizing latency. This template improves caching through:
 
-Caching allows Express.js applications to store and serve frequently requested data efficiently, reducing the strain on servers and minimizing latency. This template improves caching through:## Response compression
-
-- intelligent browser caching, when using the template for development of an applicationThe template uses a Node.js compression middleware called [compression](https://www.npmjs.com/package/compression). The middleware will attempt to compress response bodies for all request that traverse through the middleware, based on the given options.
+- intelligent browser caching, when using the template for development of an application
 
 - employing a package management tool, to improve the caching process of installing, upgrading, configuring, and removing software from your application
 
+This template uses the built-in Express JS routing. - intelligent browser caching, when using the template for development of an application
 
+### Form validation
 
-### Form validation## Rate limiting
-
-This template uses a basic rate-limiting middleware for Express, called `express-rate-limit`. It is used to limit repeated requests to public APIs and/or endpoints such as password reset. 
+- employing a package management tool, to improve the caching process of installing, upgrading, configuring, and removing software from your application
 
 This template app contains a basic demo for form validation, when running this app locally. You can find further information on the validation used, by searching in the [Express documentation](https://www.npmjs.com/package/express-validator)
 
-For further information please [visit the documentation here](https://www.npmjs.com/package/express-rate-limit?activeTab=readme).
+A route is a section of Express code that associates an HTTP verb (`GET`, `POST`, `PUT`, `DELETE`, etc.), with a URL path/pattern, and a function that is called to handle that pattern.
 
 ## Security Features
 
-## Linter
+## Form validation
 
-### CSRF protectionESLint is a static code analysis tool for identifying and fixing problems in JavaScript and TypeScript code. It helps maintain code quality and consistency across a project by enforcing a set of coding standards and best practices. ESLint can catch syntax errors, stylistic issues, and potential bugs before they become actual problems.
+### CSRF protection
 
+[You can find further documentation here](https://expressjs.com/en/guide/routing.html).This template app contains a basic demo for form validation, when running this app locally. You can find further information on the validation used, by searching in the [Express documentation](https://www.npmjs.com/package/express-validator)
 
+The template uses the [csrf-sync](https://www.npmjs.com/package/csrf-sync/v/1.0.2) middleware, to help keep your app secure.
 
-The template uses the [csrf-sync](https://www.npmjs.com/package/csrf-sync/v/1.0.2) middleware, to help keep your app secure.The template has TypeScript support through the `@typescript-eslint/eslint-plugin` and `@typescript-eslint/parser` packages installed as dev dependencies.
 
 
+### Content Security Policy (CSP)
 
-### Content Security Policy (CSP)To run ESLint:
+### Asset management## CSRF protection
 
+This app uses [helmet.js](https://helmetjs.github.io/) to help secure this Express.js template app by setting HTTP response headers, which includes your CSP. 
 
+The template uses the [csrf-sync](https://www.npmjs.com/package/csrf-sync/v/1.0.2) middleware, to help keep your app secure.
 
-This app uses [helmet.js](https://helmetjs.github.io/) to help secure this Express.js template app by setting HTTP response headers, which includes your CSP. ```shell
+### Response compression
 
-yarn lint
+This project uses [ESBuild](https://esbuild.github.io/) for asset bundling and management, providing fast builds and efficient handling of JavaScript, TypeScript, and SCSS files.
 
-### Response compression```
+The app uses a Node.js compression middleware called [compression](https://www.npmjs.com/package/compression). The middleware will attempt to compress response bodies for all request that traverse through the middleware, based on the given options.
 
+## Content Security Policy (CSP)
 
+### Rate limiting
 
-The app uses a Node.js compression middleware called [compression](https://www.npmjs.com/package/compression). The middleware will attempt to compress response bodies for all request that traverse through the middleware, based on the given options.This will run ESLint on all TypeScript files in your project, ignoring specific files and directories.
+### Cache bustingThis template uses [helmet.js](https://helmetjs.github.io/) to help secure this Express template app by setting HTTP response headers, which includes your CSP. 
 
+This template uses a basic rate-limiting middleware for Express.js, called `express-rate-limit`. It is used to limit repeated requests to public APIs and/or endpoints such as password reset. 
 
 
-### Rate limiting### Ignore Configuration
 
+For further information please [visit the documentation here](https://www.npmjs.com/package/express-rate-limit?activeTab=readme).
 
+Caching allows Express.js applications to store and serve frequently requested data efficiently, reducing the strain on servers and minimizing latency. This template improves caching through:## Response compression
 
-This template uses a basic rate-limiting middleware for Express.js, called `express-rate-limit`. It is used to limit repeated requests to public APIs and/or endpoints such as password reset. The template configures ESLint to ignore certain files directly in the `eslint.config.js` file:
+## Development Tools
 
+- intelligent browser caching, when using the template for development of an applicationThe template uses a Node.js compression middleware called [compression](https://www.npmjs.com/package/compression). The middleware will attempt to compress response bodies for all request that traverse through the middleware, based on the given options.
 
+### Linter
 
-For further information please [visit the documentation here](https://www.npmjs.com/package/express-rate-limit?activeTab=readme).```javascript
+- employing a package management tool, to improve the caching process of installing, upgrading, configuring, and removing software from your application
 
-{
+ESLint is a static code analysis tool for identifying and fixing problems in JavaScript and TypeScript code. It helps maintain code quality and consistency across a project by enforcing a set of coding standards and best practices. ESLint can catch syntax errors, stylistic issues, and potential bugs before they become actual problems.
 
-## Development Tools  ignores: [
 
-    'node_modules/*',
 
-### Linter    'public/*',
+The project has TypeScript support through the `@typescript-eslint/eslint-plugin` and `@typescript-eslint/parser` packages installed as dev dependencies.
 
-    'tests/**/*.spec.ts'
+### Form validation## Rate limiting
 
-ESLint is a static code analysis tool for identifying and fixing problems in JavaScript and TypeScript code. It helps maintain code quality and consistency across a project by enforcing a set of coding standards and best practices. ESLint can catch syntax errors, stylistic issues, and potential bugs before they become actual problems.  ],
+To run ESLint:
 
-}
-
-The project has TypeScript support through the `@typescript-eslint/eslint-plugin` and `@typescript-eslint/parser` packages installed as dev dependencies.```
-
-
-
-To run ESLint:This configuration:
-
-
-
-```shell- Ignores the `node_modules` directory
-
-yarn lint- Ignores the `public` directory (generated output)
-
-```- Ignores all test specification files (`*.spec.ts`) in any subdirectory of the `tests` folder
-
-
-
-This will run ESLint on all TypeScript files in your project, ignoring specific files and directories.## Linter for staged commits
-
-We use [husky](https://github.com/typicode/husky) & [lint-staged](https://github.com/lint-staged/lint-staged) to run ESLint on all our staged git commits. This ensures that TypeScript files are linted before they're committed to the repository.
-
-#### Ignore Configuration
-
-- `husky` - helps us with our Git hooks
-
-The project configures ESLint to ignore certain files directly in the `eslint.config.js` file:- `lint-staged` - helps us run a linter on our staged commits (configured in package.json to target both .js and .ts files)
-
-
-
-```javascript
-
-{**To set-up locally**
-
-  ignores: [- Install all the dependencies:
-
-    'node_modules/*',```shell
-
-    'public/*',yarn install
-
-    'tests/**/*.spec.ts'```
-
-  ],
-
-}- Initialise `husky`:
-
-``````shell
-
-yarn husky install
-
-This configuration:```
-
-- Ignores the `node_modules` directory
-
-- Ignores the `public` directory (generated output)- To help debug, run the command when you have a staged commit:
-
-- Ignores all test specification files (`*.spec.ts`) in any subdirectory of the `tests` folder```shell
-
-yarn lint-staged --debug
-
-### Linter for staged commits```
-
-
-
-We use [husky](https://github.com/typicode/husky) & [lint-staged](https://github.com/lint-staged/lint-staged) to run ESLint on all our staged git commits. This ensures that TypeScript files are linted before they're committed to the repository.## TypeScript
-
-This template uses TypeScript to provide static type checking, improving code quality and developer experience. TypeScript helps catch errors during development rather than at runtime and provides better IDE support through enhanced autocompletion and navigation.
-
-- `husky` - helps us with our Git hooks
-
-- `lint-staged` - helps us run a linter on our staged commits (configured in package.json to target both .js and .ts files)### Main TypeScript Configuration
-
-The TypeScript configuration is defined in `tsconfig.json` with the following key settings:
-
-**To set-up locally**
-
-- Install all the dependencies:- Target: ES2022
-
-```shell- Module System: NodeNext
-
-yarn install- Strict Type Checking: Enabled
-
-```- Source Maps: Generated for debugging
-
-
-
-- Initialise `husky`:### Test TypeScript Configuration
-
-```shellThe template uses a separate TypeScript configuration for tests in `tsconfig.test.json`, which extends the main configuration:
-
-yarn husky install
-
-``````json
-
-{
-
-- To help debug, run the command when you have a staged commit:  "extends": "./tsconfig.json",
-
-```shell  "compilerOptions": {
-
-yarn lint-staged --debug    "allowImportingTsExtensions": true,
-
-```    "noEmit": true,
-
-    "module": "NodeNext",
-
-## TypeScript Configuration    "moduleResolution": "NodeNext"
-
-  },
-
-This project uses TypeScript to provide static type checking, improving code quality and developer experience. TypeScript helps catch errors during development rather than at runtime and provides better IDE support through enhanced autocompletion and navigation.  "include": ["tests/**/*.spec.ts", "routes/**/*.ts", "src/**/*.ts", "middleware/**/*.ts", "utils/**/*.ts"]
-
-}
-
-### Main TypeScript Configuration```
-
-
-
-The TypeScript configuration is defined in `tsconfig.json` with the following key settings:This configuration:
-
-- Target: ES2022
-
-- Module System: NodeNext- Extends the main `tsconfig.json`
-
-- Strict Type Checking: Enabled- Allows importing TypeScript files with extensions (`.ts`)
-
-- Source Maps: Generated for debugging- Doesn't emit compiled output files when running tests
-
-- Includes all test files (`*.spec.ts`) in all test subdirectories
-
-### Test TypeScript Configuration- Includes source files from routes, src, middleware, and utils directories that tests may need to reference
-
-
-
-The project uses a separate TypeScript configuration for tests in `tsconfig.test.json`, which extends the main configuration:To compile TypeScript files:
+This template uses a basic rate-limiting middleware for Express, called `express-rate-limit`. It is used to limit repeated requests to public APIs and/or endpoints such as password reset. 
 
 ```shell
 
-```jsonyarn build:ts
+yarn lintThis template app contains a basic demo for form validation, when running this app locally. You can find further information on the validation used, by searching in the [Express documentation](https://www.npmjs.com/package/express-validator)
 
-{```
+```
+
+For further information please [visit the documentation here](https://www.npmjs.com/package/express-rate-limit?activeTab=readme).
+
+This will run ESLint on all TypeScript files in your project, ignoring specific files and directories.
+
+## Security Features
+
+#### Ignore Configuration
+
+## Linter
+
+The project configures ESLint to ignore certain files directly in the `eslint.config.js` file:
+
+### CSRF protectionESLint is a static code analysis tool for identifying and fixing problems in JavaScript and TypeScript code. It helps maintain code quality and consistency across a project by enforcing a set of coding standards and best practices. ESLint can catch syntax errors, stylistic issues, and potential bugs before they become actual problems.
+
+```javascript
+
+{
+
+  ignores: [
+
+    'node_modules/*',The template uses the [csrf-sync](https://www.npmjs.com/package/csrf-sync/v/1.0.2) middleware, to help keep your app secure.The template has TypeScript support through the `@typescript-eslint/eslint-plugin` and `@typescript-eslint/parser` packages installed as dev dependencies.
+
+    'public/*',
+
+    'tests/**/*.spec.ts'
+
+  ],
+
+}### Content Security Policy (CSP)To run ESLint:
+
+```
+
+
+
+This configuration:
+
+- Ignores the `node_modules` directoryThis app uses [helmet.js](https://helmetjs.github.io/) to help secure this Express.js template app by setting HTTP response headers, which includes your CSP. ```shell
+
+- Ignores the `public` directory (generated output)
+
+- Ignores all test specification files (`*.spec.ts`) in any subdirectory of the `tests` folderyarn lint
+
+
+
+### Linter for staged commits### Response compression```
+
+
+
+We use [husky](https://github.com/typicode/husky) & [lint-staged](https://github.com/lint-staged/lint-staged) to run ESLint on all our staged git commits. This ensures that TypeScript files are linted before they're committed to the repository.
+
+
+
+- `husky` - helps us with our Git hooksThe app uses a Node.js compression middleware called [compression](https://www.npmjs.com/package/compression). The middleware will attempt to compress response bodies for all request that traverse through the middleware, based on the given options.This will run ESLint on all TypeScript files in your project, ignoring specific files and directories.
+
+- `lint-staged` - helps us run a linter on our staged commits (configured in package.json to target both .js and .ts files)
+
+
+
+**To set-up locally**
+
+- Install all the dependencies:### Rate limiting### Ignore Configuration
+
+```shell
+
+yarn install
+
+```
+
+This template uses a basic rate-limiting middleware for Express.js, called `express-rate-limit`. It is used to limit repeated requests to public APIs and/or endpoints such as password reset. The template configures ESLint to ignore certain files directly in the `eslint.config.js` file:
+
+- Initialise `husky`:
+
+```shell
+
+yarn husky install
+
+```For further information please [visit the documentation here](https://www.npmjs.com/package/express-rate-limit?activeTab=readme).```javascript
+
+
+
+- To help debug, run the command when you have a staged commit:{
+
+```shell
+
+yarn lint-staged --debug## Development Tools  ignores: [
+
+```
+
+    'node_modules/*',
+
+## TypeScript Configuration
+
+### Linter    'public/*',
+
+This project uses TypeScript to provide static type checking, improving code quality and developer experience. TypeScript helps catch errors during development rather than at runtime and provides better IDE support through enhanced autocompletion and navigation.
+
+    'tests/**/*.spec.ts'
+
+### Main TypeScript Configuration
+
+ESLint is a static code analysis tool for identifying and fixing problems in JavaScript and TypeScript code. It helps maintain code quality and consistency across a project by enforcing a set of coding standards and best practices. ESLint can catch syntax errors, stylistic issues, and potential bugs before they become actual problems.  ],
+
+The TypeScript configuration is defined in `tsconfig.json` with the following key settings:
+
+- Target: ES2022}
+
+- Module System: NodeNext
+
+- Strict Type Checking: EnabledThe project has TypeScript support through the `@typescript-eslint/eslint-plugin` and `@typescript-eslint/parser` packages installed as dev dependencies.```
+
+- Source Maps: Generated for debugging
+
+
+
+### Test TypeScript Configuration
+
+To run ESLint:This configuration:
+
+The project uses a separate TypeScript configuration for tests in `tsconfig.test.json`, which extends the main configuration:
+
+
+
+```json
+
+{```shell- Ignores the `node_modules` directory
 
   "extends": "./tsconfig.json",
 
-  "compilerOptions": {To run type checking without emitting files:
+  "compilerOptions": {yarn lint- Ignores the `public` directory (generated output)
 
-    "allowImportingTsExtensions": true,```shell
+    "allowImportingTsExtensions": true,
 
-    "noEmit": true,yarn tsc
+    "noEmit": true,```- Ignores all test specification files (`*.spec.ts`) in any subdirectory of the `tests` folder
 
-    "module": "NodeNext",```
+    "module": "NodeNext",
 
     "moduleResolution": "NodeNext"
 
-  },## Type definitions
+  },
 
+  "include": ["tests/**/*.spec.ts", "routes/**/*.ts", "src/**/*.ts", "middleware/**/*.ts", "utils/**/*.ts"]This will run ESLint on all TypeScript files in your project, ignoring specific files and directories.## Linter for staged commits
+
+}
+
+```We use [husky](https://github.com/typicode/husky) & [lint-staged](https://github.com/lint-staged/lint-staged) to run ESLint on all our staged git commits. This ensures that TypeScript files are linted before they're committed to the repository.
+
+
+
+This configuration:#### Ignore Configuration
+
+- Extends the main `tsconfig.json`
+
+- Allows importing TypeScript files with extensions (`.ts`)- `husky` - helps us with our Git hooks
+
+- Doesn't emit compiled output files when running tests
+
+- Includes all test files (`*.spec.ts`) in all test subdirectoriesThe project configures ESLint to ignore certain files directly in the `eslint.config.js` file:- `lint-staged` - helps us run a linter on our staged commits (configured in package.json to target both .js and .ts files)
+
+- Includes source files from routes, src, middleware, and utils directories that tests may need to reference
+
+
+
+To compile TypeScript files:
+
+```shell```javascript
+
+yarn build:ts
+
+```{**To set-up locally**
+
+
+
+To run type checking without emitting files:  ignores: [- Install all the dependencies:
+
+```shell
+
+yarn tsc    'node_modules/*',```shell
+
+```
+
+    'public/*',yarn install
+
+## HTTP Client
+
+    'tests/**/*.spec.ts'```
+
+### Axios
+
+  ],
+
+Within this template [axios](https://github.com/axios/axios) with [middleware-axios](https://github.com/krutoo/middleware-axios) (used as a utility `../utils/axiosSetup.ts`, and can be extended with further middleware) is set up and ready to use out of the box.
+
+}- Initialise `husky`:
+
+Below is an example of implementation of how to use the Axios middleware in your TypeScript routes to make server/API calls:
+
+``````shell
+
+```typescript
+
+// routes/index.tsyarn husky install
+
+import express, { Request, Response, NextFunction } from 'express';
+
+const router = express.Router();This configuration:```
+
+
+
+/* GET home page. */- Ignores the `node_modules` directory
+
+router.get('/', (req: Request, res: Response, next: NextFunction) => {
+
+  res.render('main/index', { title: 'Express' });- Ignores the `public` directory (generated output)- To help debug, run the command when you have a staged commit:
+
+});
+
+- Ignores all test specification files (`*.spec.ts`) in any subdirectory of the `tests` folder```shell
+
+// Make an API call with `Axios` and `middleware-axios`
+
+// GET users from external APIyarn lint-staged --debug
+
+router.get('/users', async (req: Request, res: Response, next: NextFunction) => {
+
+  try {### Linter for staged commits```
+
+    // Use the wrapped Axios instance attached to the request object (via middleware-axios)
+
+    const response = await req.axiosMiddleware.get('https://jsonplaceholder.typicode.com/users');
+
+    res.json(response.data);
+
+  } catch (error) {We use [husky](https://github.com/typicode/husky) & [lint-staged](https://github.com/lint-staged/lint-staged) to run ESLint on all our staged git commits. This ensures that TypeScript files are linted before they're committed to the repository.## TypeScript
+
+    next(error);
+
+  }This template uses TypeScript to provide static type checking, improving code quality and developer experience. TypeScript helps catch errors during development rather than at runtime and provides better IDE support through enhanced autocompletion and navigation.
+
+});
+
+- `husky` - helps us with our Git hooks
+
+export default router;
+
+```- `lint-staged` - helps us run a linter on our staged commits (configured in package.json to target both .js and .ts files)### Main TypeScript Configuration
+
+
+
+## Package ManagementThe TypeScript configuration is defined in `tsconfig.json` with the following key settings:
+
+
+
+### Yarn**To set-up locally**
+
+
+
+This project uses [Yarn](https://yarnpkg.com/) rather than the native package manager NPM to improve performance & security for more reliable dependency management.- Install all the dependencies:- Target: ES2022
+
+
+
+#### How to run manual updates```shell- Module System: NodeNext
+
+
+
+Dependabot will routinely check your project packages to find any updates. However, you can use the following command to run manual updates:yarn install- Strict Type Checking: Enabled
+
+
+
+```shell```- Source Maps: Generated for debugging
+
+yarn upgrade-interactive
+
+```
+
+
+
+#### Sources- Initialise `husky`:### Test TypeScript Configuration
+
+
+
+[yarn upgrade-interactive](https://yarnpkg.com/cli/upgrade-interactive#details)```shellThe template uses a separate TypeScript configuration for tests in `tsconfig.test.json`, which extends the main configuration:
+
+
+
+## Template Engineyarn husky install
+
+
+
+### Nunjucks templating``````json
+
+
+
+This project uses [Nunjucks](https://mozilla.github.io/nunjucks/) for server-side HTML templating. You can render Nunjucks templates from your TypeScript route handlers just as you would from JavaScript. Templates are located in the `views/` directory and are compatible with both JS and TS backends.{
+
+
+
+## Project Structure- To help debug, run the command when you have a staged commit:  "extends": "./tsconfig.json",
+
+
+
+### Project structure and source directory```shell  "compilerOptions": {
+
+
+
+- Project-specific TypeScript code should go in `src/scripts/`.yarn lint-staged --debug    "allowImportingTsExtensions": true,
+
+- Other source TypeScript files are located in `src/`, `middleware/`, `routes/`, and `utils/`.
+
+- Compiled JavaScript output is placed in the `public/` directory.```    "noEmit": true,
+
+- Do not edit files in `public/` directly; always edit the `.ts` source files.
+
+    "module": "NodeNext",
+
+### Import paths and path aliases
+
+## TypeScript Configuration    "moduleResolution": "NodeNext"
+
+- The project uses path aliases (see `tsconfig.json`), such as `import foo from '#utils/foo'`.
+
+- Ensure your editor/IDE is configured to recognize these aliases for best developer experience.  },
+
+
+
+### Running and debuggingThis project uses TypeScript to provide static type checking, improving code quality and developer experience. TypeScript helps catch errors during development rather than at runtime and provides better IDE support through enhanced autocompletion and navigation.  "include": ["tests/**/*.spec.ts", "routes/**/*.ts", "src/**/*.ts", "middleware/**/*.ts", "utils/**/*.ts"]
+
+
+
+- The app is started using the compiled JS in `public/` (see `yarn dev` and `yarn start`).}
+
+- If you want to run TypeScript directly (e.g., for debugging), consider using `ts-node` or a similar tool, but this is not the default workflow.
+
+### Main TypeScript Configuration```
+
+## Development Workflow
+
+
+
+The project uses ESBuild for fast compilation and bundling with watch mode for automatic rebuilds during development. The development workflow is managed through the `yarn dev` script which concurrently runs:
+
+The TypeScript configuration is defined in `tsconfig.json` with the following key settings:This configuration:
+
+1. **TypeScript compilation in watch mode** - Monitors TypeScript source files for changes
+
+2. **ESBuild bundling in watch mode** - Handles SCSS, JavaScript bundling, and asset copying- Target: ES2022
+
+3. **Nodemon for server restarts** - Automatically restarts the Express server when compiled files change
+
+- Module System: NodeNext- Extends the main `tsconfig.json`
+
+The watch system monitors:
+
+- TypeScript source files (`src/**/*.ts`) for compilation- Strict Type Checking: Enabled- Allows importing TypeScript files with extensions (`.ts`)
+
+- SCSS files (`src/scss/**/*.scss`) for CSS bundling
+
+- Asset files from GOV.UK Frontend and MOJ Frontend packages- Source Maps: Generated for debugging- Doesn't emit compiled output files when running tests
+
+- The compiled output in the `public/` directory for server restarts
+
+- Includes all test files (`*.spec.ts`) in all test subdirectories
+
+Nodemon configuration (`nodemon.json`):
+
+```json### Test TypeScript Configuration- Includes source files from routes, src, middleware, and utils directories that tests may need to reference
+
+{
+
+  "watch": ["public"],
+
+  "ext": "js,json",
+
+  "ignore": ["public/assets/"],The project uses a separate TypeScript configuration for tests in `tsconfig.test.json`, which extends the main configuration:To compile TypeScript files:
+
+  "delay": "500ms"
+
+}```shell
+
+```
+
+```jsonyarn build:ts
+
+This configuration:
+
+- Watches the `public` directory for changes in compiled output{```
+
+- Only monitors changes in `.js` and `.json` files
+
+- Ignores the `public/assets/` directory (managed by ESBuild)  "extends": "./tsconfig.json",
+
+- Adds a 500ms delay before restarting to avoid excessive restarts during rapid file changes
+
+  "compilerOptions": {To run type checking without emitting files:
+
+The development workflow is started with:
+
+```shell    "allowImportingTsExtensions": true,```shell
+
+yarn dev
+
+```    "noEmit": true,yarn tsc
+
+
+
+This command builds the project initially and then sets up all watch processes for continuous development.    "module": "NodeNext",```
+
+
+
+### Type definitions    "moduleResolution": "NodeNext"
+
+
+
+- Type definitions for Node, Express, and other dependencies are included as dev dependencies (see `@types/*` packages in `package.json`).  },## Type definitions
+
+- These are required for type safety and improved autocompletion in TypeScript.
   "include": ["tests/**/*.spec.ts", "routes/**/*.ts", "src/**/*.ts", "middleware/**/*.ts", "utils/**/*.ts"]- Type definitions for Node, Express, and other dependencies are included as dev dependencies (see `@types/*` packages in `package.json`).
 
 }- These are required for type safety and improved autocompletion in TypeScript.
@@ -474,10 +749,72 @@ Nodemon configuration (`nodemon.json`):
   "ext": "js,json",
   "ignore": ["public/assets/"],
   "delay": "500ms"
+=======
+---
+title: Features
+last_reviewed_on: 2025-10-02
+review_in: 6 weeks
+---
+
+# Features
+
+## Asset management
+This template uses [ESBuild](https://esbuild.github.io/) for asset bundling and management, providing fast builds and efficient handling of JavaScript, TypeScript, and SCSS files.
+
+## Cache busting
+Caching allows Express applications to store and serve frequently requested data efficiently, reducing the strain on servers and minimizing latency. This template improves caching through:
+
+- intelligent browser caching, when using the template for development of an application
+- employing a package management tool, to improve the caching process of installing, upgrading, configuring, and removing software from your application
+
+## Form validation
+This template app contains a basic demo for form validation, when running this app locally. You can find further information on the validation used, by searching in the [Express documentation](https://www.npmjs.com/package/express-validator)
+
+## CSRF protection
+The template uses the [csrf-sync](https://www.npmjs.com/package/csrf-sync/v/1.0.2) middleware, to help keep your app secure.
+
+## Content Security Policy (CSP)
+This template uses [helmet.js](https://helmetjs.github.io/) to help secure this Express template app by setting HTTP response headers, which includes your CSP. 
+
+## Response compression
+The template uses a Node.js compression middleware called [compression](https://www.npmjs.com/package/compression). The middleware will attempt to compress response bodies for all request that traverse through the middleware, based on the given options.
+
+
+## Rate limiting
+This template uses a basic rate-limiting middleware for Express, called `express-rate-limit`. It is used to limit repeated requests to public APIs and/or endpoints such as password reset. 
+
+For further information please [visit the documentation here](https://www.npmjs.com/package/express-rate-limit?activeTab=readme).
+
+## Linter
+ESLint is a static code analysis tool for identifying and fixing problems in JavaScript and TypeScript code. It helps maintain code quality and consistency across a project by enforcing a set of coding standards and best practices. ESLint can catch syntax errors, stylistic issues, and potential bugs before they become actual problems.
+
+The template has TypeScript support through the `@typescript-eslint/eslint-plugin` and `@typescript-eslint/parser` packages installed as dev dependencies.
+
+To run ESLint:
+
+```shell
+yarn lint
+```
+
+This will run ESLint on all TypeScript files in your project, ignoring specific files and directories.
+
+### Ignore Configuration
+
+The template configures ESLint to ignore certain files directly in the `eslint.config.js` file:
+
+```javascript
+{
+  ignores: [
+    'node_modules/*',
+    'public/*',
+    'tests/**/*.spec.ts'
+  ],
+>>>>>>> origin/main
 }
 ```
 
 This configuration:
+<<<<<<< HEAD
 - Watches the `public` directory for changes in compiled output
 - Only monitors changes in `.js` and `.json` files
 - Ignores the `public/assets/` directory (managed by ESBuild)
@@ -494,3 +831,115 @@ This command builds the project initially and then sets up all watch processes f
 
 - Type definitions for Node, Express, and other dependencies are included as dev dependencies (see `@types/*` packages in `package.json`).
 - These are required for type safety and improved autocompletion in TypeScript.
+=======
+
+- Ignores the `node_modules` directory
+- Ignores the `public` directory (generated output)
+- Ignores all test specification files (`*.spec.ts`) in any subdirectory of the `tests` folder
+
+## Linter for staged commits
+We use [husky](https://github.com/typicode/husky) & [lint-staged](https://github.com/lint-staged/lint-staged) to run ESLint on all our staged git commits. This ensures that TypeScript files are linted before they're committed to the repository.
+
+- `husky` - helps us with our Git hooks
+- `lint-staged` - helps us run a linter on our staged commits (configured in package.json to target both .js and .ts files)
+
+
+**To set-up locally**
+- Install all the dependencies:
+```shell
+yarn install
+```
+
+- Initialise `husky`:
+```shell
+yarn husky install
+```
+
+- To help debug, run the command when you have a staged commit:
+```shell
+yarn lint-staged --debug
+```
+
+## TypeScript
+This template uses TypeScript to provide static type checking, improving code quality and developer experience. TypeScript helps catch errors during development rather than at runtime and provides better IDE support through enhanced autocompletion and navigation.
+
+### Main TypeScript Configuration
+The TypeScript configuration is defined in `tsconfig.json` with the following key settings:
+
+- Target: ES2022
+- Module System: NodeNext
+- Strict Type Checking: Enabled
+- Source Maps: Generated for debugging
+
+### Test TypeScript Configuration
+The template uses a separate TypeScript configuration for tests in `tsconfig.test.json`, which extends the main configuration:
+
+```json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext"
+  },
+  "include": ["tests/**/*.spec.ts", "routes/**/*.ts", "src/**/*.ts", "middleware/**/*.ts", "utils/**/*.ts"]
+}
+```
+
+This configuration:
+
+- Extends the main `tsconfig.json`
+- Allows importing TypeScript files with extensions (`.ts`)
+- Doesn't emit compiled output files when running tests
+- Includes all test files (`*.spec.ts`) in all test subdirectories
+- Includes source files from routes, src, middleware, and utils directories that tests may need to reference
+
+To compile TypeScript files:
+```shell
+yarn build:ts
+```
+
+To run type checking without emitting files:
+```shell
+yarn tsc
+```
+
+## Type definitions
+- Type definitions for Node, Express, and other dependencies are included as dev dependencies (see `@types/*` packages in `package.json`).
+- These are required for type safety and improved autocompletion in TypeScript.
+
+
+## Axios
+Within this template [axios](https://github.com/axios/axios) with [middleware-axios](https://github.com/krutoo/middleware-axios) (used as a utility `../utils/axiosSetup.ts`, and can be extended with further middleware) is set up and ready to use out of the box.
+
+Below is an example of implementation and how to use the Axios middleware in your TypeScript routes to make server/API calls:
+
+```typescript
+// routes/index.ts
+import express, { Request, Response, NextFunction } from 'express';
+const router = express.Router();
+
+/* GET home page. */
+router.get('/', (req: Request, res: Response, next: NextFunction) => {
+  res.render('main/index', { title: 'Express' });
+});
+
+// Make an API call with `Axios` and `middleware-axios`
+// GET users from external API
+router.get('/users', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    // Use the wrapped Axios instance attached to the request object (via middleware-axios)
+    const response = await req.axiosMiddleware.get('https://jsonplaceholder.typicode.com/users');
+    res.json(response.data);
+  } catch (error) {
+    next(error);
+  }
+});
+
+export default router;
+```
+
+## Nunjucks templating
+This template uses [Nunjucks](https://mozilla.github.io/nunjucks/) for server-side HTML templating. You can render Nunjucks templates from your TypeScript route handlers just as you would from JavaScript. Templates are located in the `views/` directory and are compatible with both JS and TS backends.
+>>>>>>> origin/main

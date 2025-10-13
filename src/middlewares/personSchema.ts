@@ -257,7 +257,7 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           
           if (!hasAnyDateField) return true; // All empty is fine
           
-          if (!value?.trim()) {
+          if (!value?.trim() || value?.trim() === '') {
             return false; // Day is required if any date field is provided
           }
           

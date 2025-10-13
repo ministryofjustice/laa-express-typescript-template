@@ -71,16 +71,17 @@ export abstract class BaseApiService {
   protected configureAxiosInstance(axiosMiddleware: AxiosInstanceWrapper): AxiosInstanceWrapper {
     const { axiosInstance } = axiosMiddleware;
     const { defaults } = axiosInstance;
-    // eslint-disable-next-line @typescript-eslint/prefer-destructuring -- Destructuring from class property is appropriate here
-    const { baseUrl, timeout } = this.config;
+    const {config} = this;
 
     // Configure base URL - from MCC pattern
+    const { baseUrl } = config;
     if (baseUrl !== '') {
       defaults.baseURL = baseUrl;
     }
 
     // Configure timeout - from MCC pattern
     const ZERO_TIMEOUT = 0;
+    const { timeout } = config;
     if (timeout !== ZERO_TIMEOUT && !Number.isNaN(timeout)) {
       defaults.timeout = timeout;
     }

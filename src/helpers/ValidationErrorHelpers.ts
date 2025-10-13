@@ -1,5 +1,4 @@
 import type { ValidationError, Result, Meta, Location } from 'express-validator';
-import type { Request, Response } from 'express';
 
 /**
  * Interface for validation error data structure
@@ -47,28 +46,56 @@ function hasProperty(obj: unknown, key: string): obj is Record<string, unknown> 
   return isRecord(obj) && key in obj;
 }
 
+// Constants for magic numbers
+const EMPTY_OBJECT_LENGTH = 0;
+const ZERO_VALUE = 0;
+
+/**
+ * Check if value should return empty string
+ * @param {unknown} value Value to check
+ * @returns {boolean} True if should return empty string
+ */
+function shouldReturnEmptyString(value: unknown): boolean {
+  return value === null || value === undefined || value === '' || value === ZERO_VALUE || value === false;
+}
+
 /**
  * Safely get string value from unknown data
  * @param {unknown} value Value to convert
  * @returns {string} String value or empty string
  */
-function safeString(value: any): string {
-  if (value === null || value === undefined || value === '' || value === 0 || value === false) {
+function safeString(value: unknown): string {
+  // Handle null, undefined, empty string, zero, and false
+  if (shouldReturnEmptyString(value)) {
     return '';
   }
-  // Handle empty objects specifically
-  if (typeof value === 'object' && value !== null && Object.keys(value).length === 0) {
-    return '';
-  }
+  
+  // Handle string type
   if (typeof value === 'string') {
     return value;
   }
+  
+  // Handle number and boolean types
   if (typeof value === 'number' || typeof value === 'boolean') {
     return String(value);
   }
-  if (typeof value === 'object' && value.toString && value.toString !== Object.prototype.toString) {
-    return value.toString();
+  
+  // Handle objects - avoid unsafe toString operations
+  if (typeof value === 'object' && value !== null) {
+    // Handle empty objects specifically
+    if (Object.keys(value).length === EMPTY_OBJECT_LENGTH) {
+      return '';
+    }
+    
+    // For objects, use JSON.stringify as it's safer than toString
+    try {
+      return JSON.stringify(value);
+    } catch {
+      return '[object Object]';
+    }
   }
+  
+  // Fallback to String conversion
   return String(value);
 }
 
@@ -203,8 +230,8 @@ export function formatValidationErrors(validationResult: Result): {
   const rawErrors = validationResult.array();
   
   // Format errors using the error formatter
-  const formattedErrors = rawErrors.map((error) => {
-    const fieldName = 'path' in error && typeof error.path === 'string' ? error.path : 'unknown';
+  const formattedErrors = rawErrors.map((error: ValidationError) => {
+    const fieldName = ('path' in error && typeof error.path === 'string') ? error.path : 'unknown';
     const errorData = formatValidationError(error);
     
     return {
@@ -214,7 +241,8 @@ export function formatValidationErrors(validationResult: Result): {
   });
   
   // Build input errors object for inline field errors
-  const inputErrors = formattedErrors.reduce<Record<string, string>>((errors, { fieldName, inlineMessage }) => {
+  const inputErrors = formattedErrors.reduce<Record<string, string>>((errors, errorItem) => {
+    const { fieldName, inlineMessage } = errorItem;
     if (inlineMessage.trim() !== '') {
       errors[fieldName] = inlineMessage;
     }

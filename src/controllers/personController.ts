@@ -9,6 +9,9 @@ interface RequestWithCSRF extends Request {
   csrfToken?: () => string;
 }
 
+// HTTP status codes
+const HTTP_STATUS_BAD_REQUEST = 400;
+
 // Default person data (in a real app, this would be from a database)
 const DEFAULT_PERSON_DATA = {
   fullName: 'John Smith',
@@ -19,23 +22,47 @@ const DEFAULT_PERSON_DATA = {
 };
 
 /**
+ * Safely gets a string value from session data or returns default
+ * @param {unknown} value - The value to check
+ * @param {string} defaultValue - The default value to use
+ * @returns {string} The safe string value
+ */
+function safeStringValue(value: unknown, defaultValue: string): string {
+  return (typeof value === 'string' && value !== '') ? value : defaultValue;
+}
+
+/**
+ * Safely gets date of birth object or returns default
+ * @param {unknown} value - The date of birth value to check  
+ * @returns {{ day: string; month: string; year: string }} The safe date of birth object
+ */
+function safeDateOfBirth(value: unknown): { day: string; month: string; year: string } {
+  if (typeof value === 'object' && value !== null && 
+      'day' in value && 'month' in value && 'year' in value) {
+    const dob = value as { day: unknown; month: unknown; year: unknown };
+    return {
+      day: typeof dob.day === 'string' ? dob.day : DEFAULT_PERSON_DATA.dateOfBirth.day,
+      month: typeof dob.month === 'string' ? dob.month : DEFAULT_PERSON_DATA.dateOfBirth.month,
+      year: typeof dob.year === 'string' ? dob.year : DEFAULT_PERSON_DATA.dateOfBirth.year
+    };
+  }
+  return DEFAULT_PERSON_DATA.dateOfBirth;
+}
+
+/**
  * Get current person data from session or return defaults
- * @param {Request} req - Express request object with session
- * @returns {typeof DEFAULT_PERSON_DATA} Current person data
+ * @param {Request} req - Express request object with session  
+ * @returns {object} Current person data matching DEFAULT_PERSON_DATA structure
  */
 function getCurrentPersonData(req: Request): typeof DEFAULT_PERSON_DATA {
   const sessionData = getSessionData(req, 'currentPerson');
-  if (sessionData) {
+  if (sessionData != null) {
     return {
-      fullName: sessionData.fullName || DEFAULT_PERSON_DATA.fullName,
-      address: sessionData.address || DEFAULT_PERSON_DATA.address,
-      contactPreference: sessionData.contactPreference || DEFAULT_PERSON_DATA.contactPreference,
-      priority: sessionData.priority || DEFAULT_PERSON_DATA.priority,
-      dateOfBirth: {
-        day: sessionData['dateOfBirth-day'] || DEFAULT_PERSON_DATA.dateOfBirth.day,
-        month: sessionData['dateOfBirth-month'] || DEFAULT_PERSON_DATA.dateOfBirth.month,
-        year: sessionData['dateOfBirth-year'] || DEFAULT_PERSON_DATA.dateOfBirth.year
-      }
+      fullName: safeStringValue(sessionData.fullName, DEFAULT_PERSON_DATA.fullName),
+      address: safeStringValue(sessionData.address, DEFAULT_PERSON_DATA.address),
+      contactPreference: safeStringValue(sessionData.contactPreference, DEFAULT_PERSON_DATA.contactPreference),
+      priority: safeStringValue(sessionData.priority, DEFAULT_PERSON_DATA.priority),
+      dateOfBirth: safeDateOfBirth(sessionData.dateOfBirth)
     };
   }
   return DEFAULT_PERSON_DATA;
@@ -70,7 +97,7 @@ export function getPerson(req: RequestWithCSRF, res: Response, next: NextFunctio
       currentContactPreference: currentPersonData.contactPreference,
       currentPriority: currentPersonData.priority,
       currentDateOfBirth: currentPersonData.dateOfBirth,
-      csrfToken: csrfToken,
+      csrfToken,
       formData: {},
       error: null
     });
@@ -110,13 +137,13 @@ export function postPerson(req: RequestWithCSRF, res: Response, next: NextFuncti
       const currentPersonData = getCurrentPersonData(req);
       
       // Re-render the form with errors and preserve user input
-      res.status(400).render('change-person.njk', {
+      res.status(HTTP_STATUS_BAD_REQUEST).render('change-person.njk', {
         currentName: currentPersonData.fullName,
         currentAddress: currentPersonData.address,
         currentContactPreference: currentPersonData.contactPreference,
         currentPriority: currentPersonData.priority,
         currentDateOfBirth: currentPersonData.dateOfBirth,
-        csrfToken: csrfToken,
+        csrfToken,
         formData: formFields,
         error: {
           inputErrors,
@@ -149,7 +176,7 @@ export function postPerson(req: RequestWithCSRF, res: Response, next: NextFuncti
       currentContactPreference: currentPersonData.contactPreference,
       currentPriority: currentPersonData.priority,
       currentDateOfBirth: currentPersonData.dateOfBirth,
-      csrfToken: csrfToken,
+      csrfToken,
       formData: { 
         fullName: '', 
         address: '',

@@ -25,8 +25,8 @@ export function hasProperty(obj: unknown, key: string): obj is Record<string, un
 
 /**
  * Capitalises the first letter of each word in a string
- * @param str - The string to capitalise
- * @returns The capitalised string
+ * @param {string} str - The string to capitalise
+ * @returns {string} The capitalised string
  */
 export function capitaliseFirst(str: string): string {
   return str.replace(/\b\w/g, (char) => char.toUpperCase());

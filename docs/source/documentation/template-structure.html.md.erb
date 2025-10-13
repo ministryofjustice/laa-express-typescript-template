@@ -53,20 +53,32 @@ Nodemon configuration (`nodemon.json`):
 }
 ```
 
-This configuration:
+## Deployment files
+The template has an outline of how you might want to deploy your application to a hosted cloud service. The initial configuration can be enhanced to do the following;
 
-- Watches the `public` directory for changes in compiled output
-- Only monitors changes in `.js` and `.json` files
-- Ignores the `public/assets/` directory (managed by ESBuild)
-- Adds a 500ms delay before restarting to avoid excessive restarts during rapid file changes
+- Enhance the `.github/workflows/deploy.yml` file, to deploy a docker image to a namespace in the hosted cloud service using Helm values found in the template
+- Add a `.github/actions/deploy/action.yml` file to Deploy docker image to namespace
+- Add a `.github/actions/build_and_push/action.yml` file to Build Image and Push to a Container Registry (with caching)
 
-The development workflow is started with:
+The file structure would look like this;
 
-```shell
-yarn dev
+```yaml
+.github/
+  actions/
+    build_and_push/
+      action.yml
+    deploy/
+      action.yml
+  workflows/
+    deploy.yml
+deploy/
+  your-repo-name/
+    values/ # Helm chart values
+src/
+  deploy.sh/
 ```
 
-This command builds the template initially and then sets up all watch processes for continuous development.
+Example of how you might want to implement this can be found in the [MCC repo](https://github.com/ministryofjustice/laa-manage-your-civil-cases). 
 
 
 ## GitHub Actions

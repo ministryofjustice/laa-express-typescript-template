@@ -83,7 +83,10 @@ jobs:
           npm install linkinator
           npx linkinator . --recurse --markdown \
             --skip https://ministryofjustice.github.io/laa-manage-your-civil-cases/images/govuk-large.png \
-            --skip javascripts/govuk_frontend.js
+            --skip javascripts/govuk_frontend.js \
+            --skip 'http://localhost:.*' \
+            --skip 'https://github.com/ministryofjustice/laa-express-typescript-template/blob/main/source/.*\.md\.erb' \
+            --skip 'https://www.npmjs.com/package/csrf-sync.*'
             # Skip govuk_frontend.js due to MOJ Docker image template bug:
             # The tech-docs-github-pages-publisher:v6.0.1 image generates HTML with
             # <script src="javascripts/govuk_frontend.js"> but doesn't provide the file

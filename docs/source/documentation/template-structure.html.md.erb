@@ -103,6 +103,34 @@ yarn dev
 This command builds the template initially and then sets up all watch processes for continuous development.
 
 
+## Deployment files
+The template has an outline of how you might want to deploy your application to a hosted cloud service. The initial configuration can be enhanced to do the following;
+
+- Enhance the `.github/workflows/deploy.yml` file, to deploy a docker image to a namespace in the hosted cloud service using Helm values found in the template
+- Add a `.github/actions/deploy/action.yml` file to Deploy docker image to namespace
+- Add a `.github/actions/build_and_push/action.yml` file to Build Image and Push to a Container Registry (with caching)
+
+The file structure would look like this;
+
+```yaml
+.github/
+  actions/
+    build_and_push/
+      action.yml
+    deploy/
+      action.yml
+  workflows/
+    deploy.yml
+deploy/
+  your-repo-name/
+    values/ # Helm chart values
+src/
+  deploy.sh/
+```
+
+Example of how you might want to implement this can be found in the [MCC repo](https://github.com/ministryofjustice/laa-manage-your-civil-cases). 
+
+
 ## GitHub Actions
 
 - These have been disabled in this GitHub template repo. Make sure you enable them when setting up your project. 

@@ -49,17 +49,17 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
       customSanitizer: {
         /**
          * Custom sanitizer for fullName field - preserves null/undefined for validation
-         * @param {any} value - The input value to sanitize
-         * @returns {any} Sanitized value
+         * @param {unknown} value - The input value to sanitize
+         * @returns {unknown} Sanitized value
          */
-        options: (value: any) => {
+        options: (value: unknown) => {
           // Preserve undefined and null to allow proper validation
           if (value === undefined || value === null) {
             return value;
           }
           // Convert any non-string value to string for consistent processing
           if (typeof value !== 'string') {
-            return String(value);
+            return typeof value === 'object' && value !== null ? '' : String(value);
           }
           return value;
         }
@@ -81,17 +81,17 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
       customSanitizer: {
         /**
          * Custom sanitizer for address field - preserves null/undefined for validation
-         * @param {any} value - The input value to sanitize
-         * @returns {any} Sanitized value
+         * @param {unknown} value - The input value to sanitize
+         * @returns {unknown} Sanitized value
          */
-        options: (value: any) => {
+        options: (value: unknown) => {
           // Preserve undefined and null to allow proper validation
           if (value === undefined || value === null) {
             return value;
           }
           // Convert any non-string value to string for consistent processing
           if (typeof value !== 'string') {
-            return String(value);
+            return typeof value === 'object' && value !== null ? '' : String(value);
           }
           return value;
         }
@@ -141,12 +141,12 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
          */
         options: (value: string, { req }: Meta): boolean => {
           // Get original form data from session
-          const originalData = req.session?.personOriginal;
+          const originalData = req.session?.personOriginal as Record<string, unknown> | undefined;
           if (!originalData || typeof originalData !== 'object') {
             return true; // No original data to compare against
           }
           
-          const originalContactPreference = originalData.contactPreference;
+          const { contactPreference: originalContactPreference } = originalData;
           if (!originalContactPreference) {
             return true; // No original contact preference to compare against
           }
@@ -197,12 +197,12 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
          */
         options: (value: string, { req }: Meta): boolean => {
           // Get original form data from session
-          const originalData = req.session?.personOriginal;
+          const originalData = req.session?.personOriginal as Record<string, unknown> | undefined;
           if (!originalData || typeof originalData !== 'object') {
             return true; // No original data to compare against
           }
           
-          const originalPriority = originalData.priority;
+          const { priority: originalPriority } = originalData;
           if (!originalPriority) {
             return true; // No original priority to compare against
           }
@@ -239,9 +239,9 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
       trim: true,
       custom: {
         /**
-         * Validates dateOfBirth day field - requires all date fields if any are provided
-         * @param {string} value - The day value from the form
-         * @param {object} root0 - Meta object from express-validator
+         * Validate day field in date of birth - requires all or none
+         * @param {string} value - The day value to validate  
+         * @param {object} root0 - Metadata object
          * @param {object} root0.req - Express request object
          * @returns {boolean} True if validation passes, false otherwise
          */
@@ -253,7 +253,7 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           const month = req.body['dateOfBirth-month']?.trim();
           const year = req.body['dateOfBirth-year']?.trim();
           
-          const hasAnyDateField = day || month || year;
+          const hasAnyDateField = (day !== '' && day !== undefined) || (month !== '' && month !== undefined) || (year !== '' && year !== undefined);
           
           if (!hasAnyDateField) return true; // All empty is fine
           
@@ -320,7 +320,7 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           
           if (!hasAnyDateField) return true; // All empty is fine
           
-          if (!value?.trim()) {
+          if (!value?.trim() || value?.trim() === '') {
             return false; // Month is required if any date field is provided
           }
           
@@ -381,7 +381,7 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           
           if (!hasAnyDateField) return true; // All empty is fine
           
-          if (!value?.trim()) {
+          if (!value?.trim() || value?.trim() === '') {
             return false; // Year is required if any date field is provided
           }
           

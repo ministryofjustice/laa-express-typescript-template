@@ -10,6 +10,7 @@ const MAX_DAY = 31;
 const MIN_MONTH = 1;
 const MAX_MONTH = 12;
 const YEAR_LENGTH = 4;
+const MIN_COMMUNICATION_METHODS = 1;
 
 interface PersonBody {
   fullName: string;
@@ -19,6 +20,16 @@ interface PersonBody {
   'dateOfBirth-day': string;
   'dateOfBirth-month': string;
   'dateOfBirth-year': string;
+  communicationMethods: string[];
+}
+
+/**
+ * Type guard to safely check if a value is a valid record
+ * @param value - The value to check
+ * @returns True if value is a non-null object
+ */
+function isValidRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
 }
 
 /**
@@ -59,7 +70,7 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           }
           // Convert any non-string value to string for consistent processing
           if (typeof value !== 'string') {
-            return typeof value === 'object' && value !== null ? '' : String(value);
+            return typeof value === 'object' ? '' : String(value);
           }
           return value;
         }
@@ -91,7 +102,7 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           }
           // Convert any non-string value to string for consistent processing
           if (typeof value !== 'string') {
-            return typeof value === 'object' && value !== null ? '' : String(value);
+            return typeof value === 'object' ? '' : String(value);
           }
           return value;
         }
@@ -141,13 +152,13 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
          */
         options: (value: string, { req }: Meta): boolean => {
           // Get original form data from session
-          const originalData = req.session?.personOriginal as Record<string, unknown> | undefined;
-          if (!originalData || typeof originalData !== 'object') {
+          const originalData = req.session?.personOriginal;
+          if (!isValidRecord(originalData)) {
             return true; // No original data to compare against
           }
           
           const { contactPreference: originalContactPreference } = originalData;
-          if (!originalContactPreference) {
+          if (originalContactPreference === undefined || originalContactPreference === null) {
             return true; // No original contact preference to compare against
           }
           
@@ -197,13 +208,13 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
          */
         options: (value: string, { req }: Meta): boolean => {
           // Get original form data from session
-          const originalData = req.session?.personOriginal as Record<string, unknown> | undefined;
-          if (!originalData || typeof originalData !== 'object') {
+          const originalData = req.session?.personOriginal;
+          if (!isValidRecord(originalData)) {
             return true; // No original data to compare against
           }
           
           const { priority: originalPriority } = originalData;
-          if (!originalPriority) {
+          if (originalPriority === undefined || originalPriority === null) {
             return true; // No original priority to compare against
           }
           
@@ -223,7 +234,7 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
     communicationMethods: {
       in: ['body'],
       isArray: {
-        options: { min: 1 },
+        options: { min: MIN_COMMUNICATION_METHODS },
         /**
          * Custom error message for empty communication methods array using i18n
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
@@ -257,7 +268,7 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           
           if (!hasAnyDateField) return true; // All empty is fine
           
-          if (!value?.trim() || value?.trim() === '') {
+          if (value?.trim() === '' || value?.trim() === undefined) {
             return false; // Day is required if any date field is provided
           }
           

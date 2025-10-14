@@ -33,7 +33,7 @@ describe('Session Helpers', () => {
   describe('storeSessionData()', () => {
     it('stores data under specified namespace', () => {
       const req = createMockRequest();
-      const testData = { name: 'John', age: 30 };
+      const testData = { name: 'John', age: '30' };
       
       storeSessionData(req, 'testNamespace', testData);
       

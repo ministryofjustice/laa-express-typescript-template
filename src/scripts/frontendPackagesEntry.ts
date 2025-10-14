@@ -5,19 +5,19 @@ import { initAll as initGOVUK } from "govuk-frontend";
 import { initAll as initMOJ } from "@ministryofjustice/frontend";
 
 /**
- * Initializes both GOV.UK Frontend and MOJ Frontend packages.
+ * Initialises both GOV.UK Frontend and MOJ Frontend packages.
  * Only runs in browser environment and includes error handling.
  * 
  * @returns {void}
  */
-const initializeFrontendPackages = (): void => {
+const initialiseFrontendPackages = (): void => {
     if (typeof window !== 'undefined') {
         try {
             initGOVUK();
             initMOJ();
             // Only log in development/debug mode
             if (process.env.NODE_ENV !== 'production') {
-                console.log('Frontend packages loaded and initialized');
+                console.log('Frontend packages loaded and initialised');
             }
         } catch (error: unknown) {
             // Always log errors, even in production
@@ -26,5 +26,5 @@ const initializeFrontendPackages = (): void => {
     }
 };
 
-// Initialize the frontend packages
-initializeFrontendPackages();
+// Initialise the frontend packages
+initialiseFrontendPackages();

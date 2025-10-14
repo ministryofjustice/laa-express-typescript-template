@@ -6,7 +6,7 @@ review_in: 6 weeks
 
 # Centralised Locale System
 
-This application uses a centralized internationalization system powered by **i18next** for managing all translatable text. The system provides type-safe, globally accessible locale data across the entire application with support for namespaces, interpolation, and graceful fallbacks.
+This application uses a centralised internationalisation system powered by **i18next** for managing all translatable text. The system provides type-safe, globally accessible locale data across the entire application with support for namespaces, interpolation, and graceful fallbacks.
 
 ## Architecture
 
@@ -23,7 +23,7 @@ locales/
 
 A robust i18next-based loader that:
 
-- ✅ Synchronously initializes i18next for immediate availability
+- ✅ Synchronously initialises i18next for immediate availability
 - ✅ Supports namespace-based organization
 - ✅ Provides interpolation with `{variable}` syntax
 - ✅ Handles missing keys gracefully with fallbacks
@@ -87,7 +87,7 @@ Locale functions are **globally available** through the `t` function:
 
 ## Locale File Structure
 
-The locale files follow a nested namespace structure organized by functional areas e.g:
+The locale files follow a nested namespace structure organised by functional areas e.g:
 
 ```json
 {
@@ -179,7 +179,7 @@ t('pages.title', { pageTitle: 'Case Details', serviceName: 'LAA SiLAS' });
 
 ### Initialization Process
 
-1. **Synchronous Loading**: `initializeI18nextSync()` runs during app startup
+1. **Synchronous Loading**: `initialiseI18nextSync()` runs during app startup
 2. **Resource Loading**: Reads `locales/en.json` using Node.js `fs.readFileSync`
 3. **i18next Configuration**: Sets up namespaces, interpolation, and fallbacks
 4. **Global Availability**: Functions become immediately available across the app
@@ -214,7 +214,7 @@ t('pages.title', { pageTitle: 'Case Details', serviceName: 'LAA SiLAS' });
 - TypeScript modules can import and use directly
 - Consistent API across all application layers
 
-### ⚡ **Performance Optimized**
+### ⚡ **Performance Optimised**
 
 - Synchronous initialization prevents race conditions
 - File-based loading with caching for optimal performance
@@ -278,7 +278,7 @@ console.log(t('messages.welcome', { name: 'Test' })); // Should output: "Welcome
 
 - **Development**: Missing keys and errors logged to console with warnings
 - **Production**: Missing keys return the key path silently for graceful degradation
-- **Testing**: Use `initializeI18nextSync()` in test setup for consistent state
+- **Testing**: Use `initialiseI18nextSync()` in test setup for consistent state
 
 ## Migration Guide
 

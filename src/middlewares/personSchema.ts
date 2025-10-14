@@ -25,8 +25,8 @@ interface PersonBody {
 
 /**
  * Type guard to safely check if a value is a valid record
- * @param value - The value to check
- * @returns True if value is a non-null object
+ * @param {unknown} value - The value to check
+ * @returns {boolean} True if value is a non-null object
  */
 function isValidRecord(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -70,7 +70,9 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           }
           // Convert any non-string value to string for consistent processing
           if (typeof value !== 'string') {
-            return typeof value === 'object' ? '' : String(value);
+            if (typeof value === 'object') return '';
+            if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+            return '';
           }
           return value;
         }
@@ -102,7 +104,9 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           }
           // Convert any non-string value to string for consistent processing
           if (typeof value !== 'string') {
-            return typeof value === 'object' ? '' : String(value);
+            if (typeof value === 'object') return '';
+            if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+            return '';
           }
           return value;
         }
@@ -152,7 +156,8 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
          */
         options: (value: string, { req }: Meta): boolean => {
           // Get original form data from session
-          const originalData = req.session?.personOriginal;
+          const session = req.session;
+          const originalData = session && isValidRecord(session) ? session.personOriginal : undefined;
           if (!isValidRecord(originalData)) {
             return true; // No original data to compare against
           }
@@ -264,7 +269,7 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           const month = req.body['dateOfBirth-month']?.trim();
           const year = req.body['dateOfBirth-year']?.trim();
           
-          const hasAnyDateField = (day !== '' && day !== undefined) || (month !== '' && month !== undefined) || (year !== '' && year !== undefined);
+          const hasAnyDateField = Boolean(day && day !== '') || Boolean(month && month !== '') || Boolean(year && year !== '');
           
           if (!hasAnyDateField) return true; // All empty is fine
           

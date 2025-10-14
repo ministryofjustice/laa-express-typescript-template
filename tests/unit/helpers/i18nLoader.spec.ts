@@ -74,7 +74,7 @@ describe('i18nLoader', () => {
 
       initializeI18nextSync();
 
-      expect(consoleErrorStub.calledWithMatch('Failed to initialize i18next synchronously:')).to.be.true;
+      expect(consoleErrorStub.calledWithMatch('Failed to initialise i18next synchronously:')).to.be.true;
       expect(i18next.isInitialized).to.be.true;
     });
   });
@@ -125,7 +125,7 @@ describe('i18nLoader', () => {
 
         const result = t('back');
 
-        expect(consoleWarnStub.calledWith('i18next not initialized when translating: back')).to.be.true;
+        expect(consoleWarnStub.calledWith('i18next not initialised when translating: back')).to.be.true;
         expect(result).to.equal('back');
 
         Object.defineProperty(i18next, 'isInitialized', { value: originalIsInitialized, writable: true });

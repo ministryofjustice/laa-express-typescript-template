@@ -86,6 +86,7 @@ storeOriginalFormData(req, 'personOriginal', existingData)
 ```
 
 **Session Data Flow:**
+
 1. **Initial Load** - Original data stored in session for comparison
 2. **Form Submission** - Current form data cached to survive validation failures
 3. **Error Handling** - Form data persisted, error states maintained
@@ -140,6 +141,7 @@ The validation example demonstrates all major GOV.UK Design System form componen
 - `govukNotificationBanner` - Success message display
 
 **Each component includes:**
+
 - Proper error state handling
 - Value persistence across form submissions
 - Accessibility attributes

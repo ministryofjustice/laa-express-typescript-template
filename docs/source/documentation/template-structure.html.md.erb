@@ -28,8 +28,8 @@ The template organizes API connection functionality across several key directori
 - **`apiMiddleware.ts`** - Enhanced axios middleware with configurable instances, authentication support, and logging
 
 #### `src/services/`
-- **`BaseApiService.ts`** - Abstract base class extracting common HTTP client patterns from MCC
-- **`ExampleApiService.ts`** - Simple demonstration of BaseApiService usage (replace with your own services)
+- **`baseApiService.ts`** - Abstract base class extracting common HTTP client patterns from MCC
+- **`exampleApiService.ts`** - Simple demonstration of BaseApiService usage (replace with your own services)
 
 #### `utils/`
 - **`axiosSetup.ts`** - Clean exports of enhanced middleware functionality and TypeScript interfaces
@@ -37,7 +37,7 @@ The template organizes API connection functionality across several key directori
 #### Integration Pattern
 ```typescript
 // Import the base service pattern
-import { BaseApiService } from '#src/services/BaseApiService.js';
+import { BaseApiService } from '#src/services/baseApiService.js';
 
 // Import middleware utilities  
 import { createApiMiddleware } from '#utils/axiosSetup.js';

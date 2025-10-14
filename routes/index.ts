@@ -1,6 +1,6 @@
 import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
-import { exampleApiService } from '#src/services/ExampleApiService.js';
+import { exampleApiService } from '#src/services/exampleApiService.js';
 
 // Create a new router
 const router = express.Router();

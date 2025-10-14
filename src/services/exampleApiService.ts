@@ -11,7 +11,7 @@
  * - Implement their own business logic methods
  */
 
-import { BaseApiService } from './BaseApiService.js';
+import { BaseApiService } from './baseApiService.js';
 import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
 import type { AxiosResponse } from 'axios';
 

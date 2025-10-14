@@ -21,24 +21,28 @@ The schema validation system consists of several key components:
 
 ## Schema Structure
 
-The `personSchema.ts` middleware provides validation for a comprehensive form including:
+The `personSchema.ts` middleware provides an example of validation for a comprehensive form including:
 
 **Text Input Validation:**
+
 - `fullName` - Required text input with trimming and sanitization
 - `address` - Required textarea with multi-line support
 
 **Selection Validation:**
+
 - `contactPreference` - Radio button validation with predefined options (`email`, `phone`, `post`)
 - `priority` - Select dropdown validation with priority levels (`low`, `medium`, `high`, `urgent`)
 - `communicationMethods` - Checkbox array validation requiring at least one selection
 
 **Date Field Validation:**
+
 - Complex three-field date validation (`dateOfBirth-day`, `dateOfBirth-month`, `dateOfBirth-year`)
 - Conditional validation - if any date component is provided, all are required
 - Valid date checking using `validator.js`
 - Proper error messaging for incomplete or invalid dates
 
 **Change Detection:**
+
 - Validates that certain fields have been modified from their original values
 - Uses session data to compare current form input against stored original values
 - Prevents submission when required changes haven't been made
@@ -46,6 +50,7 @@ The `personSchema.ts` middleware provides validation for a comprehensive form in
 ## Error Handling System
 
 **TypedValidationError Class:**
+
 ```typescript
 // Provides structured error objects for GOV.UK Design System
 new TypedValidationError({
@@ -98,6 +103,7 @@ storeOriginalFormData(req, 'personOriginal', existingData)
 The template includes several utility modules to support the validation system:
 
 **Data Transformers** (`src/scripts/helpers/dataTransformers.ts`):
+
 - `safeString()` - Converts any input to string safely
 - `safeOptionalString()` - Handles optional string conversion
 - `isRecord()` - Type guard for object validation
@@ -106,12 +112,14 @@ The template includes several utility modules to support the validation system:
 - `dateStringFromThreeFields()` - Combines day/month/year into date string
 
 **Error Handler** (`src/scripts/helpers/errorHandler.ts`):
+
 - `extractErrorMessage()` - Extracts user-friendly messages from various error types
 - `isAuthError()`, `isForbiddenError()`, etc. - HTTP status code helpers
 - `createProcessedError()` - Creates wrapped errors with context
 - `extractAndLogError()` - Logging utility for development debugging
 
 **Date Formatter** (`src/scripts/helpers/dateFormatter.ts`):
+
 - `formatDate()` - Formats ISO date strings for display
 - Handles invalid dates gracefully
 - Provides consistent date formatting across the application
@@ -121,6 +129,7 @@ The template includes several utility modules to support the validation system:
 The validation example demonstrates all major GOV.UK Design System form components:
 
 **Implemented Components:**
+
 - `govukInput` - Text input with validation
 - `govukTextarea` - Multi-line text input
 - `govukRadios` - Radio button groups
@@ -155,7 +164,7 @@ The middleware automatically handles validation, error formatting, and session m
 
 ## Template Integration
 
-Access the validation example at `/change/person` when running the application locally. The page demonstrates:
+Access the validation example at [`/change/person`](http://localhost:3000/change/person) when running the application locally. The page demonstrates:
 - Complete form validation workflow
 - Error summary and inline error display
 - Session-based form data persistence

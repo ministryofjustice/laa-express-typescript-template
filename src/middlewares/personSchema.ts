@@ -292,9 +292,9 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           const month = req.body['dateOfBirth-month']?.trim();
           const year = req.body['dateOfBirth-year']?.trim();
           
-          const hasAnyDateField = day || month || year;
+          const hasAnyDateField = (day !== '' && day !== undefined) || (month !== '' && month !== undefined) || (year !== '' && year !== undefined);
           
-          if (hasAnyDateField && (!value?.trim())) {
+          if (hasAnyDateField && (value?.trim() === '' || value?.trim() === undefined)) {
             return new TypedValidationError({
               summaryMessage: t('forms.dateOfBirth.validationError.day.notEmpty'),
               inlineMessage: t('forms.dateOfBirth.validationError.day.notEmpty'),
@@ -354,9 +354,9 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           const month = req.body['dateOfBirth-month']?.trim();
           const year = req.body['dateOfBirth-year']?.trim();
           
-          const hasAnyDateField = day || month || year;
+          const hasAnyDateField = (day !== '' && day !== undefined) || (month !== '' && month !== undefined) || (year !== '' && year !== undefined);
           
-          if (hasAnyDateField && (!value?.trim())) {
+          if (hasAnyDateField && (value?.trim() === '' || value?.trim() === undefined)) {
             return new TypedValidationError({
               summaryMessage: t('forms.dateOfBirth.validationError.month.notEmpty'),
               inlineMessage: t('forms.dateOfBirth.validationError.month.notEmpty'),

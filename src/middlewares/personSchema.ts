@@ -13,7 +13,53 @@ const YEAR_LENGTH = 4;
 const MIN_COMMUNICATION_METHODS = 1;
 const EMPTY = 0;
 
+/**
+ * Helper function to check if any date field has a value
+ * @param {string} day - Day field value
+ * @param {string} month - Month field value  
+ * @param {string} year - Year field value
+ * @returns {boolean} True if any field has content
+ */
+function hasAnyDateField(day: string, month: string, year: string): boolean {
+  return (typeof day === 'string' && day.trim().length > EMPTY) ||
+         (typeof month === 'string' && month.trim().length > EMPTY) ||
+         (typeof year === 'string' && year.trim().length > EMPTY);
+}
 
+/**
+ * Helper function to get safe date field values from request body
+ * @param {unknown} body - Request body object
+ * @returns {object} Object with day, month, year values
+ */
+function getDateFields(body: unknown): { day: string; month: string; year: string } {
+  if (!isRecord(body)) {
+    return { day: '', month: '', year: '' };
+  }
+  
+  const dayValue = safeBodyString(body, 'dateOfBirth-day');
+  const monthValue = safeBodyString(body, 'dateOfBirth-month');
+  const yearValue = safeBodyString(body, 'dateOfBirth-year');
+  
+  return {
+    day: typeof dayValue === 'string' ? dayValue : '',
+    month: typeof monthValue === 'string' ? monthValue : '',
+    year: typeof yearValue === 'string' ? yearValue : ''
+  };
+}
+
+/**
+ * Helper function to create date validation error messages
+ * @param {string} field - Field name (day, month, year)
+ * @param {string} errorType - Type of error (notEmpty, isLength, etc)
+ * @returns {TypedValidationError} Structured error object
+ */
+function createDateValidationError(field: string, errorType: string): TypedValidationError {
+  const messageKey = `forms.dateOfBirth.validationError.${field}.${errorType}`;
+  return new TypedValidationError({
+    summaryMessage: t(messageKey),
+    inlineMessage: t(messageKey),
+  });
+}
 
 /**
  * Type guard to safely check if a value is a valid record
@@ -191,11 +237,12 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
          */
         options: (value: string, { req }: Meta): boolean => {
           // Get original form data from session following MCC pattern
-          if (!isRecord(req.session) || !isValidRecord(req.session.personOriginal)) {
+          const { session } = req;
+          if (!isRecord(session) || !isValidRecord(session.personOriginal)) {
             return true; // No original data to compare against
           }
           
-          const { personOriginal: originalData } = req.session;
+          const { personOriginal: originalData } = session;
           
           const { priority: originalPriority } = originalData;
           if (originalPriority === undefined || originalPriority === null) {
@@ -244,15 +291,9 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           // If any date field is provided, all must be provided - following MCC pattern
           if (!isRecord(req.body)) return true;
           
-          const day = safeBodyString(req.body, 'dateOfBirth-day') ?? '';
-          const month = safeBodyString(req.body, 'dateOfBirth-month') ?? '';
-          const year = safeBodyString(req.body, 'dateOfBirth-year') ?? '';
+          const { day, month, year } = getDateFields(req.body);
           
-          const hasAnyDateField = (typeof day === 'string' && day.trim().length > EMPTY) ||
-                                  (typeof month === 'string' && month.trim().length > EMPTY) ||
-                                  (typeof year === 'string' && year.trim().length > EMPTY);
-          
-          if (!hasAnyDateField) return true; // All empty is fine
+          if (!hasAnyDateField(day, month, year)) return true; // All empty is fine
           
           if (typeof value !== 'string' || value.trim().length === EMPTY) {
             return false; // Day is required if any date field is provided
@@ -269,30 +310,19 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: (value: string, { req }: Meta) => {
-          if (!isRecord(req.body)) {return new TypedValidationError({
-            summaryMessage: t('forms.dateOfBirth.validationError.day.notEmpty'),
-            inlineMessage: t('forms.dateOfBirth.validationError.day.notEmpty'),
-          });}
-          
-          const day = safeBodyString(req.body, 'dateOfBirth-day') ?? '';
-          const month = safeBodyString(req.body, 'dateOfBirth-month') ?? '';
-          const year = safeBodyString(req.body, 'dateOfBirth-year') ?? '';
-          
-          const hasAnyDateField = (typeof day === 'string' && day.trim().length > EMPTY) ||
-                                  (typeof month === 'string' && month.trim().length > EMPTY) ||
-                                  (typeof year === 'string' && year.trim().length > EMPTY);
-          
-          if (hasAnyDateField && (typeof value !== 'string' || value.trim().length === EMPTY)) {
-            return new TypedValidationError({
-              summaryMessage: t('forms.dateOfBirth.validationError.day.notEmpty'),
-              inlineMessage: t('forms.dateOfBirth.validationError.day.notEmpty'),
-            });
+          if (!isRecord(req.body)) {
+            return createDateValidationError('day', 'notEmpty');
           }
           
-          return new TypedValidationError({
-            summaryMessage: t('forms.dateOfBirth.validationError.day.isInt'),
-            inlineMessage: t('forms.dateOfBirth.validationError.day.isInt'),
-          });
+          const { day, month, year } = getDateFields(req.body);
+          
+          const hasDateFields = hasAnyDateField(day, month, year);
+          
+          if (hasDateFields && (typeof value !== 'string' || value.trim().length === EMPTY)) {
+            return createDateValidationError('day', 'notEmpty');
+          }
+          
+          return createDateValidationError('day', 'isInt');
         }
       },
     },
@@ -311,15 +341,9 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           // If any date field is provided, all must be provided
           if (!isRecord(req.body)) return true;
           
-          const day = safeBodyString(req.body, 'dateOfBirth-day') ?? '';
-          const month = safeBodyString(req.body, 'dateOfBirth-month') ?? '';
-          const year = safeBodyString(req.body, 'dateOfBirth-year') ?? '';
+          const { day, month, year } = getDateFields(req.body);
           
-          const hasAnyDateField = (typeof day === 'string' && day.trim().length > EMPTY) ||
-                                  (typeof month === 'string' && month.trim().length > EMPTY) ||
-                                  (typeof year === 'string' && year.trim().length > EMPTY);
-          
-          if (!hasAnyDateField) return true; // All empty is fine
+          if (!hasAnyDateField(day, month, year)) return true; // All empty is fine
           
           if (typeof value !== 'string' || value.trim().length === EMPTY) {
             return false; // Month is required if any date field is provided
@@ -336,30 +360,19 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: (value: string, { req }: Meta) => {
-          if (!isRecord(req.body)) {return new TypedValidationError({
-            summaryMessage: t('forms.dateOfBirth.validationError.month.notEmpty'),
-            inlineMessage: t('forms.dateOfBirth.validationError.month.notEmpty'),
-          });}
-          
-          const day = safeBodyString(req.body, 'dateOfBirth-day') ?? '';
-          const month = safeBodyString(req.body, 'dateOfBirth-month') ?? '';
-          const year = safeBodyString(req.body, 'dateOfBirth-year') ?? '';
-          
-          const hasAnyDateField = (typeof day === 'string' && day.trim().length > EMPTY) ||
-                                  (typeof month === 'string' && month.trim().length > EMPTY) ||
-                                  (typeof year === 'string' && year.trim().length > EMPTY);
-          
-          if (hasAnyDateField && (typeof value !== 'string' || value.trim().length === EMPTY)) {
-            return new TypedValidationError({
-              summaryMessage: t('forms.dateOfBirth.validationError.month.notEmpty'),
-              inlineMessage: t('forms.dateOfBirth.validationError.month.notEmpty'),
-            });
+          if (!isRecord(req.body)) {
+            return createDateValidationError('month', 'notEmpty');
           }
           
-          return new TypedValidationError({
-            summaryMessage: t('forms.dateOfBirth.validationError.month.isInt'),
-            inlineMessage: t('forms.dateOfBirth.validationError.month.isInt'),
-          });
+          const { day, month, year } = getDateFields(req.body);
+          
+          const hasDateFields = hasAnyDateField(day, month, year);
+          
+          if (hasDateFields && (typeof value !== 'string' || value.trim().length === EMPTY)) {
+            return createDateValidationError('month', 'notEmpty');
+          }
+          
+          return createDateValidationError('month', 'isInt');
         }
       },
     },
@@ -378,15 +391,9 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           // If any date field is provided, all must be provided - following MCC pattern
           if (!isRecord(req.body)) return true;
           
-          const day = safeBodyString(req.body, 'dateOfBirth-day') ?? '';
-          const month = safeBodyString(req.body, 'dateOfBirth-month') ?? '';
-          const year = safeBodyString(req.body, 'dateOfBirth-year') ?? '';
+          const { day, month, year } = getDateFields(req.body);
           
-          const hasAnyDateField = (typeof day === 'string' && day.trim().length > EMPTY) ||
-                                  (typeof month === 'string' && month.trim().length > EMPTY) ||
-                                  (typeof year === 'string' && year.trim().length > EMPTY);
-          
-          if (!hasAnyDateField) return true; // All empty is fine
+          if (!hasAnyDateField(day, month, year)) return true; // All empty is fine
           
           if (typeof value !== 'string' || value.trim().length === EMPTY) {
             return false; // Year is required if any date field is provided
@@ -411,33 +418,20 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
             inlineMessage: t('forms.dateOfBirth.validationError.year.notEmpty'),
           });}
           
-          const day = safeBodyString(req.body, 'dateOfBirth-day') ?? '';
-          const month = safeBodyString(req.body, 'dateOfBirth-month') ?? '';
-          const year = safeBodyString(req.body, 'dateOfBirth-year') ?? '';
+          const { day, month, year } = getDateFields(req.body);
           
-          const hasAnyDateField = (typeof day === 'string' && day.trim().length > EMPTY) ||
-                                  (typeof month === 'string' && month.trim().length > EMPTY) ||
-                                  (typeof year === 'string' && year.trim().length > EMPTY);
+          const hasDateFields = hasAnyDateField(day, month, year);
           
-          if (hasAnyDateField && (typeof value !== 'string' || value.trim().length === EMPTY)) {
-            return new TypedValidationError({
-              summaryMessage: t('forms.dateOfBirth.validationError.year.notEmpty'),
-              inlineMessage: t('forms.dateOfBirth.validationError.year.notEmpty'),
-            });
+          if (hasDateFields && (typeof value !== 'string' || value.trim().length === EMPTY)) {
+            return createDateValidationError('year', 'notEmpty');
           }
           
           const yearStr = value.trim();
           if (yearStr.length > EMPTY && yearStr.length !== YEAR_LENGTH) {
-            return new TypedValidationError({
-              summaryMessage: t('forms.dateOfBirth.validationError.year.isLength'),
-              inlineMessage: t('forms.dateOfBirth.validationError.year.isLength'),
-            });
+            return createDateValidationError('year', 'isLength');
           }
           
-          return new TypedValidationError({
-            summaryMessage: t('forms.dateOfBirth.validationError.year.isInt'),
-            inlineMessage: t('forms.dateOfBirth.validationError.year.isInt'),
-          });
+          return createDateValidationError('year', 'isInt');
         }
       },
     },
@@ -458,20 +452,17 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
             return true;
           }
 
-          const day = safeBodyString(req.body, 'dateOfBirth-day') ?? '';
-          const month = safeBodyString(req.body, 'dateOfBirth-month') ?? '';
-          const year = safeBodyString(req.body, 'dateOfBirth-year') ?? '';
+          const { day, month, year } = getDateFields(req.body);
 
           // If no date fields are provided, skip validation - following MCC pattern
-          const hasAnyDateField = (typeof day === 'string' && day.trim().length > EMPTY) ||
-                                  (typeof month === 'string' && month.trim().length > EMPTY) ||
-                                  (typeof year === 'string' && year.trim().length > EMPTY);
-          if (!hasAnyDateField) return true;
+          if (!hasAnyDateField(day, month, year)) {
+            return true;
+          }
 
           // If any field is missing, this validation should pass (individual field validations will handle it)
-          if (typeof day !== 'string' || day.trim().length === EMPTY ||
-              typeof month !== 'string' || month.trim().length === EMPTY ||
-              typeof year !== 'string' || year.trim().length === EMPTY) return true;
+          if (day.trim().length === EMPTY || month.trim().length === EMPTY || year.trim().length === EMPTY) {
+            return true;
+          }
 
           // Use validator.js isDate() with dateStringFromThreeFields helper
           const dateString = dateStringFromThreeFields(day, month, year);

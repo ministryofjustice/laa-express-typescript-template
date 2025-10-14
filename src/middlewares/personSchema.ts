@@ -1,7 +1,7 @@
 import { checkSchema, type Meta } from 'express-validator';
 import validator from 'validator';
 import { TypedValidationError } from '../helpers/ValidationErrorHelpers.js';
-import { hasProperty, isRecord, dateStringFromThreeFields, safeBodyString } from '../helpers/dataTransformers.js';
+import { isRecord, dateStringFromThreeFields, safeBodyString } from '../helpers/dataTransformers.js';
 import { t } from '#src/scripts/helpers/i18nLoader.js';
 
 // Constants for validation boundaries
@@ -13,16 +13,7 @@ const YEAR_LENGTH = 4;
 const MIN_COMMUNICATION_METHODS = 1;
 const EMPTY = 0;
 
-interface PersonBody {
-  fullName: string;
-  address: string;
-  contactPreference: string;
-  priority: string;
-  'dateOfBirth-day': string;
-  'dateOfBirth-month': string;
-  'dateOfBirth-year': string;
-  communicationMethods: string[];
-}
+
 
 /**
  * Type guard to safely check if a value is a valid record
@@ -33,21 +24,7 @@ function isValidRecord(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
 }
 
-/**
- * Checks whether the given body object has the expected structure of PersonBody.
- * @param {unknown} body - The body object to check
- * @returns {body is PersonBody} True if the body matches PersonBody shape
- */
-function isPersonBody(body: unknown): body is PersonBody {
-  return isRecord(body) &&
-    hasProperty(body, 'fullName') &&
-    hasProperty(body, 'address') &&
-    hasProperty(body, 'contactPreference') &&
-    hasProperty(body, 'priority') &&
-    hasProperty(body, 'dateOfBirth-day') &&
-    hasProperty(body, 'dateOfBirth-month') &&
-    hasProperty(body, 'dateOfBirth-year');
-}
+
 
 /**
  * Validation middleware for person input (name and address).
@@ -267,9 +244,9 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           // If any date field is provided, all must be provided - following MCC pattern
           if (!isRecord(req.body)) return true;
           
-          const day = safeBodyString(req.body, 'dateOfBirth-day') as string;
-          const month = safeBodyString(req.body, 'dateOfBirth-month') as string;
-          const year = safeBodyString(req.body, 'dateOfBirth-year') as string;
+          const day = safeBodyString(req.body, 'dateOfBirth-day') ?? '';
+          const month = safeBodyString(req.body, 'dateOfBirth-month') ?? '';
+          const year = safeBodyString(req.body, 'dateOfBirth-year') ?? '';
           
           const hasAnyDateField = (typeof day === 'string' && day.trim().length > EMPTY) ||
                                   (typeof month === 'string' && month.trim().length > EMPTY) ||
@@ -297,9 +274,9 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
             inlineMessage: t('forms.dateOfBirth.validationError.day.notEmpty'),
           });}
           
-          const day = safeBodyString(req.body, 'dateOfBirth-day') as string;
-          const month = safeBodyString(req.body, 'dateOfBirth-month') as string;
-          const year = safeBodyString(req.body, 'dateOfBirth-year') as string;
+          const day = safeBodyString(req.body, 'dateOfBirth-day') ?? '';
+          const month = safeBodyString(req.body, 'dateOfBirth-month') ?? '';
+          const year = safeBodyString(req.body, 'dateOfBirth-year') ?? '';
           
           const hasAnyDateField = (typeof day === 'string' && day.trim().length > EMPTY) ||
                                   (typeof month === 'string' && month.trim().length > EMPTY) ||
@@ -334,9 +311,9 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           // If any date field is provided, all must be provided
           if (!isRecord(req.body)) return true;
           
-          const day = safeBodyString(req.body, 'dateOfBirth-day') as string;
-          const month = safeBodyString(req.body, 'dateOfBirth-month') as string;
-          const year = safeBodyString(req.body, 'dateOfBirth-year') as string;
+          const day = safeBodyString(req.body, 'dateOfBirth-day') ?? '';
+          const month = safeBodyString(req.body, 'dateOfBirth-month') ?? '';
+          const year = safeBodyString(req.body, 'dateOfBirth-year') ?? '';
           
           const hasAnyDateField = (typeof day === 'string' && day.trim().length > EMPTY) ||
                                   (typeof month === 'string' && month.trim().length > EMPTY) ||
@@ -363,9 +340,9 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
             inlineMessage: t('forms.dateOfBirth.validationError.month.notEmpty'),
           });}
           
-          const day = safeBodyString(req.body, 'dateOfBirth-day') as string;
-          const month = safeBodyString(req.body, 'dateOfBirth-month') as string;
-          const year = safeBodyString(req.body, 'dateOfBirth-year') as string;
+          const day = safeBodyString(req.body, 'dateOfBirth-day') ?? '';
+          const month = safeBodyString(req.body, 'dateOfBirth-month') ?? '';
+          const year = safeBodyString(req.body, 'dateOfBirth-year') ?? '';
           
           const hasAnyDateField = (typeof day === 'string' && day.trim().length > EMPTY) ||
                                   (typeof month === 'string' && month.trim().length > EMPTY) ||
@@ -399,9 +376,9 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           // If any date field is provided, all must be provided - following MCC pattern
           if (!isRecord(req.body)) return true;
           
-          const day = safeBodyString(req.body, 'dateOfBirth-day') as string;
-          const month = safeBodyString(req.body, 'dateOfBirth-month') as string;
-          const year = safeBodyString(req.body, 'dateOfBirth-year') as string;
+          const day = safeBodyString(req.body, 'dateOfBirth-day') ?? '';
+          const month = safeBodyString(req.body, 'dateOfBirth-month') ?? '';
+          const year = safeBodyString(req.body, 'dateOfBirth-year') ?? '';
           
           const hasAnyDateField = (typeof day === 'string' && day.trim().length > EMPTY) ||
                                   (typeof month === 'string' && month.trim().length > EMPTY) ||
@@ -431,9 +408,9 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
             inlineMessage: t('forms.dateOfBirth.validationError.year.notEmpty'),
           });}
           
-          const day = safeBodyString(req.body, 'dateOfBirth-day') as string;
-          const month = safeBodyString(req.body, 'dateOfBirth-month') as string;
-          const year = safeBodyString(req.body, 'dateOfBirth-year') as string;
+          const day = safeBodyString(req.body, 'dateOfBirth-day') ?? '';
+          const month = safeBodyString(req.body, 'dateOfBirth-month') ?? '';
+          const year = safeBodyString(req.body, 'dateOfBirth-year') ?? '';
           
           const hasAnyDateField = (typeof day === 'string' && day.trim().length > EMPTY) ||
                                   (typeof month === 'string' && month.trim().length > EMPTY) ||
@@ -478,16 +455,20 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
             return true;
           }
 
-          const day = safeBodyString(req.body, 'dateOfBirth-day') as string;
-          const month = safeBodyString(req.body, 'dateOfBirth-month') as string;
-          const year = safeBodyString(req.body, 'dateOfBirth-year') as string;
+          const day = safeBodyString(req.body, 'dateOfBirth-day') ?? '';
+          const month = safeBodyString(req.body, 'dateOfBirth-month') ?? '';
+          const year = safeBodyString(req.body, 'dateOfBirth-year') ?? '';
 
-          // If no date fields are provided, skip validation
-          const hasAnyDateField = day || month || year;
+          // If no date fields are provided, skip validation - following MCC pattern
+          const hasAnyDateField = (typeof day === 'string' && day.trim().length > EMPTY) ||
+                                  (typeof month === 'string' && month.trim().length > EMPTY) ||
+                                  (typeof year === 'string' && year.trim().length > EMPTY);
           if (!hasAnyDateField) return true;
 
           // If any field is missing, this validation should pass (individual field validations will handle it)
-          if (!day || !month || !year) return true;
+          if (typeof day !== 'string' || day.trim().length === EMPTY ||
+              typeof month !== 'string' || month.trim().length === EMPTY ||
+              typeof year !== 'string' || year.trim().length === EMPTY) return true;
 
           // Use validator.js isDate() with dateStringFromThreeFields helper
           const dateString = dateStringFromThreeFields(day, month, year);

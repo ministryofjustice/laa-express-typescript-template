@@ -139,35 +139,83 @@ yarn tsc
 - These are required for type safety and improved autocompletion in TypeScript.
 
 
-## Axios
-Within this template [axios](https://github.com/axios/axios) with [middleware-axios](https://github.com/krutoo/middleware-axios) (used as a utility `../utils/axiosSetup.ts`, and can be extended with further middleware) is set up and ready to use out of the box.
+## API Connection Patterns
+This template provides generalised API connection patterns. The patterns offer a robust foundation for HTTP client functionality without forcing specific response formats or domain logic.
 
-Below is an example of implementation and how to use the Axios middleware in your TypeScript routes to make server/API calls:
+### Enhanced Axios Middleware
+The template includes enhanced axios middleware with:
+
+- **Configurable instances** - Create axios instances with custom timeout, headers, and base URLs
+- **Authentication support** - Optional JWT/token handling with automatic refresh on 401 responses  
+- **Request/response logging** - Environment-aware logging with JSON pretty-printing for debugging
+- **Error handling** - Standardised error extraction and user-friendly message transformation
 
 ```typescript
-// routes/index.ts
-import express, { Request, Response, NextFunction } from 'express';
-const router = express.Router();
-
-/* GET home page. */
-router.get('/', (req: Request, res: Response, next: NextFunction) => {
-  res.render('main/index', { title: 'Express' });
-});
-
-// Make an API call with `Axios` and `middleware-axios`
-// GET users from external API
+// Basic usage (existing pattern still works)
 router.get('/users', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    // Use the wrapped Axios instance attached to the request object (via middleware-axios)
-    const response = await req.axiosMiddleware.get('https://jsonplaceholder.typicode.com/users');
+    const response = await req.axiosMiddleware.get('https://api.example.com/users');
     res.json(response.data);
   } catch (error) {
     next(error);
   }
 });
 
-export default router;
+// Enhanced usage with custom configuration
+import { createApiMiddleware } from '#utils/axiosSetup.js';
+
+const apiMiddleware = createApiMiddleware({
+  timeout: 10000,
+  defaultHeaders: { 'Content-Type': 'application/json' },
+  enableLogging: true,
+  authService: myAuthService // Optional authentication
+});
 ```
+
+### BaseApiService Pattern
+For more complex API integrations, the template provides a `BaseApiService` abstract class that extracts common HTTP client patterns:
+
+```typescript
+// Create your own API service
+import { BaseApiService } from '#src/services/baseApiService.js';
+
+class MyApiService extends BaseApiService {
+  constructor() {
+    super({
+      baseUrl: process.env.MY_API_URL,
+      apiPrefix: '/v1',
+      timeout: 10000,
+      enableLogging: true
+    });
+  }
+
+  async getUsers(axiosWrapper: AxiosInstanceWrapper) {
+    return this.get(axiosWrapper, '/users');
+  }
+
+  async createUser(axiosWrapper: AxiosInstanceWrapper, userData: unknown) {
+    return this.post(axiosWrapper, '/users', userData);
+  }
+}
+
+// Use in routes
+const myApiService = new MyApiService();
+
+router.get('/users', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const response = await myApiService.getUsers(req.axiosMiddleware);
+    res.json(response.data);
+  } catch (error) {
+    next(error);
+  }
+});
+```
+
+### Key Benefits
+- **Production-tested patterns** extracted from LAA's MCC application
+- **Scalable architecture** - from simple API calls to complex authentication flows
+- **Comprehensive logging** - request/response logging with error context
+- **Type-safe** - Full TypeScript support with proper type definitions
 
 ## Nunjucks templating
 This template uses [Nunjucks](https://mozilla.github.io/nunjucks/) for server-side HTML templating. You can render Nunjucks templates from your TypeScript route handlers just as you would from JavaScript. Templates are located in the `views/` directory and are compatible with both JS and TS backends.

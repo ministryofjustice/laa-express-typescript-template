@@ -135,7 +135,7 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
         options: (value: string, { req }: Meta): boolean => {
           // Get original form data from session
           const {session} = req;
-          const originalData = session && isValidRecord(session) ? session.personOriginal : undefined;
+          const originalData = (session !== null && session !== undefined && isValidRecord(session)) ? session.personOriginal : undefined;
           if (!isValidRecord(originalData)) {
             return true; // No original data to compare against
           }
@@ -195,7 +195,7 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
             return true; // No original data to compare against
           }
           
-          const originalData = req.session.personOriginal;
+          const { personOriginal: originalData } = req.session;
           
           const { priority: originalPriority } = originalData;
           if (originalPriority === undefined || originalPriority === null) {
@@ -329,10 +329,11 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           return !isNaN(monthNum) && monthNum >= MIN_MONTH && monthNum <= MAX_MONTH;
         },
         /**
-         *
-         * @param value
-         * @param root0
-         * @param root0.req
+         * Generates error message for dateOfBirth month field validation
+         * @param {string} value - The month value from the form  
+         * @param {object} root0 - Meta object from express-validator
+         * @param {object} root0.req - Express request object
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: (value: string, { req }: Meta) => {
           if (!isRecord(req.body)) {return new TypedValidationError({
@@ -367,10 +368,11 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
       trim: true,
       custom: {
         /**
-         *
-         * @param value
-         * @param root0
-         * @param root0.req
+         * Validates dateOfBirth year field - requires all date fields if any are provided
+         * @param {string} value - The year value from the form
+         * @param {object} root0 - Meta object from express-validator  
+         * @param {object} root0.req - Express request object
+         * @returns {boolean} True if validation passes, false otherwise
          */
         options: (value: string, { req }: Meta): boolean => {
           // If any date field is provided, all must be provided - following MCC pattern
@@ -397,10 +399,11 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           return !isNaN(yearNum);
         },
         /**
-         *
-         * @param value
-         * @param root0
-         * @param root0.req
+         * Generates error message for dateOfBirth year field validation
+         * @param {string} value - The year value from the form
+         * @param {object} root0 - Meta object from express-validator
+         * @param {object} root0.req - Express request object
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: (value: string, { req }: Meta) => {
           if (!isRecord(req.body)) {return new TypedValidationError({
@@ -423,8 +426,8 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
             });
           }
           
-          const yearStr = value?.trim();
-          if (yearStr && yearStr.length !== YEAR_LENGTH) {
+          const yearStr = value.trim();
+          if (yearStr.length > EMPTY && yearStr.length !== YEAR_LENGTH) {
             return new TypedValidationError({
               summaryMessage: t('forms.dateOfBirth.validationError.year.isLength'),
               inlineMessage: t('forms.dateOfBirth.validationError.year.isLength'),

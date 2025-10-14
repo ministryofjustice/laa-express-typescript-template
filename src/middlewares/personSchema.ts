@@ -291,15 +291,25 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           // If any date field is provided, all must be provided - following MCC pattern
           if (!isRecord(req.body)) return true;
           
-          const { day, month, year } = getDateFields(req.body);
+          // For checking if other fields exist, we need to get raw values
+          // But for this field's validation, use the trimmed 'value' parameter
+          const dayValue = typeof value === 'string' ? value : '';
+          const monthValue = safeBodyString(req.body, 'dateOfBirth-month');
+          const yearValue = safeBodyString(req.body, 'dateOfBirth-year');
           
-          if (!hasAnyDateField(day, month, year)) return true; // All empty is fine
+          const monthStr = typeof monthValue === 'string' ? monthValue.trim() : '';
+          const yearStr = typeof yearValue === 'string' ? yearValue.trim() : '';
           
-          if (typeof value !== 'string' || value.trim().length === EMPTY) {
+          // Check if any field has content (use trimmed values)
+          const hasContent = dayValue.length > EMPTY || monthStr.length > EMPTY || yearStr.length > EMPTY;
+          
+          if (!hasContent) return true; // All empty is fine
+          
+          if (dayValue.length === EMPTY) {
             return false; // Day is required if any date field is provided
           }
           
-          const dayNum = parseInt(value.trim());
+          const dayNum = parseInt(dayValue);
           return !isNaN(dayNum) && dayNum >= MIN_DAY && dayNum <= MAX_DAY;
         },
         /**
@@ -341,15 +351,25 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           // If any date field is provided, all must be provided
           if (!isRecord(req.body)) return true;
           
-          const { day, month, year } = getDateFields(req.body);
+          // For checking if other fields exist, we need to get raw values
+          // But for this field's validation, use the trimmed 'value' parameter
+          const monthValue = typeof value === 'string' ? value : '';
+          const dayValue = safeBodyString(req.body, 'dateOfBirth-day');
+          const yearValue = safeBodyString(req.body, 'dateOfBirth-year');
           
-          if (!hasAnyDateField(day, month, year)) return true; // All empty is fine
+          const dayStr = typeof dayValue === 'string' ? dayValue.trim() : '';
+          const yearStr = typeof yearValue === 'string' ? yearValue.trim() : '';
           
-          if (typeof value !== 'string' || value.trim().length === EMPTY) {
+          // Check if any field has content (use trimmed values)
+          const hasContent = dayStr.length > EMPTY || monthValue.length > EMPTY || yearStr.length > EMPTY;
+          
+          if (!hasContent) return true; // All empty is fine
+          
+          if (monthValue.length === EMPTY) {
             return false; // Month is required if any date field is provided
           }
           
-          const monthNum = parseInt(value.trim());
+          const monthNum = parseInt(monthValue);
           return !isNaN(monthNum) && monthNum >= MIN_MONTH && monthNum <= MAX_MONTH;
         },
         /**
@@ -391,18 +411,27 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
           // If any date field is provided, all must be provided - following MCC pattern
           if (!isRecord(req.body)) return true;
           
-          const { day, month, year } = getDateFields(req.body);
+          // For checking if other fields exist, we need to get raw values
+          // But for this field's validation, use the trimmed 'value' parameter
+          const yearValue = typeof value === 'string' ? value : '';
+          const dayValue = safeBodyString(req.body, 'dateOfBirth-day');
+          const monthValue = safeBodyString(req.body, 'dateOfBirth-month');
           
-          if (!hasAnyDateField(day, month, year)) return true; // All empty is fine
+          const dayStr = typeof dayValue === 'string' ? dayValue.trim() : '';
+          const monthStr = typeof monthValue === 'string' ? monthValue.trim() : '';
           
-          if (typeof value !== 'string' || value.trim().length === EMPTY) {
+          // Check if any field has content (use trimmed values)
+          const hasContent = dayStr.length > EMPTY || monthStr.length > EMPTY || yearValue.length > EMPTY;
+          
+          if (!hasContent) return true; // All empty is fine
+          
+          if (yearValue.length === EMPTY) {
             return false; // Year is required if any date field is provided
           }
           
-          const yearStr = value.trim();
-          if (yearStr.length !== YEAR_LENGTH) return false;
+          if (yearValue.length !== YEAR_LENGTH) return false;
           
-          const yearNum = parseInt(yearStr);
+          const yearNum = parseInt(yearValue);
           return !isNaN(yearNum);
         },
         /**
@@ -452,15 +481,22 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
             return true;
           }
 
-          const { day, month, year } = getDateFields(req.body);
+          // Access the trimmed values directly from req.body (after individual field processing)
+          const dayValue = req.body['dateOfBirth-day'];
+          const monthValue = req.body['dateOfBirth-month']; 
+          const yearValue = req.body['dateOfBirth-year'];
+          
+          const day = typeof dayValue === 'string' ? dayValue : '';
+          const month = typeof monthValue === 'string' ? monthValue : '';
+          const year = typeof yearValue === 'string' ? yearValue : '';
 
           // If no date fields are provided, skip validation - following MCC pattern
-          if (!hasAnyDateField(day, month, year)) {
+          if (day.length === EMPTY && month.length === EMPTY && year.length === EMPTY) {
             return true;
           }
 
           // If any field is missing, this validation should pass (individual field validations will handle it)
-          if (day.trim().length === EMPTY || month.trim().length === EMPTY || year.trim().length === EMPTY) {
+          if (day.length === EMPTY || month.length === EMPTY || year.length === EMPTY) {
             return true;
           }
 

@@ -20,7 +20,7 @@ const TRUST_FIRST_PROXY = 1;
  * @returns {Promise<import('express').Application>} The configured Express application
  */
 const createApp = (): express.Application => {
-	// Initialize i18next synchronously before setting up the app
+	// Initialise i18next synchronously before setting up the app
 	initializeI18nextSync();
 
 	const app = express();

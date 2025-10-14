@@ -1,7 +1,7 @@
 /**
  * Base API Service
  * 
- * Generalized foundation for creating API services based on MCC's apiService.ts patterns.
+ * Generalised foundation for creating API services based on MCC's apiService.ts patterns.
  * Provides common HTTP client configuration, logging, and error handling utilities.
  * 
  * Domain services extend this class to implement specific API logic while reusing
@@ -48,7 +48,7 @@ export abstract class BaseApiService {
   protected config: Required<BaseApiConfig>;
 
   /**
-   * Initialize BaseApiService with configuration
+   * Initialise BaseApiService with configuration
    * @param {BaseApiConfig} config Configuration object for the API service
    */
   constructor(config: BaseApiConfig) {

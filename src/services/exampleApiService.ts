@@ -23,7 +23,7 @@ import type { AxiosResponse } from 'axios';
  */
 export class ExampleApiService extends BaseApiService {
   /**
-   * Initialize ExampleApiService with JSONPlaceholder configuration
+   * Initialise ExampleApiService with JSONPlaceholder configuration
    */
   constructor() {
     const EXAMPLE_TIMEOUT_MS = 10000;

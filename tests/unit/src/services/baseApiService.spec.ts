@@ -51,7 +51,7 @@ describe('BaseApiService', () => {
   });
 
   describe('Constructor and Configuration', () => {
-    it('should initialize with default config values', () => {
+    it('should initialise with default config values', () => {
       const service = new TestApiService({
         baseUrl: 'https://api.example.com'
       });

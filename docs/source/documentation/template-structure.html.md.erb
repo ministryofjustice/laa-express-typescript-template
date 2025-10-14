@@ -20,7 +20,7 @@ A route is a section of Express code that associates an HTTP verb (`GET`, `POST`
 - Compiled JavaScript output is placed in the `public/` directory.
 - Do not edit files in `public/` directly; always edit the `.ts` source files.
 
-### API Connection Architecture
+## API Connection Architecture
 
 The template organises API connection functionality across several key directories:
 
@@ -35,6 +35,7 @@ The template organises API connection functionality across several key directori
 - **`axiosSetup.ts`** - Clean exports of enhanced middleware functionality and TypeScript interfaces
 
 #### Integration Pattern
+
 ```typescript
 // Import the base service pattern
 import { BaseApiService } from '#src/services/baseApiService.js';

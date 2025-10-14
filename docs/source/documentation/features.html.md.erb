@@ -15,8 +15,99 @@ Caching allows Express applications to store and serve frequently requested data
 - intelligent browser caching, when using the template for development of an application
 - employing a package management tool, to improve the caching process of installing, upgrading, configuring, and removing software from your application
 
-## Form validation
-This template app contains a basic demo for form validation, when running this app locally. You can find further information on the validation used, by searching in the [Express documentation](https://www.npmjs.com/package/express-validator)
+## Advanced Schema Validation
+This template provides comprehensive form validation using express-validator with advanced patterns for complex data structures, error handling, and user experience.
+
+### Production-Ready Validation Features
+- **Complex data validation** - Date fields, conditional logic, cross-field validation
+- **Type-safe error handling** - TypeScript integration with proper error types
+- **Internationalised messages** - Multi-language support with i18n integration
+- **Session integration** - Change detection and form state management
+- **Accessibility compliance** - WCAG-compliant error messaging and form handling
+
+### Schema Validation Patterns
+The template demonstrates advanced validation patterns extracted from production LAA applications:
+
+```typescript
+// middleware/personSchema.ts
+import { body } from 'express-validator';
+import { createSessionChangeDetectionValidator } from '#src/scripts/helpers/index.js';
+
+export const personValidationSchema = [
+  // Basic field validation with i18n messages
+  body('firstName')
+    .trim()
+    .notEmpty()
+    .withMessage('validation.firstName.required')
+    .isLength({ max: 50 })
+    .withMessage('validation.firstName.maxLength'),
+    
+  // Complex date validation with cross-field logic
+  body(['dateOfBirth.day', 'dateOfBirth.month', 'dateOfBirth.year'])
+    .custom((value, { req }) => {
+      return validateDateFields(req.body.dateOfBirth);
+    })
+    .withMessage('validation.dateOfBirth.invalid'),
+    
+  // Session change detection
+  createSessionChangeDetectionValidator('person')
+];
+```
+
+### Advanced Error Handling
+Type-safe error processing with internationalisation:
+
+```typescript
+// controllers/personController.ts
+import { validationResult } from 'express-validator';
+import { TypedValidationError, formatValidationErrors } from '#src/scripts/helpers/index.js';
+
+export const processPerson = (req: Request, res: Response): void => {
+  const errors = validationResult(req);
+  
+  if (!errors.isEmpty()) {
+    const formattedErrors = formatValidationErrors(
+      errors.array() as TypedValidationError[],
+      req.t
+    );
+    
+    return res.render('person/form', {
+      errors: formattedErrors,
+      formData: req.body
+    });
+  }
+  
+  // Process valid data...
+};
+```
+
+### Helper Functions for Complex Validation
+The template includes production-tested helper functions:
+
+```typescript
+// Data transformation helpers
+safeBodyString(req.body, 'fieldName') // Safe string extraction
+isRecord(data) // Type-safe object checking
+hasProperty(obj, 'prop') // Property existence validation
+
+// Date validation helpers  
+validateDateFields(dateObject) // Complete date validation
+formatDateErrors(errors, translator) // Accessible error messages
+
+// Session helpers
+detectChanges(current, previous) // Form change detection
+updateSessionData(req, data) // Safe session updates
+```
+
+### Key Benefits
+- **Production-proven patterns** from live LAA applications
+- **Accessibility-first approach** with proper error associations
+- **Type safety** throughout validation pipeline  
+- **Internationalisation ready** with translation integration
+- **Complex validation logic** for real-world form requirements
+- **Performance optimised** with efficient validation chains
+
+For detailed implementation examples, see the [Schema Validation Guide](script-helpers.html) documentation.
 
 ## CSRF protection
 The template uses the [csrf-sync](https://www.npmjs.com/package/csrf-sync/v/1.0.2) middleware, to help keep your app secure.
@@ -139,83 +230,35 @@ yarn tsc
 - These are required for type safety and improved autocompletion in TypeScript.
 
 
-## API Connection Patterns
-This template provides generalised API connection patterns. The patterns offer a robust foundation for HTTP client functionality without forcing specific response formats or domain logic.
+## Axios
+Within this template [axios](https://github.com/axios/axios) with [middleware-axios](https://github.com/krutoo/middleware-axios) (used as a utility `../utils/axiosSetup.ts`, and can be extended with further middleware) is set up and ready to use out of the box.
 
-### Enhanced Axios Middleware
-The template includes enhanced axios middleware with:
-
-- **Configurable instances** - Create axios instances with custom timeout, headers, and base URLs
-- **Authentication support** - Optional JWT/token handling with automatic refresh on 401 responses  
-- **Request/response logging** - Environment-aware logging with JSON pretty-printing for debugging
-- **Error handling** - Standardised error extraction and user-friendly message transformation
+Below is an example of implementation and how to use the Axios middleware in your TypeScript routes to make server/API calls:
 
 ```typescript
-// Basic usage (existing pattern still works)
+// routes/index.ts
+import express, { Request, Response, NextFunction } from 'express';
+const router = express.Router();
+
+/* GET home page. */
+router.get('/', (req: Request, res: Response, next: NextFunction) => {
+  res.render('main/index', { title: 'Express' });
+});
+
+// Make an API call with `Axios` and `middleware-axios`
+// GET users from external API
 router.get('/users', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const response = await req.axiosMiddleware.get('https://api.example.com/users');
+    // Use the wrapped Axios instance attached to the request object (via middleware-axios)
+    const response = await req.axiosMiddleware.get('https://jsonplaceholder.typicode.com/users');
     res.json(response.data);
   } catch (error) {
     next(error);
   }
 });
 
-// Enhanced usage with custom configuration
-import { createApiMiddleware } from '#utils/axiosSetup.js';
-
-const apiMiddleware = createApiMiddleware({
-  timeout: 10000,
-  defaultHeaders: { 'Content-Type': 'application/json' },
-  enableLogging: true,
-  authService: myAuthService // Optional authentication
-});
+export default router;
 ```
-
-### BaseApiService Pattern
-For more complex API integrations, the template provides a `BaseApiService` abstract class that extracts common HTTP client patterns:
-
-```typescript
-// Create your own API service
-import { BaseApiService } from '#src/services/baseApiService.js';
-
-class MyApiService extends BaseApiService {
-  constructor() {
-    super({
-      baseUrl: process.env.MY_API_URL,
-      apiPrefix: '/v1',
-      timeout: 10000,
-      enableLogging: true
-    });
-  }
-
-  async getUsers(axiosWrapper: AxiosInstanceWrapper) {
-    return this.get(axiosWrapper, '/users');
-  }
-
-  async createUser(axiosWrapper: AxiosInstanceWrapper, userData: unknown) {
-    return this.post(axiosWrapper, '/users', userData);
-  }
-}
-
-// Use in routes
-const myApiService = new MyApiService();
-
-router.get('/users', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const response = await myApiService.getUsers(req.axiosMiddleware);
-    res.json(response.data);
-  } catch (error) {
-    next(error);
-  }
-});
-```
-
-### Key Benefits
-- **Production-tested patterns** extracted from LAA's MCC application
-- **Scalable architecture** - from simple API calls to complex authentication flows
-- **Comprehensive logging** - request/response logging with error context
-- **Type-safe** - Full TypeScript support with proper type definitions
 
 ## Nunjucks templating
 This template uses [Nunjucks](https://mozilla.github.io/nunjucks/) for server-side HTML templating. You can render Nunjucks templates from your TypeScript route handlers just as you would from JavaScript. Templates are located in the `views/` directory and are compatible with both JS and TS backends.

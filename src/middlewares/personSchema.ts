@@ -481,27 +481,26 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
             return true;
           }
 
-          // Access the trimmed values directly from req.body (after individual field processing)
-          const dayValue = req.body['dateOfBirth-day'];
-          const monthValue = req.body['dateOfBirth-month']; 
-          const yearValue = req.body['dateOfBirth-year'];
+          // Get trimmed values from the helper function (same logic as individual field validations)
+          const { day, month, year } = getDateFields(req.body);
           
-          const day = typeof dayValue === 'string' ? dayValue : '';
-          const month = typeof monthValue === 'string' ? monthValue : '';
-          const year = typeof yearValue === 'string' ? yearValue : '';
+          // Trim the values to handle whitespace consistently with field validations
+          const dayTrimmed = day.trim();
+          const monthTrimmed = month.trim();
+          const yearTrimmed = year.trim();
 
           // If no date fields are provided, skip validation - following MCC pattern
-          if (day.length === EMPTY && month.length === EMPTY && year.length === EMPTY) {
+          if (dayTrimmed.length === EMPTY && monthTrimmed.length === EMPTY && yearTrimmed.length === EMPTY) {
             return true;
           }
 
           // If any field is missing, this validation should pass (individual field validations will handle it)
-          if (day.length === EMPTY || month.length === EMPTY || year.length === EMPTY) {
+          if (dayTrimmed.length === EMPTY || monthTrimmed.length === EMPTY || yearTrimmed.length === EMPTY) {
             return true;
           }
 
           // Use validator.js isDate() with dateStringFromThreeFields helper
-          const dateString = dateStringFromThreeFields(day, month, year);
+          const dateString = dateStringFromThreeFields(dayTrimmed, monthTrimmed, yearTrimmed);
 
           return validator.isDate(dateString);
         },

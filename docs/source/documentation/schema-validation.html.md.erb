@@ -60,6 +60,7 @@ new TypedValidationError({
 ```
 
 **Features:**
+
 - Dual message support (summary and inline errors)
 - i18n integration for multi-language error messages
 - GOV.UK Design System compliant error formatting
@@ -94,6 +95,7 @@ storeOriginalFormData(req, 'personOriginal', existingData)
 5. **Change Detection** - Original vs current data comparison for required field changes
 
 **Session Namespaces:**
+
 - `person` - Current form data
 - `personOriginal` - Original data for change detection
 - `formErrors` - Validation error states
@@ -167,6 +169,7 @@ The middleware automatically handles validation, error formatting, and session m
 ## Template Integration
 
 Access the validation example at [`/change/person`](http://localhost:3000/change/person) when running the application locally. The page demonstrates:
+
 - Complete form validation workflow
 - Error summary and inline error display
 - Session-based form data persistence

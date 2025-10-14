@@ -213,11 +213,12 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
          * @returns {boolean} True if the value has changed from original or no original exists
          */
         options: (value: string, { req }: Meta): boolean => {
-          // Get original form data from session
-          const originalData = req.session?.personOriginal;
-          if (!isValidRecord(originalData)) {
+          // Get original form data from session following MCC pattern
+          if (!isRecord(req.session) || !isValidRecord(req.session.personOriginal)) {
             return true; // No original data to compare against
           }
+          
+          const originalData = req.session.personOriginal;
           
           const { priority: originalPriority } = originalData;
           if (originalPriority === undefined || originalPriority === null) {
@@ -263,18 +264,20 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
          * @returns {boolean} True if validation passes, false otherwise
          */
         options: (value: string, { req }: Meta): boolean => {
-          // If any date field is provided, all must be provided
-          if (!isPersonBody(req.body)) return true;
+          // If any date field is provided, all must be provided - following MCC pattern
+          if (!isRecord(req.body)) return true;
           
-          const day = req.body['dateOfBirth-day']?.trim();
-          const month = req.body['dateOfBirth-month']?.trim();
-          const year = req.body['dateOfBirth-year']?.trim();
+          const day = safeBodyString(req.body, 'dateOfBirth-day') as string;
+          const month = safeBodyString(req.body, 'dateOfBirth-month') as string;
+          const year = safeBodyString(req.body, 'dateOfBirth-year') as string;
           
-          const hasAnyDateField = Boolean(day && day !== '') || Boolean(month && month !== '') || Boolean(year && year !== '');
+          const hasAnyDateField = (typeof day === 'string' && day.trim().length > EMPTY) ||
+                                  (typeof month === 'string' && month.trim().length > EMPTY) ||
+                                  (typeof year === 'string' && year.trim().length > EMPTY);
           
           if (!hasAnyDateField) return true; // All empty is fine
           
-          if (value?.trim() === '' || value?.trim() === undefined) {
+          if (typeof value !== 'string' || value.trim().length === EMPTY) {
             return false; // Day is required if any date field is provided
           }
           
@@ -289,18 +292,20 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: (value: string, { req }: Meta) => {
-          if (!isPersonBody(req.body)) {return new TypedValidationError({
+          if (!isRecord(req.body)) {return new TypedValidationError({
             summaryMessage: t('forms.dateOfBirth.validationError.day.notEmpty'),
             inlineMessage: t('forms.dateOfBirth.validationError.day.notEmpty'),
           });}
           
-          const day = req.body['dateOfBirth-day']?.trim();
-          const month = req.body['dateOfBirth-month']?.trim();
-          const year = req.body['dateOfBirth-year']?.trim();
+          const day = safeBodyString(req.body, 'dateOfBirth-day') as string;
+          const month = safeBodyString(req.body, 'dateOfBirth-month') as string;
+          const year = safeBodyString(req.body, 'dateOfBirth-year') as string;
           
-          const hasAnyDateField = (day !== '' && day !== undefined) || (month !== '' && month !== undefined) || (year !== '' && year !== undefined);
+          const hasAnyDateField = (typeof day === 'string' && day.trim().length > EMPTY) ||
+                                  (typeof month === 'string' && month.trim().length > EMPTY) ||
+                                  (typeof year === 'string' && year.trim().length > EMPTY);
           
-          if (hasAnyDateField && (value?.trim() === '' || value?.trim() === undefined)) {
+          if (hasAnyDateField && (typeof value !== 'string' || value.trim().length === EMPTY)) {
             return new TypedValidationError({
               summaryMessage: t('forms.dateOfBirth.validationError.day.notEmpty'),
               inlineMessage: t('forms.dateOfBirth.validationError.day.notEmpty'),
@@ -327,17 +332,19 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
          */
         options: (value: string, { req }: Meta): boolean => {
           // If any date field is provided, all must be provided
-          if (!isPersonBody(req.body)) return true;
+          if (!isRecord(req.body)) return true;
           
-          const day = req.body['dateOfBirth-day']?.trim();
-          const month = req.body['dateOfBirth-month']?.trim();
-          const year = req.body['dateOfBirth-year']?.trim();
+          const day = safeBodyString(req.body, 'dateOfBirth-day') as string;
+          const month = safeBodyString(req.body, 'dateOfBirth-month') as string;
+          const year = safeBodyString(req.body, 'dateOfBirth-year') as string;
           
-          const hasAnyDateField = (day !== '' && day !== undefined) || (month !== '' && month !== undefined) || (year !== '' && year !== undefined);
+          const hasAnyDateField = (typeof day === 'string' && day.trim().length > EMPTY) ||
+                                  (typeof month === 'string' && month.trim().length > EMPTY) ||
+                                  (typeof year === 'string' && year.trim().length > EMPTY);
           
           if (!hasAnyDateField) return true; // All empty is fine
           
-          if (!value?.trim() || value?.trim() === '') {
+          if (typeof value !== 'string' || value.trim().length === EMPTY) {
             return false; // Month is required if any date field is provided
           }
           

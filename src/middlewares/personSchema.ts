@@ -27,6 +27,66 @@ function hasAnyDateField(day: string, month: string, year: string): boolean {
 }
 
 /**
+ * Checks if any date fields have been partially filled (MCC pattern)
+ * @param {unknown} body - Request body
+ * @returns {boolean} True if any date field has content
+ */
+function hasPartialDateFields(body: unknown): boolean {
+  if (!isRecord(body)) return false;
+  const { day, month, year } = getDateFields(body);
+  return hasAnyDateField(day, month, year);
+}
+
+/**
+ * Validates day field following MCC pattern
+ * @param {string} value - The day value 
+ * @param {unknown} body - Request body
+ * @returns {boolean} True if validation passes
+ */
+function validateDayField(value: string, body: unknown): boolean {
+  const currentValue = typeof value === 'string' ? value.trim() : '';
+  
+  if (!hasPartialDateFields(body)) return true; // All empty is fine
+  if (currentValue.length === EMPTY) return false; // Required if any field provided
+  
+  const dayNum = parseInt(currentValue);
+  return !isNaN(dayNum) && dayNum >= MIN_DAY && dayNum <= MAX_DAY;
+}
+
+/**
+ * Validates month field following MCC pattern
+ * @param {string} value - The month value
+ * @param {unknown} body - Request body
+ * @returns {boolean} True if validation passes
+ */
+function validateMonthField(value: string, body: unknown): boolean {
+  const currentValue = typeof value === 'string' ? value.trim() : '';
+  
+  if (!hasPartialDateFields(body)) return true; // All empty is fine
+  if (currentValue.length === EMPTY) return false; // Required if any field provided
+  
+  const monthNum = parseInt(currentValue);
+  return !isNaN(monthNum) && monthNum >= MIN_MONTH && monthNum <= MAX_MONTH;
+}
+
+/**
+ * Validates year field following MCC pattern
+ * @param {string} value - The year value
+ * @param {unknown} body - Request body
+ * @returns {boolean} True if validation passes
+ */
+function validateYearField(value: string, body: unknown): boolean {
+  const currentValue = typeof value === 'string' ? value.trim() : '';
+  
+  if (!hasPartialDateFields(body)) return true; // All empty is fine
+  if (currentValue.length === EMPTY) return false; // Required if any field provided
+  if (currentValue.length !== YEAR_LENGTH) return false;
+  
+  const yearNum = parseInt(currentValue);
+  return !isNaN(yearNum);
+}
+
+/**
  * Helper function to get safe date field values from request body
  * @param {unknown} body - Request body object
  * @returns {object} Object with day, month, year values
@@ -287,31 +347,7 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
          * @param {object} root0.req - Express request object
          * @returns {boolean} True if validation passes, false otherwise
          */
-        options: (value: string, { req }: Meta): boolean => {
-          // If any date field is provided, all must be provided - following MCC pattern
-          if (!isRecord(req.body)) return true;
-          
-          // For checking if other fields exist, we need to get raw values
-          // But for this field's validation, use the trimmed 'value' parameter
-          const dayValue = typeof value === 'string' ? value : '';
-          const monthValue = safeBodyString(req.body, 'dateOfBirth-month');
-          const yearValue = safeBodyString(req.body, 'dateOfBirth-year');
-          
-          const monthStr = typeof monthValue === 'string' ? monthValue.trim() : '';
-          const yearStr = typeof yearValue === 'string' ? yearValue.trim() : '';
-          
-          // Check if any field has content (use trimmed values)
-          const hasContent = dayValue.length > EMPTY || monthStr.length > EMPTY || yearStr.length > EMPTY;
-          
-          if (!hasContent) return true; // All empty is fine
-          
-          if (dayValue.length === EMPTY) {
-            return false; // Day is required if any date field is provided
-          }
-          
-          const dayNum = parseInt(dayValue);
-          return !isNaN(dayNum) && dayNum >= MIN_DAY && dayNum <= MAX_DAY;
-        },
+        options: (value: string, { req }: Meta): boolean => validateDayField(value, req.body),
         /**
          * Custom error message for dateOfBirth day field validation
          * @param {string} value - The day value from the form
@@ -347,31 +383,7 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
          * @param {object} root0.req - Express request object
          * @returns {boolean} True if validation passes, false otherwise
          */
-        options: (value: string, { req }: Meta): boolean => {
-          // If any date field is provided, all must be provided
-          if (!isRecord(req.body)) return true;
-          
-          // For checking if other fields exist, we need to get raw values
-          // But for this field's validation, use the trimmed 'value' parameter
-          const monthValue = typeof value === 'string' ? value : '';
-          const dayValue = safeBodyString(req.body, 'dateOfBirth-day');
-          const yearValue = safeBodyString(req.body, 'dateOfBirth-year');
-          
-          const dayStr = typeof dayValue === 'string' ? dayValue.trim() : '';
-          const yearStr = typeof yearValue === 'string' ? yearValue.trim() : '';
-          
-          // Check if any field has content (use trimmed values)
-          const hasContent = dayStr.length > EMPTY || monthValue.length > EMPTY || yearStr.length > EMPTY;
-          
-          if (!hasContent) return true; // All empty is fine
-          
-          if (monthValue.length === EMPTY) {
-            return false; // Month is required if any date field is provided
-          }
-          
-          const monthNum = parseInt(monthValue);
-          return !isNaN(monthNum) && monthNum >= MIN_MONTH && monthNum <= MAX_MONTH;
-        },
+        options: (value: string, { req }: Meta): boolean => validateMonthField(value, req.body),
         /**
          * Generates error message for dateOfBirth month field validation
          * @param {string} value - The month value from the form  
@@ -407,33 +419,7 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
          * @param {object} root0.req - Express request object
          * @returns {boolean} True if validation passes, false otherwise
          */
-        options: (value: string, { req }: Meta): boolean => {
-          // If any date field is provided, all must be provided - following MCC pattern
-          if (!isRecord(req.body)) return true;
-          
-          // For checking if other fields exist, we need to get raw values
-          // But for this field's validation, use the trimmed 'value' parameter
-          const yearValue = typeof value === 'string' ? value : '';
-          const dayValue = safeBodyString(req.body, 'dateOfBirth-day');
-          const monthValue = safeBodyString(req.body, 'dateOfBirth-month');
-          
-          const dayStr = typeof dayValue === 'string' ? dayValue.trim() : '';
-          const monthStr = typeof monthValue === 'string' ? monthValue.trim() : '';
-          
-          // Check if any field has content (use trimmed values)
-          const hasContent = dayStr.length > EMPTY || monthStr.length > EMPTY || yearValue.length > EMPTY;
-          
-          if (!hasContent) return true; // All empty is fine
-          
-          if (yearValue.length === EMPTY) {
-            return false; // Year is required if any date field is provided
-          }
-          
-          if (yearValue.length !== YEAR_LENGTH) return false;
-          
-          const yearNum = parseInt(yearValue);
-          return !isNaN(yearNum);
-        },
+        options: (value: string, { req }: Meta): boolean => validateYearField(value, req.body),
         /**
          * Generates error message for dateOfBirth year field validation
          * @param {string} value - The year value from the form

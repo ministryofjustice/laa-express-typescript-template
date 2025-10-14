@@ -20,9 +20,44 @@ A route is a section of Express code that associates an HTTP verb (`GET`, `POST`
 - Compiled JavaScript output is placed in the `public/` directory.
 - Do not edit files in `public/` directly; always edit the `.ts` source files.
 
+## API Connection Architecture
+
+The template organises API connection functionality across several key directories:
+
+#### `src/middleware/`
+- **`apiMiddleware.ts`** - Enhanced axios middleware with configurable instances, authentication support, and logging
+
+#### `src/services/`
+- **`baseApiService.ts`** - Abstract base class extracting common HTTP client patterns from MCC
+- **`exampleApiService.ts`** - Simple demonstration of BaseApiService usage (replace with your own services)
+
+#### `utils/`
+- **`axiosSetup.ts`** - Clean exports of enhanced middleware functionality and TypeScript interfaces
+
+#### Integration Pattern
+
+```typescript
+// Import the base service pattern
+import { BaseApiService } from '#src/services/baseApiService.js';
+
+// Import middleware utilities  
+import { createApiMiddleware } from '#utils/axiosSetup.js';
+import type { ApiMiddlewareConfig } from '#utils/axiosSetup.js';
+
+// Create domain-specific services by extending BaseApiService
+class MyApiService extends BaseApiService {
+  // Implement your API-specific methods here
+}
+```
+
+This architecture separates concerns between:
+- **Middleware layer** (`src/middleware/`) - Request/response handling, authentication, logging
+- **Service layer** (`src/services/`) - Domain-specific API logic and business operations  
+- **Utilities** (`utils/`) - Exports and configuration interfaces for easy imports
+
 ## Import paths and path aliases
 - The template uses path aliases (see `tsconfig.json`), such as `import foo from '#utils/foo'`.
-- Ensure your editor/IDE is configured to recognize these aliases for best developer experience.
+- Ensure your editor/IDE is configured to recognise these aliases for best developer experience.
 
 ## Running and debugging
 - The app is started using the compiled JS in `public/` (see `yarn dev` and `yarn start`).

@@ -90,7 +90,7 @@ Key configuration points:
 
 The tests are automatically run in our GitHub Actions workflow (`.github/workflows/playwright.yml`) during pull requests and deployments to UAT.
 
-- The workflow installs only the Chromium browser to optimize CI runtime
+- The workflow installs only the Chromium browser to optimise CI runtime
 - Traces are captured for all test runs in CI for easier debugging
 - Test artifacts (traces, videos) are preserved for 14 days in GitHub Actions
 
@@ -100,7 +100,7 @@ When tests fail in CI:
 
 1. Check the error message in the GitHub Actions log
 2. Download the trace artifacts (named `playwright-traces.zip`) from GitHub Actions
-3. Extract the downloaded ZIP file - inside you'll find folders organized by test name
+3. Extract the downloaded ZIP file - inside you'll find folders organised by test name
 4. Locate the `trace.zip` file within the specific test folder you want to debug
 5. Open traces using one of the following methods:
 

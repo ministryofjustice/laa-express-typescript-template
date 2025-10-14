@@ -32,7 +32,7 @@ export function initializeI18nextSync(): void {
       // Use type guard
       const localeData = isLocaleData(parsedData) ? parsedData : {};
 
-      // Initialize synchronously (blocks until complete)
+      // Initialise synchronously (blocks until complete)
       void i18next.init({
         lng: 'en',
         fallbackLng: 'en',
@@ -68,8 +68,8 @@ export function initializeI18nextSync(): void {
       });
     }
   } catch (error) {
-    console.error('Failed to initialize i18next synchronously:', error);
-    // Initialize with empty resources as fallback
+    console.error('Failed to initialise i18next synchronously:', error);
+    // Initialise with empty resources as fallback
     void i18next.init({
       lng: 'en',
       fallbackLng: 'en',
@@ -96,9 +96,9 @@ export { i18next };
  * @returns {string} The translated string
  */
 export const t = (key: string, options?: Record<string, unknown>): string => {
-  // Ensure i18next is initialized before calling translation
+  // Ensure i18next is initialised before calling translation
   if (!i18next.isInitialized) {
-    console.warn(`i18next not initialized when translating: ${key}`);
+    console.warn(`i18next not initialised when translating: ${key}`);
     return key; // Return the key as fallback
   }
 

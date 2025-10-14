@@ -1,7 +1,7 @@
 import { checkSchema, type Meta } from 'express-validator';
 import validator from 'validator';
 import { TypedValidationError } from '../helpers/ValidationErrorHelpers.js';
-import { hasProperty, isRecord, dateStringFromThreeFields } from '../helpers/dataTransformers.js';
+import { hasProperty, isRecord, dateStringFromThreeFields, safeBodyString } from '../helpers/dataTransformers.js';
 import { t } from '#src/scripts/helpers/i18nLoader.js';
 
 // Constants for validation boundaries
@@ -11,6 +11,7 @@ const MIN_MONTH = 1;
 const MAX_MONTH = 12;
 const YEAR_LENGTH = 4;
 const MIN_COMMUNICATION_METHODS = 1;
+const EMPTY = 0;
 
 interface PersonBody {
   fullName: string;
@@ -156,7 +157,7 @@ export const validatePerson = (): ReturnType<typeof checkSchema> =>
          */
         options: (value: string, { req }: Meta): boolean => {
           // Get original form data from session
-          const session = req.session;
+          const {session} = req;
           const originalData = session && isValidRecord(session) ? session.personOriginal : undefined;
           if (!isValidRecord(originalData)) {
             return true; // No original data to compare against

@@ -10,7 +10,7 @@ View the [full technical documentation here](https://ministryofjustice.github.io
 ## Get Started
 ### Prerequisites
 
-- node stable version [24.2.0](https://nodejs.org/en/blog/release/v24.2.0/)
+- node stable version [24.10.0](https://nodejs.org/en/blog/release/v24.10.0/)
 - [Yarn 4.9.2](https://yarnpkg.com/) package manager (see installation instructions below)
 - TypeScript 5.8.3
 

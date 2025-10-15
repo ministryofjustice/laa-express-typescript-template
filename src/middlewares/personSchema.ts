@@ -49,7 +49,7 @@ function validateDayField(value: string, body: unknown): boolean {
   if (!hasPartialDateFields(body)) return true; // All empty is fine
   if (currentValue.length === EMPTY) return false; // Required if any field provided
   
-  const dayNum = parseInt(currentValue);
+  const dayNum = parseInt(currentValue, 10);
   return !isNaN(dayNum) && dayNum >= MIN_DAY && dayNum <= MAX_DAY;
 }
 
@@ -65,7 +65,7 @@ function validateMonthField(value: string, body: unknown): boolean {
   if (!hasPartialDateFields(body)) return true; // All empty is fine
   if (currentValue.length === EMPTY) return false; // Required if any field provided
   
-  const monthNum = parseInt(currentValue);
+  const monthNum = parseInt(currentValue, 10);
   return !isNaN(monthNum) && monthNum >= MIN_MONTH && monthNum <= MAX_MONTH;
 }
 
@@ -82,7 +82,7 @@ function validateYearField(value: string, body: unknown): boolean {
   if (currentValue.length === EMPTY) return false; // Required if any field provided
   if (currentValue.length !== YEAR_LENGTH) return false;
   
-  const yearNum = parseInt(currentValue);
+  const yearNum = parseInt(currentValue, 10);
   return !isNaN(yearNum);
 }
 

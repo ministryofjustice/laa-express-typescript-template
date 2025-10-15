@@ -1,5 +1,7 @@
 import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
+import { validatePerson } from '#src/middlewares/personSchema.js';
+import { getPerson, postPerson } from '#src/controllers/personController.js';
 import { exampleApiService } from '#src/services/exampleApiService.js';
 
 // Create a new router
@@ -53,5 +55,11 @@ router.get('/error', function (req: Request, res: Response): void {
 	// Simulate an error
 	res.set('X-Error-Tag', 'TEST_500_ALERT').status(UNSUCCESSFUL_REQUEST).send('Internal Server Error');
 });
+
+// GET endpoint to render the person change form
+router.get('/change/person', getPerson);
+
+router.post('/change/person', validatePerson(), postPerson);
+
 
 export default router;

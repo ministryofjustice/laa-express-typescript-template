@@ -1,5 +1,4 @@
-/
-  import { test as base, expect } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
 import { AxeBuilder } from '@axe-core/playwright';
 import { PageFactory } from '../pages/PageFactory.js';
 

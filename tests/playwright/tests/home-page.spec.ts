@@ -9,14 +9,14 @@ test('homepage should have the correct title', async ({ page }) => {
 });
 
 test('homepage should display LAA header', async ({ page }) => {
-	await page.goto('/');
+  await page.goto('/');
 
-	// Check for the header with LAA branding
-	const header = page.getByRole('banner');
-	await expect(header).toBeVisible();
+  // Check for the header with LAA branding
+  const header = page.locator('.govuk-header, .govuk-template__header');
+  await expect(header).toBeVisible();
 
-	// Check for GOV.UK branding which is typically in the header
-	await expect(page.getByRole('link', { name: 'GOV.UK' })).toBeVisible();
+  // Check for GOV.UK branding which is typically in the header
+  await expect(page.getByRole('link', { name: 'GOV.UK' })).toBeVisible();
 });
 
 test('home page displays service name and mountains table', async ({ pages, checkAccessibility }) => {

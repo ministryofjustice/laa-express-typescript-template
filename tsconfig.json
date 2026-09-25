@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"target": "ES2022",
+		"lib": ["ES2022", "ES2023.Intl", "DOM"],
 		"module": "NodeNext",
 		"moduleResolution": "NodeNext",
 		"esModuleInterop": true,
@@ -15,7 +16,6 @@
 		"noImplicitAny": true, // Disallow implicit any types
 		"strict": true, // Enable all strict type-checking options
 		"forceConsistentCasingInFileNames": true, // Disallow inconsistently-cased references to the same file
-		"baseUrl": ".",
 		"paths": {
 			"#*": ["./*"]
 		}
@@ -33,7 +33,8 @@
 		"types/**/*.ts",
 		"playwright.config.ts",
 		"tests/**/*.spec.ts",
-		"tests/**/*.ts"
+		"tests/**/*.ts",
+		"packages/**/*.ts"
 	],
 	"exclude": [
 		"node_modules",

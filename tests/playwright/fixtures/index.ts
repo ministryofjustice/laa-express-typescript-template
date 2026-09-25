@@ -25,7 +25,15 @@ export const test = base.extend<TestFixtures>({
          */
         const checkAccessibility = async (): Promise<void> => {
         const accessibilityScanResults = await new AxeBuilder({ page })
-            .withTags(['wcag22a'])
+            .withTags([
+              "wcag2a",
+              "wcag2aa",
+              "wcag21a",
+              "wcag21aa",
+              "wcag22a",
+              "wcag22aa",
+            ])
+            .disableRules(["aria-allowed-attr"]) // https://github.com/w3c/aria/issues/1404
             .analyze();
 
         const { violations } = accessibilityScanResults;

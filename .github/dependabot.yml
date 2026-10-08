@@ -7,45 +7,56 @@
 version: 2
 
 updates:
-  - package-ecosystem: "terraform"
-    directory: "/terraform"
-    schedule:
-      interval: "weekly"
-    groups:
-      combined-dependencies:
-        patterns:
-          - "*"
-        update-types:
-          - "minor"
-          - "patch"
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    groups:
-      combined-dependencies:
-        patterns:
-          - "*"
-        update-types:
-          - "minor"
-          - "patch"
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    groups:
-      combined-dependencies:
-        patterns:
-          - "*"
-        update-types:
-          - "minor"
-          - "patch"
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 7
     groups:
-      combined-dependencies:
+      docker-minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+    groups:
+      github-actions-minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  - package-ecosystem: "helm"
+    directory: "/deploy"
+    cooldown:
+      default-days: 7
+    schedule:
+      interval: "weekly"
+    groups:
+      helm-minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+    groups:
+      npm-minor-and-patch:
         patterns:
           - "*"
         update-types:

@@ -3,6 +3,8 @@ on:
   workflow_dispatch: # Allow manual triggering only
   workflow_call: # Allow this workflow to be called by other workflows
 
+permissions: {}
+
 jobs:
   playwright:
     name: Playwright Tests
@@ -13,12 +15,13 @@ jobs:
       status: ${{ job.status }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0 # Fetch all history for proper change detection
+          persist-credentials: false
 
       - name: Setup Node and Dependencies
-        uses: ./.github/actions/setup-node
+        uses: $/.github/actions/setup-node
 
       - name: Build application
         run: yarn build
@@ -27,7 +30,7 @@ jobs:
         run: yarn playwright install chromium --with-deps
 
       - name: Cache Playwright browsers
-        uses: actions/cache@v4
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-chromium-${{ hashFiles('**/yarn.lock') }}
@@ -53,7 +56,7 @@ jobs:
           RATE_WINDOW_MS: "900000"
       - name: Upload trace artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: playwright-traces
           path: |
@@ -73,19 +76,20 @@ jobs:
       status: ${{ job.status }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Read Node version from .nvmrc
         run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_ENV
 
       - name: Set up Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # 7.1.0
         with:
           node-version: ${{ env.NODE_VERSION }}
         env:
-          SKIP_YARN_COREPACK_CHECK: '1'
+          SKIP_YARN_COREPACK_CHECK: "1"
 
       - name: Enable Corepack and prepare Yarn
         run: |
@@ -102,7 +106,7 @@ jobs:
         run: yarn playwright install chromium --with-deps
 
       - name: Cache Playwright browsers
-        uses: actions/cache@v4
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-chromium-${{ hashFiles('**/yarn.lock') }}
@@ -126,7 +130,7 @@ jobs:
 
       - name: Upload Accessibility Report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: accessibility-report
           path: |

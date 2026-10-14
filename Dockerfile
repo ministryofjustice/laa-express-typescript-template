@@ -1,40 +1,32 @@
-# Use the official Node.js image as the base image
-FROM node:26.9.0-alpine
-
-# Set the working directory inside the container
+FROM node:26.9.0-alpine@sha256:dbaa92e5758cbbcf85d65d5403fdb530fe3442cbe8c6dbfb7ef23365450d5070 AS base
 WORKDIR /app
 
-# Enable Corepack and prepare Yarn version
-RUN corepack enable && corepack prepare yarn@4.9.2 --activate
+# Install dependencies and build the application in a stage that isn't shipped.
+FROM base AS build
+# Node 26 no longer bundles Corepack.
+RUN npm install --global corepack@0.36.0 && corepack enable
+COPY package.json yarn.lock .yarnrc.yml ./
 
-# Copy package.json and yarn.lock to the working directory
-COPY package*.json yarn.lock .yarnrc.yml ./
-
-# Install dependencies
+# Copy manifests before source so source changes can reuse the dependency layer.
 RUN yarn install --immutable
+COPY . .
+RUN NODE_ENV=production yarn build
 
-# Create a non-root user
-RUN addgroup -g 1001 -S appuser && \
-    adduser -u 1001 -G appuser -S appuser
+# Keep only runtime dependencies in the tree copied into the final image.
+FROM build AS production-dependencies
+RUN YARN_ENABLE_IMMUTABLE_INSTALLS=true yarn workspaces focus --production
 
-# Copy the rest of the application code to the working directory
-# and set ownership to the non-root user
-COPY --chown=1001:1001 . .
-
-# Build the application
-RUN yarn build
-
-# Set ownership of all generated files to the non-root user
-RUN chown -R 1001:1001 /app
-
-# Switch to the non-root user by ID (not name)
-USER 1001
-
-# Set HOME environment variable to fix corepack cache issues
-ENV HOME=/app
-
-# Expose the port the app runs on
+# Assemble the runtime image from only the files the app needs.
+FROM base AS runtime
+ENV NODE_ENV=production
+COPY --from=production-dependencies /app/node_modules ./node_modules
+COPY --from=build /app/package.json ./package.json
+COPY --from=build /app/public/app.js ./public/app.js
+COPY --from=build /app/public/assets ./public/assets
+COPY --from=build /app/public/css ./public/css
+COPY --from=build /app/public/js ./public/js
+COPY --from=build /app/views ./views
+COPY --from=build /app/locales ./locales
+USER 1000:1000
 EXPOSE 3000
-
-# Define the command to run the application
 CMD ["node", "public/app.js"]

@@ -1,0 +1,24 @@
+services:
+  app:
+    init: true
+    build:
+      context: .
+    networks:
+      - laa
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: local
+      PORT: "3000"
+      SESSION_SECRET: ${SESSION_SECRET:?Set SESSION_SECRET in your local .env or shell}
+      SESSION_NAME: ${SESSION_NAME:-sessionId}
+      SERVICE_NAME: ${SERVICE_NAME:-Express Typescript Template}
+      SERVICE_PHASE: ${SERVICE_PHASE:-Alpha}
+      SERVICE_URL: ${SERVICE_URL:-http://localhost:3000}
+      DEPARTMENT_NAME: ${DEPARTMENT_NAME:-Legal Aid Agency}
+      DEPARTMENT_URL: ${DEPARTMENT_URL:-https://www.gov.uk/government/organisations/legal-aid-agency}
+      CONTACT_EMAIL: ${CONTACT_EMAIL:-}
+      CONTACT_PHONE: ${CONTACT_PHONE:-}
+
+networks:
+  laa:

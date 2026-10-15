@@ -64,7 +64,7 @@ function isAxiosErrorWithResponse(error: unknown): error is AxiosError & { respo
          error.response !== null &&
          typeof error.response === 'object' &&
          'status' in error.response &&
-         typeof (error.response as { status: unknown }).status === 'number';
+         typeof (error.response).status === 'number';
 }
 
 /**

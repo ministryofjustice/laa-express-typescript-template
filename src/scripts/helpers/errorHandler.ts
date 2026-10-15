@@ -36,7 +36,7 @@ function isAxiosError(error: unknown): error is { response: { status: number; da
     error.response !== null &&
     typeof error.response === 'object' &&
     'status' in error.response &&
-    typeof (error.response as { status: unknown }).status === 'number'
+    typeof (error.response).status === 'number'
   );
 }
 
@@ -51,7 +51,7 @@ function isNetworkError(error: unknown): error is { code: string; message?: stri
     error !== undefined &&
     typeof error === 'object' &&
     'code' in error &&
-    typeof (error as { code: unknown }).code === 'string'
+    typeof (error).code === 'string'
   );
 }
 
@@ -114,7 +114,7 @@ function getNetworkErrorMessage(code: string): string {
  */
 function extractResponseMessage(data: unknown): string | null {
   if (data !== null && data !== undefined && typeof data === 'object' && 'message' in data) {
-    const responseData = data as { message: unknown };
+    const responseData = data;
     return typeof responseData.message === 'string' ? responseData.message : null;
   }
   return null;

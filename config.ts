@@ -8,8 +8,8 @@ const MILLISECONDS_IN_A_MINUTE = 60000;
 const DEFAULT_PORT = 3000;
 
 // Validate required session env vars
-if (process.env.SESSION_SECRET == null || process.env.SESSION_SECRET === '' ||
-    process.env.SESSION_NAME == null || process.env.SESSION_NAME === '') {
+if (process.env.SESSION_SECRET === undefined || process.env.SESSION_SECRET === '' ||
+  process.env.SESSION_NAME === undefined || process.env.SESSION_NAME === '') {
   throw new Error('SESSION_SECRET and SESSION_NAME must be defined in environment variables.');
 }
 

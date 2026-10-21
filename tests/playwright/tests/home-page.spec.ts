@@ -19,7 +19,7 @@ test('homepage should display LAA header', async ({ page }) => {
   await expect(page.getByRole('link', { name: 'GOV.UK' })).toBeVisible();
 });
 
-test('home page displays service name and mountains table', async ({ pages, checkAccessibility }) => {
+test('home page displays service name and mountains table', async ({ pages }) => {
   const homePage = pages.homePage;
   
   // Navigate to home page
@@ -49,7 +49,12 @@ test('home page displays service name and mountains table', async ({ pages, chec
   await expect(everestRow).toContainText('Asia');
   await expect(everestRow).toContainText('1953');
   
-  // Run accessibility check
+});
+
+test('homepage should be accessible', { tag: '@accessibility' }, async ({ pages, checkAccessibility }) => {
+  await pages.homePage.navigate();
+  await pages.homePage.waitForLoad();
+
   await checkAccessibility();
 });
 

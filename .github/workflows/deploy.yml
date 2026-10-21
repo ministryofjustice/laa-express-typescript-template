@@ -54,13 +54,30 @@ jobs:
           docker build -t laa-manage-your-civil-cases ./
           docker save laa-manage-your-civil-cases -o image.tar
 
+      - name: Authenticate with Snyk
+        id: snyk-auth
+        uses: ministryofjustice/laa-reusable-github-actions/.github/actions/snyk-auth@29411bff7835740bdb7005f64b73f05f8a2ffd10 # main
+        with:
+          client_id: ${{ secrets.SNYK_CLIENT_ID }}
+          client_secret: ${{ secrets.SNYK_CLIENT_SECRET }}
+
+      - name: Validate and mask Snyk OAuth token
+        env:
+          SNYK_OAUTH_TOKEN: ${{ steps.snyk-auth.outputs.token }}
+        run: |
+          if [ -z "$SNYK_OAUTH_TOKEN" ] || [ "$SNYK_OAUTH_TOKEN" = "null" ]; then
+            echo "::error::Failed to obtain Snyk OAuth token"
+            exit 1
+          fi
+          echo "::add-mask::$SNYK_OAUTH_TOKEN"
+
       - name: Run Snyk to scan Docker image from tarball
         uses: snyk/actions/docker@9adf32b1121593767fc3c057af55b55db032dc04 # v1.0.0
         with:
           image: image.tar
           args: --docker --severity-threshold=high
         env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          SNYK_OAUTH_TOKEN: ${{ steps.snyk-auth.outputs.token }}
 
   mocha-unit-tests:
     name: Mocha Unit Tests

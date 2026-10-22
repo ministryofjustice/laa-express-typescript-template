@@ -1,6 +1,5 @@
 import type { Application } from 'express';
 import express from 'express';
-import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import config from '../config.js';
 
@@ -11,9 +10,6 @@ import config from '../config.js';
  * @returns {void} Sets up various middleware on the provided app instance.
  */
 export const setupMiddlewares = (app: Application): void => {
-  // Parses cookies and adds them to req.cookies
-  app.use(cookieParser());
-
   // Parses URL-encoded bodies (form submissions)
   app.use(bodyParser.urlencoded({ extended: true }));
 

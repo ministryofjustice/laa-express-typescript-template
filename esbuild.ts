@@ -55,7 +55,6 @@ const externalModules: string[] = [
   'nunjucks',
   'dotenv',
   'cookie-signature',
-  'cookie-parser',
   'body-parser',
   'express-session',
   'morgan',

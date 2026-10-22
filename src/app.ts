@@ -25,7 +25,7 @@ const createApp = (): express.Application => {
 
 	const app = express();
 
-	// Set up common middleware for handling cookies, body parsing, etc.
+	// Set up common middleware for body parsing and static files.
 	setupMiddlewares(app);
 
 	app.use(axiosMiddleware);

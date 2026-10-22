@@ -1,4 +1,4 @@
-FROM node:26.9.0-alpine@sha256:dbaa92e5758cbbcf85d65d5403fdb530fe3442cbe8c6dbfb7ef23365450d5070 AS base
+FROM node:26.12.0-alpine@sha256:6f08a523443ddedf52941874c203475b0ad503e859ad70cb26ab8be9a517dbd5 AS base
 # The pinned base image predates the Alpine zlib security fix.
 # Check https://hub.docker.com/_/node for refreshed images, then verify with:
 # docker run --rm --entrypoint sh <candidate-image> -c 'apk list --installed zlib'

@@ -1,11 +1,10 @@
 import type { Request, Response } from 'express';
 import express from 'express';
-import chalk from 'chalk';
 import morgan from 'morgan';
 import compression from 'compression';
 import { setupCsrf, setupMiddlewares, setupConfig, setupLocaleMiddleware } from '#middleware/index.js';
 import session from 'express-session';
-import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner } from '#utils/index.js';
+import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware } from '#utils/index.js';
 import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
 import config from '#config.js';
 import indexRouter from '#routes/index.js';
@@ -90,12 +89,9 @@ const createApp = (): express.Application => {
 		app.use(livereload());
 	}
 
-	// Display ASCII Art banner
-	displayAsciiBanner(config);
-
 	// Starts the Express server on the specified port
 	app.listen(config.app.port, () => {
-		console.log(chalk.yellow(`Listening on port ${config.app.port}...`));
+		console.log(`${config.SERVICE_NAME ?? 'Service'} is listening at http://localhost:${config.app.port}`);
 	});
 
 	return app;

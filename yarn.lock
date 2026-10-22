@@ -1096,13 +1096,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/figlet@npm:^1.7.0":
-  version: 1.7.0
-  resolution: "@types/figlet@npm:1.7.0"
-  checksum: 10c0/d33a07727e35d6b9ccb47c863d2d9c84b6cd23d2935cf904c495fce687558c842063a7e01176c03a354a2f40f2781004cce66ae446462e5f73c4ee23d7956daa
-  languageName: node
-  linkType: hard
-
 "@types/fs-extra@npm:^11.0.4":
   version: 11.0.4
   resolution: "@types/fs-extra@npm:11.0.4"
@@ -2027,13 +2020,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "chalk@npm:6.0.1"
-  checksum: 10c0/4c58238fa874f531b5201bf99ebd374742be31f8e306c7783d930856aec305f2dea3e07531a8805b2a7ba92807296e39ced52e9f673703e0264d96e83998a429
-  languageName: node
-  linkType: hard
-
 "chokidar@npm:5.0.0, chokidar@npm:^5.0.0":
   version: 5.0.0
   resolution: "chokidar@npm:5.0.0"
@@ -2125,13 +2111,6 @@ __metadata:
   dependencies:
     delayed-stream: "npm:~1.0.0"
   checksum: 10c0/0dbb829577e1b1e839fa82b40c07ffaf7de8a09b935cadd355a73652ae70a88b4320db322f6634a4ad93424292fa80973ac6480986247f1734a1137debf271d5
-  languageName: node
-  linkType: hard
-
-"commander@npm:^14.0.0":
-  version: 14.0.1
-  resolution: "commander@npm:14.0.1"
-  checksum: 10c0/64439c0651ddd01c1d0f48c8f08e97c18a0a1fa693879451f1203ad01132af2c2aa85da24cf0d8e098ab9e6dc385a756be670d2999a3c628ec745c3ec124587b
   languageName: node
   linkType: hard
 
@@ -3047,17 +3026,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"figlet@npm:^1.12.0":
-  version: 1.12.0
-  resolution: "figlet@npm:1.12.0"
-  dependencies:
-    commander: "npm:^14.0.0"
-  bin:
-    figlet: bin/index.js
-  checksum: 10c0/8aa6c2eab183eaa24bafb4a5ccd17df4008db5af0ae7195f850e0ab108999f524f0c4d36f3e7fbdfd4d9e81eabb920dcaf968f0b919bb44955849b0bcb2bf64c
-  languageName: node
-  linkType: hard
-
 "file-entry-cache@npm:11.1.5 || >11.1.6 <12":
   version: 11.1.5
   resolution: "file-entry-cache@npm:11.1.5"
@@ -3893,7 +3861,6 @@ __metadata:
     "@types/connect-livereload": "npm:^0.6.3"
     "@types/express": "npm:^5.0.6"
     "@types/express-session": "npm:^1.19.0"
-    "@types/figlet": "npm:^1.7.0"
     "@types/fs-extra": "npm:^11.0.4"
     "@types/jsdom": "npm:^30.0.0"
     "@types/livereload": "npm:^0.9.5"
@@ -3911,7 +3878,6 @@ __metadata:
     body-parser: "npm:^2.3.0"
     c8: "npm:^12.0.0"
     chai: "npm:^6.3.0"
-    chalk: "npm:^6.0.1"
     chokidar: "npm:5.0.0"
     compression: "npm:^1.8.2"
     concurrently: "npm:^10.0.6"
@@ -3928,7 +3894,6 @@ __metadata:
     express-rate-limit: "npm:^8.7.1"
     express-session: "npm:^1.19.0"
     express-validator: "npm:^7.3.0"
-    figlet: "npm:^1.12.0"
     fs-extra: "npm:^11.4.0"
     globals: "npm:^17.13.0"
     govuk-frontend: "npm:^6.6.0"

@@ -64,7 +64,6 @@ const externalModules: string[] = [
   'util',
   'path',
   'fs',
-  'figlet',
   'csrf-sync',
   'http-errors',
   '*.node'

@@ -2,7 +2,7 @@ import esbuild from 'esbuild';
 import { sassPlugin } from 'esbuild-sass-plugin';
 import { builtinModules } from 'node:module';
 import dotenv from 'dotenv';
-import fs from 'fs-extra';
+import { cp } from 'node:fs/promises';
 import path from 'node:path';
 import chokidar from 'chokidar';
 import { getBuildNumber } from './utils/buildHelper.js';
@@ -24,19 +24,22 @@ const SECOND_IN_ARRAY = 1;
 const copyAssets = async (): Promise<void> => {
   try {
     // GOV.UK assets
-    await fs.copy(
+    await cp(
       path.resolve('./node_modules/govuk-frontend/dist/govuk/assets'),
-      path.resolve('./public/assets')
+      path.resolve('./public/assets'),
+      { recursive: true }
     );
     // Copy MOJ Frontend assets
-    await fs.copy(
+    await cp(
       path.resolve('./node_modules/@ministryofjustice/frontend/moj/assets/images'),
-      path.resolve('./public/assets/images')
+      path.resolve('./public/assets/images'),
+      { recursive: true }
     );
     // Copy Images
-    await fs.copy(
+    await cp(
       path.resolve('./src/images'),
-      path.resolve('./public/assets/images')
+      path.resolve('./public/assets/images'),
+      { recursive: true }
     );
     console.log('✅ GOV.UK assets, MOJ Frontend assets & Images copied successfully.');
   } catch (error) {

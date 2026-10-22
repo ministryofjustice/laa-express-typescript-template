@@ -21,6 +21,7 @@
     "test": "yarn test:unit && yarn test:e2e",
     "test:unit": "./node_modules/.bin/mocha",
     "test:e2e": "yarn playwright test --config=tests/playwright/playwright.config.ts",
+    "test:accessibility": "yarn test:e2e --grep @accessibility",
     "coverage": "c8 yarn test:unit --check-coverage"
   },
   "engines": {
@@ -51,7 +52,7 @@
     "moment": "^2.31.0",
     "morgan": "~1.12.1",
     "nunjucks": "^3.2.4",
-    "validator": "^13.15.15"
+    "validator": "^13.15.35"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",

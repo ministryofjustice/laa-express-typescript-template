@@ -37,9 +37,9 @@ function safeStringValue(value: unknown, defaultValue: string): string {
  * @returns {{ day: string; month: string; year: string }} The safe date of birth object
  */
 function safeDateOfBirth(value: unknown): { day: string; month: string; year: string } {
-  if (typeof value === 'object' && value !== null && 
-      'day' in value && 'month' in value && 'year' in value) {
-    const dob = value as { day: unknown; month: unknown; year: unknown };
+  if (typeof value === 'object' && value !== null &&
+    'day' in value && 'month' in value && 'year' in value) {
+    const dob = value;
     return {
       day: typeof dob.day === 'string' ? dob.day : DEFAULT_PERSON_DATA.dateOfBirth.day,
       month: typeof dob.month === 'string' ? dob.month : DEFAULT_PERSON_DATA.dateOfBirth.month,
@@ -56,7 +56,7 @@ function safeDateOfBirth(value: unknown): { day: string; month: string; year: st
  */
 function getCurrentPersonData(req: Request): typeof DEFAULT_PERSON_DATA {
   const sessionData = getSessionData(req, 'currentPerson');
-  if (sessionData != null) {
+  if (sessionData !== null) {
     return {
       fullName: safeStringValue(sessionData.fullName, DEFAULT_PERSON_DATA.fullName),
       address: safeStringValue(sessionData.address, DEFAULT_PERSON_DATA.address),
@@ -78,7 +78,7 @@ export function getPerson(req: RequestWithCSRF, res: Response, next: NextFunctio
   try {
     const csrfToken = typeof req.csrfToken === 'function' ? req.csrfToken() : undefined;
     const currentPersonData = getCurrentPersonData(req);
-    
+
     // Store original form data for comparison (following MCC pattern)
     const originalFormData = {
       fullName: currentPersonData.fullName,
@@ -90,7 +90,7 @@ export function getPerson(req: RequestWithCSRF, res: Response, next: NextFunctio
       'dateOfBirth-year': currentPersonData.dateOfBirth.year
     };
     storeOriginalFormData(req, 'personOriginal', originalFormData);
-    
+
     res.render('change-person.njk', {
       currentName: currentPersonData.fullName,
       currentAddress: currentPersonData.address,
@@ -116,26 +116,26 @@ export function getPerson(req: RequestWithCSRF, res: Response, next: NextFunctio
 export function postPerson(req: RequestWithCSRF, res: Response, next: NextFunction): void {
   try {
     const csrfToken = typeof req.csrfToken === 'function' ? req.csrfToken() : undefined;
-    
+
     // Extract form fields for consistent handling
     const formFields = extractFormFields(req.body, [
-      'fullName', 
-      'address', 
+      'fullName',
+      'address',
       'contactPreference',
       'priority',
-      'dateOfBirth-day', 
-      'dateOfBirth-month', 
+      'dateOfBirth-day',
+      'dateOfBirth-month',
       'dateOfBirth-year'
     ]);
-    
+
     // Check for validation errors
     const validationErrors = validationResult(req);
-    
+
     if (!validationErrors.isEmpty()) {
       // Use the new formatValidationErrors helper
       const { inputErrors, errorSummaryList } = formatValidationErrors(validationErrors);
       const currentPersonData = getCurrentPersonData(req);
-      
+
       // Re-render the form with errors and preserve user input
       res.status(HTTP_STATUS_BAD_REQUEST).render('change-person.njk', {
         currentName: currentPersonData.fullName,
@@ -152,7 +152,7 @@ export function postPerson(req: RequestWithCSRF, res: Response, next: NextFuncti
       });
       return;
     }
-    
+
     // Success case - update the stored person data and show success
     const updatedPersonData = {
       fullName: String(formFields.fullName),
@@ -162,13 +162,13 @@ export function postPerson(req: RequestWithCSRF, res: Response, next: NextFuncti
       'dateOfBirth-month': String(formFields['dateOfBirth-month']),
       'dateOfBirth-year': String(formFields['dateOfBirth-year'])
     };
-    
+
     // Store the updated data in session
     storeSessionData(req, 'currentPerson', updatedPersonData);
-    
+
     // Get the updated data for display
     const currentPersonData = getCurrentPersonData(req);
-    
+
     // Render the form again with the updated data and success state
     res.render('change-person.njk', {
       currentName: currentPersonData.fullName,
@@ -177,8 +177,8 @@ export function postPerson(req: RequestWithCSRF, res: Response, next: NextFuncti
       currentPriority: currentPersonData.priority,
       currentDateOfBirth: currentPersonData.dateOfBirth,
       csrfToken,
-      formData: { 
-        fullName: '', 
+      formData: {
+        fullName: '',
         address: '',
         contactPreference: '',
         priority: '',
@@ -189,7 +189,7 @@ export function postPerson(req: RequestWithCSRF, res: Response, next: NextFuncti
       error: null,
       successMessage: 'Person details updated successfully'
     });
-    
+
   } catch (error) {
     next(error);
   }

@@ -30,6 +30,7 @@ This command will first run the unit tests with Mocha and then run the end-to-en
 | `yarn test` | Run all tests (unit + e2e) |
 | `yarn test:unit` | Run only unit tests |
 | `yarn test:e2e` | Run all E2E tests |
+| `yarn test:accessibility` | Run only accessibility tests |
 | `yarn coverage` | Run unit tests with coverage report |
 
 ## Unit/Integration Testing frameworks
@@ -143,7 +144,9 @@ This project includes automated accessibility testing using [axe-core](https://g
 
 - Accessibility tests run automatically as part of the CI pipeline in a separate parallel job
 - Tests scan each page for WCAG violations using axe-core rules: `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`, `wcag22aa`
-- Each major page has a corresponding accessibility test (e.g., `homepage should be accessible`, `search page should be accessible`)
+- Accessibility tests use the `@accessibility` tag so CI can run them separately from functional tests
+- Each rendered page has a dedicated accessibility test: the homepage (`/`) and change person form (`/change/person`)
+- Add a tagged accessibility test for each new page as it is introduced; JSON API and plain-text health-check routes are not pages
 
 ### Running Accessibility Tests Locally
 
@@ -155,7 +158,7 @@ yarn test:accessibility
 yarn test:e2e
 
 # Run accessibility tests in UI mode for debugging
-yarn playwright test --config=tests/playwright/playwright.config.ts --grep @accessibility
+yarn test:accessibility --ui
 ```
 
 ### CI Integration
@@ -163,7 +166,7 @@ yarn playwright test --config=tests/playwright/playwright.config.ts --grep @acce
 Accessibility tests run in parallel with functional E2E tests in the GitHub Actions workflow:
 
 - **Functional Tests Job**: Runs all E2E tests except accessibility tests
-- **Accessibility Tests Job**: Runs only accessibility tests (filtered by `"should be accessible"`)
+- **Accessibility Tests Job**: Runs only tests tagged `@accessibility`
 
 Both jobs must pass for deployment to proceed.
 
@@ -200,15 +203,15 @@ To add accessibility testing to a new page:
 
 ```typescript
 // In your test file: tests/playwright/tests/your-page.spec.ts
-import { test, expect } from '../fixtures/index.js';
+import { test } from '../fixtures/index.js';
 
-test('page name should be accessible', async ({ page, checkAccessibility }) => {
+test('page name should be accessible', { tag: '@accessibility' }, async ({ page, checkAccessibility }) => {
   await page.goto('/your-page-url');
   await checkAccessibility();
 });
 ```
 
-The `checkAccessibility` fixture is available in all test files and will automatically scan the current page for WCAG 2.2 Level A violations.
+The `checkAccessibility` fixture is available in all test files. Calling it scans the current page for WCAG 2.2 Level A and AA violations. Tag each accessibility test with `@accessibility` so the CI accessibility job discovers it.
 
 ## Code coverage - unit tests
 We use the library [c8](https://github.com/bcoe/c8) which output unit test coverage reports using Node.js' built in coverage.

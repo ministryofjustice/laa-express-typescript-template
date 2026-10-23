@@ -30,7 +30,7 @@
   "dependencies": {
     "@ministryofjustice/frontend": "^11.0.1",
     "axios": "1.20.0",
-    "body-parser": "^2.3.0",
+    "body-parser": "^2.4.0",
     "compression": "^1.8.2",
     "csrf-sync": "^4.2.1",
     "dotenv": "^18.0.8",

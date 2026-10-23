@@ -61,7 +61,7 @@ This architecture separates concerns between:
 
 ## Running and debugging
 - The app is started using the compiled JS in `public/` (see `yarn dev` and `yarn start`).
-- If you want to run TypeScript directly (e.g., for debugging), consider using `ts-node` or a similar tool, but this is not the default workflow.
+- To run TypeScript directly (e.g., for debugging), use `yarn tsx path/to/script.ts`. The template also uses `tsx` to load TypeScript unit tests.
 
 ## Development workflow
 The template uses ESBuild for fast compilation and bundling with watch mode for automatic rebuilds during development. The development workflow is managed through the `yarn dev` script which concurrently runs:

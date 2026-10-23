@@ -39,10 +39,10 @@ export default [
       jsdoc: jsdocPlugin
     },
     rules: {
-      'indent': 'off', // Prettier is handling this
-      'linebreak-style': 'off', // Prettier is handling this
-      'quotes': 'off', // Prettier is handling this
-      'semi': 'off', // Prettier is handling this
+      'indent': 'off',
+      'linebreak-style': 'off',
+      'quotes': 'off',
+      'semi': 'off',
       'no-console': 'off', // Stops complaining about putting messages in the console
       'no-param-reassign': ['error', { props: false }], // Allow modifying properties of function parameters (common in Express middleware and reducers)
       'no-negated-condition': 'off', // Allow negated conditions as they can improve readability in certain contexts

@@ -4,7 +4,6 @@ import { builtinModules } from 'node:module';
 import dotenv from 'dotenv';
 import { cp } from 'node:fs/promises';
 import path from 'node:path';
-import chokidar from 'chokidar';
 import { getBuildNumber } from './utils/buildHelper.js';
 import type { SassPluginOptions } from './types/sass-plugin-types.js';
 
@@ -248,24 +247,6 @@ const watchBuild = async (): Promise<void> => {
       buildFrontendPackages(true)
     ]);
 
-    // Watch for asset changes and copy them
-    const assetWatcher = chokidar.watch(['node_modules/govuk-frontend/dist/govuk/assets/**/*', 'node_modules/@ministryofjustice/frontend/moj/assets/images/**/*'], {
-      ignored: /node_modules\/(?!govuk-frontend|@ministryofjustice)/v,
-      persistent: true
-    });
-
-    /**
-     * Handles asset file changes by copying assets.
-     * @returns {void}
-     */
-    const handleAssetChange = (): void => {
-      copyAssets().catch((error: unknown) => {
-        console.error('❌ Failed to copy assets on change:', error);
-      });
-    };
-
-    assetWatcher.on('change', handleAssetChange);
-
     console.log('✅ Watch mode started successfully. Watching for file changes...');
 
     // Keep the process alive
@@ -280,7 +261,6 @@ const watchBuild = async (): Promise<void> => {
           .filter((context): context is esbuild.BuildContext => context !== undefined)
           .map(async (context) => { await context.dispose(); })
       ).then(() => {
-        void assetWatcher.close();
         process.exit(NO_MORE_ASYNC_OPERATIONS);
       }).catch((error: unknown) => {
         console.error('❌ Error during cleanup:', error);

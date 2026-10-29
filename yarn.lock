@@ -952,15 +952,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/livereload@npm:^0.9.5":
-  version: 0.9.5
-  resolution: "@types/livereload@npm:0.9.5"
-  dependencies:
-    "@types/ws": "npm:*"
-  checksum: 10c0/063d6c517643472f80780a66081ed4166777918011aaa1aa8c54b04c24a2e0f51eb900d2b45341ac6aa8a381d3cff231f7d88a177eee47f2891362d3630f0901
-  languageName: node
-  linkType: hard
-
 "@types/methods@npm:^1.1.4":
   version: 1.1.4
   resolution: "@types/methods@npm:1.1.4"
@@ -1128,15 +1119,6 @@ __metadata:
   version: 13.15.10
   resolution: "@types/validator@npm:13.15.10"
   checksum: 10c0/3e2e65fcd37dd6961ca3fd0535293d0c42f5911dc3ca44b96f458835e6db2392b678ccbb0c9815d8c0a14e653439e6c62c7b8758a6cd1d6e390551c9e56618ac
-  languageName: node
-  linkType: hard
-
-"@types/ws@npm:*":
-  version: 8.18.1
-  resolution: "@types/ws@npm:8.18.1"
-  dependencies:
-    "@types/node": "npm:*"
-  checksum: 10c0/61aff1129143fcc4312f083bc9e9e168aa3026b7dd6e70796276dcfb2c8211c4292603f9c4864fae702f2ed86e4abd4d38aa421831c2fd7f856c931a481afbab
   languageName: node
   linkType: hard
 
@@ -1776,15 +1758,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chokidar@npm:5.0.0, chokidar@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "chokidar@npm:5.0.0"
-  dependencies:
-    readdirp: "npm:^5.0.0"
-  checksum: 10c0/42fc907cb2a7ff5c9e220f84dae75380a77997f851c2a5e7865a2cf9ae45dd407a23557208cdcdbf3ac8c93341135a1748e4c48c31855f3bfa095e5159b6bdec
-  languageName: node
-  linkType: hard
-
 "chokidar@npm:^3.5.2":
   version: 3.6.0
   resolution: "chokidar@npm:3.6.0"
@@ -1804,12 +1777,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chokidar@npm:^4.0.3":
-  version: 4.0.3
-  resolution: "chokidar@npm:4.0.3"
+"chokidar@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "chokidar@npm:5.0.0"
   dependencies:
-    readdirp: "npm:^4.0.1"
-  checksum: 10c0/a58b9df05bb452f7d105d9e7229ac82fa873741c0c40ddcc7bb82f8a909fbe3f7814c9ebe9bc9a2bef9b737c0ec6e2d699d179048ef06ad3ec46315df0ebe6ad
+    readdirp: "npm:^5.0.0"
+  checksum: 10c0/42fc907cb2a7ff5c9e220f84dae75380a77997f851c2a5e7865a2cf9ae45dd407a23557208cdcdbf3ac8c93341135a1748e4c48c31855f3bfa095e5159b6bdec
   languageName: node
   linkType: hard
 
@@ -3484,7 +3457,6 @@ __metadata:
     "@types/connect-livereload": "npm:^0.6.3"
     "@types/express": "npm:^5.0.6"
     "@types/express-session": "npm:^1.19.0"
-    "@types/livereload": "npm:^0.9.5"
     "@types/mocha": "npm:^10.0.10"
     "@types/morgan": "npm:^1.9.9"
     "@types/node": "npm:^26.6.5"
@@ -3498,7 +3470,6 @@ __metadata:
     body-parser: "npm:^2.4.0"
     c8: "npm:^12.0.0"
     chai: "npm:^6.3.0"
-    chokidar: "npm:5.0.0"
     compression: "npm:^1.8.2"
     concurrently: "npm:^10.0.6"
     connect-livereload: "npm:^0.6.1"
@@ -3520,7 +3491,6 @@ __metadata:
     husky: "npm:^9.1.7"
     i18next: "npm:^26.4.5"
     lint-staged: "npm:^17.6.0"
-    livereload: "npm:^0.10.2"
     middleware-axios: "npm:^3.0.0"
     mocha: "npm:^12.0.3"
     moment: "npm:^2.31.0"
@@ -3564,27 +3534,6 @@ __metadata:
   bin:
     lint-staged: bin/lint-staged.js
   checksum: 10c0/016905cebb46de70ff8de63db8527592d595709b31982f274677f252ac2037f2e446c92e0662ef6ba6a0dbf42e36324ae30df4d8b4cbc5032d219343cc306512
-  languageName: node
-  linkType: hard
-
-"livereload-js@npm:^4.0.2":
-  version: 4.0.2
-  resolution: "livereload-js@npm:4.0.2"
-  checksum: 10c0/e79f1c87e92874b7d6a3992143f856d74bfae77abcc761357078e38b0247ddb773f3e2515b5342229ded8d0cd26b2d687cb04c1a7b93c3e8b390152844adb353
-  languageName: node
-  linkType: hard
-
-"livereload@npm:^0.10.2":
-  version: 0.10.3
-  resolution: "livereload@npm:0.10.3"
-  dependencies:
-    chokidar: "npm:^4.0.3"
-    livereload-js: "npm:^4.0.2"
-    opts: "npm:^2.0.2"
-    ws: "npm:^8.4.3"
-  bin:
-    livereload: bin/livereload.js
-  checksum: 10c0/4e39d6c9b6a321d51f0e787b7b54b36b5778383da81a91d382d0a4863fb3518075a2b2b98f8fa93921df5ebedcb4373b60987308486a4d1be0dbe08ab1f9a7dd
   languageName: node
   linkType: hard
 
@@ -4094,13 +4043,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"opts@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "opts@npm:2.0.2"
-  checksum: 10c0/c6056d5c959f8f3e221c16cf5cf16eae0ed6cc36c6944d3bd0e8affa1dd7c8c9da47343a62bb1a98cfe3b3dce3c088f9cbb90d97b6b0286372a5c7c2281c8ebb
-  languageName: node
-  linkType: hard
-
 "outvariant@npm:^1.4.3":
   version: 1.4.3
   resolution: "outvariant@npm:1.4.3"
@@ -4349,13 +4291,6 @@ __metadata:
     iconv-lite: "npm:~0.7.0"
     unpipe: "npm:~1.0.0"
   checksum: 10c0/d266678d08e1e7abea62c0ce5864344e980fa81c64f6b481e9842c5beaed2cdcf975f658a3ccd67ad35fc919c1f6664ccc106067801850286a6cbe101de89f29
-  languageName: node
-  linkType: hard
-
-"readdirp@npm:^4.0.1":
-  version: 4.1.2
-  resolution: "readdirp@npm:4.1.2"
-  checksum: 10c0/60a14f7619dec48c9c850255cd523e2717001b0e179dc7037cfa0895da7b9e9ab07532d324bfb118d73a710887d1e35f79c495fa91582784493e085d18c72c62
   languageName: node
   linkType: hard
 
@@ -5563,21 +5498,6 @@ __metadata:
   version: 1.0.2
   resolution: "wrappy@npm:1.0.2"
   checksum: 10c0/56fece1a4018c6a6c8e28fbc88c87e0fbf4ea8fd64fc6c63b18f4acc4bd13e0ad2515189786dd2c30d3eec9663d70f4ecf699330002f8ccb547e4a18231fc9f0
-  languageName: node
-  linkType: hard
-
-"ws@npm:^8.4.3":
-  version: 8.22.0
-  resolution: "ws@npm:8.22.0"
-  peerDependencies:
-    bufferutil: ^4.0.1
-    utf-8-validate: ">=5.0.2"
-  peerDependenciesMeta:
-    bufferutil:
-      optional: true
-    utf-8-validate:
-      optional: true
-  checksum: 10c0/7304d14ef38898dd366a528a85e2da389c4eebf30f4ce8a007bd2dce6025f9b619cefe44fe2354f0bad0ec541b1c9a4da06a3f3e046ab56f01fd52d5784ecfb2
   languageName: node
   linkType: hard
 

@@ -68,7 +68,7 @@
     "@typescript-eslint/parser": "^8.71.2",
     "c8": "^12.0.0",
     "chai": "^6.3.0",
-    "chokidar": "5.0.0",
+    "chokidar": "6.0.0",
     "concurrently": "^10.0.6",
     "connect-livereload": "^0.6.1",
     "esbuild": "^0.28.2",

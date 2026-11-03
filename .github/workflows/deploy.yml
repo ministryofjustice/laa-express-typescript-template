@@ -95,6 +95,8 @@ jobs:
     permissions:
       contents: read
       id-token: write
+      actions: read
+      security-events: write
     with:
       environment: dev #--Requires multiple Github Environments set up in CP
       app_name: laa-express-typescript-template

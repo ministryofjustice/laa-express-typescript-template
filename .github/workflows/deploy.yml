@@ -92,6 +92,9 @@ jobs:
 
   cp_build_and_deploy:
     uses: ministryofjustice/laa-reusable-github-actions/.github/workflows/cp-build-push-deploy.yml@add-snyk-secrets-to-cp-build-and-deploy
+    permissions:
+      contents: read
+      id-token: write
     with:
       environment: dev #--Requires multiple Github Environments set up in CP
       app_name: laa-express-typescript-template

@@ -1,6 +1,6 @@
 ---
 title: Template structure
-last_reviewed_on: 2025-10-02
+last_reviewed_on: 2026-11-04
 review_in: 6 weeks
 ---
 
@@ -28,11 +28,17 @@ The template organises API connection functionality across several key directori
 - **`apiMiddleware.ts`** - Enhanced axios middleware with configurable instances, authentication support, and logging
 
 #### `src/services/`
-- **`baseApiService.ts`** - Abstract base class extracting common HTTP client patterns from MCC
+- **`baseApiService.ts`** - Abstract base class extracting common HTTP client patterns
 - **`exampleApiService.ts`** - Simple demonstration of BaseApiService usage (replace with your own services)
 
 #### `utils/`
 - **`axiosSetup.ts`** - Clean exports of enhanced middleware functionality and TypeScript interfaces
+
+#### `middleware/` (root level)
+- **`commonMiddleware.ts`** - Application-wide middleware configuration
+- **`setupCsrf.ts`** - CSRF protection setup
+- **`setupLocale.ts`** - Locale/internationalization setup
+- **`setupConfigs.ts`** - Application configuration setup
 
 #### Integration Pattern
 
@@ -51,7 +57,7 @@ class MyApiService extends BaseApiService {
 ```
 
 This architecture separates concerns between:
-- **Middleware layer** (`src/middleware/`) - Request/response handling, authentication, logging
+- **Middleware layer** (`src/middleware/` and `middleware/`) - Request/response handling, authentication, logging, CSRF protection
 - **Service layer** (`src/services/`) - Domain-specific API logic and business operations  
 - **Utilities** (`utils/`) - Exports and configuration interfaces for easy imports
 
@@ -105,33 +111,49 @@ This command builds the template initially and then sets up all watch processes 
 
 
 ## Deployment files
-The template has an outline of how you might want to deploy your application to a hosted cloud service. The initial configuration can be enhanced to do the following;
 
-- Enhance the `.github/workflows/deploy.yml` file, to deploy a docker image to a namespace in the hosted cloud service using Helm values found in the template
-- Add a `.github/actions/deploy/action.yml` file to Deploy docker image to namespace
-- Add a `.github/actions/build_and_push/action.yml` file to Build Image and Push to a Container Registry (with caching)
-
-The file structure would look like this;
+The template includes deployment configuration files for deploying to a hosted cloud service:
 
 ```yaml
 .github/
   actions/
-    build_and_push/
-      action.yml
-    deploy/
-      action.yml
+    setup-node/
+      action.yml         # Custom action for Node.js setup
   workflows/
-    deploy.yml
+    deploy.yml           # CI/CD workflow for linting, security audits, and tests
+    mocha.yml            # Unit test workflow
+    playwright.yml       # E2E test workflow
+    publish-documentation.yml  # Documentation publishing workflow
+    dependency-review.yml      # Dependency review workflow
 deploy/
   your-repo-name/
-    values/ # Helm chart values
-src/
-  deploy.sh/
+    Chart.yaml           # Helm chart configuration
+    templates/           # Kubernetes templates
+    values/              # Helm chart values
+scripts/
+  deploy.sh              # Deployment script
 ```
 
-Example of how you might want to implement this can be found in the [MCC repo](https://github.com/ministryofjustice/laa-manage-your-civil-cases). 
+### Current CI/CD Pipeline
+
+The `.github/workflows/deploy.yml` file contains the following stages:
+
+1. **Code Linting** - ESLint checks
+2. **Code Security Audit** - NPM security audit
+3. **Snyk Security Scan** - Docker image vulnerability scanning
+4. **Mocha Unit Tests** - Runs unit tests
+5. **Playwright E2E Tests** - Runs end-to-end tests
+
+### To Enhance Deployment
+
+You can further enhance the deployment configuration by:
+- Creating a `.github/actions/build_and_push/action.yml` file to build and push Docker images to a Container Registry (with caching)
+- Creating a `.github/actions/deploy/action.yml` file to deploy the Docker image to a namespace using Helm
+- Configuring `.github/workflows/deploy.yml` to use these custom actions
+
+For an example implementation, refer to the [MCC repo](https://github.com/ministryofjustice/laa-manage-your-civil-cases). 
 
 
 ## GitHub Actions
 
-- These have been disabled in this GitHub template repo. Make sure you enable them when setting up your project. 
+- Make sure you enable them when setting up your project. 

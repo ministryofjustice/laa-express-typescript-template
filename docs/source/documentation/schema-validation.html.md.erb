@@ -1,6 +1,6 @@
 ---
 title: Schema Validation
-last_reviewed_on: 2025-10-13
+last_reviewed_on: 2026-11-04
 review_in: 6 weeks
 ---
 
@@ -14,15 +14,16 @@ The schema validation system consists of several key components:
 
 **Core Components:**
 
-- **Schema Definition** (`src/middlewares/personSchema.ts`) - Comprehensive validation rules using `express-validator`
-- **Error Formatting** (`src/helpers/ValidationErrorHelpers.ts`) - GOV.UK-compliant error message formatting
+- **Schema Definition** (`src/middlewares/personSchema.ts`) - Comprehensive validation rules using `express-validator` with helper functions
+- **Error Formatting** (`src/helpers/ValidationErrorHelpers.ts`) - GOV.UK-compliant error message formatting with `TypedValidationError` class
 - **Session Management** (`src/scripts/helpers/sessionHelpers.ts`) - Form data persistence and comparison utilities
+- **Data Transformers** (`src/helpers/dataTransformers.ts`) - Additional data transformation utilities for validation
 - **Controller Logic** (`src/controllers/personController.ts`) - Request handling with validation integration
 - **Template Implementation** (`views/change-person.njk`) - Complete form with all GOV.UK components
 
 ## Schema Structure
 
-The `personSchema.ts` middleware provides an example of validation for a comprehensive form including:
+The `personSchema.ts` middleware provides a comprehensive validation example using `express-validator` with the `checkSchema()` function for:
 
 **Text Input Validation:**
 
@@ -39,8 +40,10 @@ The `personSchema.ts` middleware provides an example of validation for a compreh
 
 - Complex three-field date validation (`dateOfBirth-day`, `dateOfBirth-month`, `dateOfBirth-year`)
 - Conditional validation - if any date component is provided, all are required
+- Bounds checking: days 1-31, months 1-12, years 4 digits
 - Valid date checking using `validator.js`
 - Proper error messaging for incomplete or invalid dates
+- Helper functions: `hasAnyDateField()`, `hasPartialDateFields()`, `validateDayField()`, `validateMonthField()`, `validateYearField()`
 
 **Change Detection:**
 
@@ -50,22 +53,29 @@ The `personSchema.ts` middleware provides an example of validation for a compreh
 
 ## Error Handling System
 
-**TypedValidationError Class:**
+**TypedValidationError Class** (`src/helpers/ValidationErrorHelpers.ts`):
 
 ```typescript
 // Provides structured error objects for GOV.UK Design System
-new TypedValidationError({
-  summaryMessage: 'Error for summary list',
-  inlineMessage: 'Error for field display'
-})
+export class TypedValidationError extends Error {
+  public readonly errorData: ValidationErrorData;
+  
+  constructor(errorData: {
+    summaryMessage: string;    // Error for summary list
+    inlineMessage: string;     // Error for field display
+    fieldPath?: string;        // Field identifier from express-validator
+  })
+}
 ```
 
 **Features:**
 
 - Dual message support (summary and inline errors)
-- i18n integration for multi-language error messages
+- i18n integration for multi-language error messages via `t()` function
 - GOV.UK Design System compliant error formatting
 - Automatic error propagation to templates
+- Type-safe error object structure
+- `formatValidationErrors()` helper function for processing express-validator results into GOV.UK format
 
 ## Session Caching for Form Data
 
@@ -89,24 +99,22 @@ storeOriginalFormData(req, 'personOriginal', existingData)
 
 **Session Data Flow:**
 
-1. **Initial Load** - Original data stored in session for comparison
-2. **Form Submission** - Current form data cached to survive validation failures
-3. **Error Handling** - Form data persisted, error states maintained
-4. **Success Flow** - Session data cleared after successful submission
-5. **Change Detection** - Original vs current data comparison for required field changes
+1. **Initial Load** - Original data stored in session under `personOriginal` namespace for comparison
+2. **Form Submission** - Current form data cached under `currentPerson` namespace to survive validation failures
+3. **Error Handling** - Form data persisted via `storeSessionData()`, error states maintained
+4. **Success Flow** - Session data cleared via `clearSessionData()` after successful submission
+5. **Change Detection** - Original vs current data comparison using `getSessionData()` for required field changes
 
 **Session Namespaces:**
 
-- `person` - Current form data
+- `currentPerson` - Current form data
 - `personOriginal` - Original data for change detection
-- `formErrors` - Validation error states
-- `successMessage` - Success notifications
 
 ## Helper Utilities
 
 The template includes several utility modules to support the validation system:
 
-**Data Transformers** (`src/scripts/helpers/dataTransformers.ts`):
+**Data Transformers** (`src/helpers/dataTransformers.ts` and `src/scripts/helpers/dataTransformers.ts`):
 
 - `safeString()` - Converts any input to string safely
 - `safeOptionalString()` - Handles optional string conversion
@@ -114,19 +122,28 @@ The template includes several utility modules to support the validation system:
 - `safeStringFromRecord()` - Safe property extraction from objects
 - `hasProperty()` - Property existence checking
 - `dateStringFromThreeFields()` - Combines day/month/year into date string
+- `safeBodyString()` - Safely convert form body values to strings
+- `extractFormFields()` - Extract specific fields from form data
 
 **Error Handler** (`src/scripts/helpers/errorHandler.ts`):
 
 - `extractErrorMessage()` - Extracts user-friendly messages from various error types
-- `isAuthError()`, `isForbiddenError()`, etc. - HTTP status code helpers
+- `isAuthError()`, `isForbiddenError()`, `isNotFoundError()`, etc. - HTTP status code helpers
 - `createProcessedError()` - Creates wrapped errors with context
 - `extractAndLogError()` - Logging utility for development debugging
 
 **Date Formatter** (`src/scripts/helpers/dateFormatter.ts`):
 
-- `formatDate()` - Formats ISO date strings for display
+- `formatDate()` - Formats ISO date strings for display ("DD MMM YYYY" format)
+- `dateStringFromThreeFields()` - Combines day/month/year fields into ISO string
 - Handles invalid dates gracefully
 - Provides consistent date formatting across the application
+
+**Validation Error Helpers** (`src/helpers/ValidationErrorHelpers.ts`):
+
+- `TypedValidationError` - Custom error class for validation errors
+- `formatValidationErrors()` - Formats express-validator results into GOV.UK-compliant error objects
+- Error data structure interface with `summaryMessage`, `inlineMessage`, and optional `fieldPath`
 
 ## GOV.UK Component Integration
 
@@ -155,6 +172,7 @@ The validation example demonstrates all major GOV.UK Design System form componen
 To implement similar validation in your routes:
 
 ```typescript
+import { checkSchema } from 'express-validator';
 import { validatePerson } from '#src/middlewares/personSchema.js';
 import { getPerson, postPerson } from '#src/controllers/personController.js';
 
@@ -162,19 +180,64 @@ import { getPerson, postPerson } from '#src/controllers/personController.js';
 router.get('/change/person', getPerson);
 
 // POST route with validation middleware
+// validatePerson() returns the express-validator checkSchema result
 router.post('/change/person', validatePerson(), postPerson);
 ```
 
-The middleware automatically handles validation, error formatting, and session management, while the controller focuses on business logic and response handling.
+The middleware automatically handles:
+- Validation rule checking with `express-validator`
+- Custom validation logic (date fields, change detection, etc.)
+- Error formatting into GOV.UK-compliant structure
+- Session data management for form persistence
+
+The controller then:
+- Retrieves validation results via `validationResult()`
+- Handles form data retrieval and transformation
+- Manages session storage/retrieval
+- Renders responses or redirects
 
 ## Template Integration
 
-Access the validation example at [`/change/person`](http://localhost:3000/change/person) when running the application locally. The page demonstrates:
+Access the validation example at `/change/person` when running the application locally. The page demonstrates:
 
-- Complete form validation workflow
-- Error summary and inline error display
-- Session-based form data persistence
+- Complete form validation workflow with `express-validator`
+- Error summary and inline error display using GOV.UK components
+- Session-based form data persistence using `storeSessionData()`/`getSessionData()`
+- Pre-population with original data for comparison
 - Success/failure message handling
-- All GOV.UK Design System form components working together
+- All GOV.UK Design System form components working together:
+  - `govukInput` for text inputs
+  - `govukTextarea` for multi-line text
+  - `govukRadios` for radio button groups
+  - `govukSelect` for dropdowns
+  - `govukCheckboxes` for multiple selections
+  - `govukDateInput` for three-field date input
+  - `govukErrorSummary` for error list display
 
-This comprehensive validation system serves as both a functional example and a foundation for building complex forms in LAA applications.
+## Testing Validation
+
+The validation system includes comprehensive unit tests:
+
+- **`tests/unit/middleware/personSchema.spec.ts`** - Tests the schema validation rules
+- **`tests/unit/middleware/dateFieldValidation.spec.ts`** - Tests complex date field validation logic
+
+Run tests with:
+```shell
+yarn test:unit
+```
+
+Or test specific files:
+```shell
+yarn test:unit tests/unit/middleware/personSchema.spec.ts
+```
+
+## Production Considerations
+
+This comprehensive validation system serves as both a functional example and a foundation for building complex forms in LAA applications. When implementing in production:
+
+1. **Replace DEFAULT_PERSON_DATA** with actual data from your API/database
+2. **Add more validation rules** as needed for your domain
+3. **Implement proper error logging** for debugging issues
+4. **Add CSRF protection** via the `setupCsrfMiddleware()` 
+5. **Consider rate limiting** for form submissions
+6. **Add accessibility testing** to ensure forms comply with WCAG 2.2 AA

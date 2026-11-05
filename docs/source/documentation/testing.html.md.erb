@@ -1,6 +1,6 @@
 ---
 title: Testing
-last_reviewed_on: 2025-10-02
+last_reviewed_on: 2026-11-04
 review_in: 6 weeks
 ---
 
@@ -35,9 +35,11 @@ This command will first run the unit tests with Mocha and then run the end-to-en
 
 ## Unit/Integration Testing frameworks
 - We use [Mocha](https://mochajs.org/) as our unit testing framework. It is a widely-used JavaScript testing framework that works well with TypeScript projects and integrates with CI pipelines.
-- We also use [chai](https://www.chaijs.com/) to help with our test assertions, in mocha.
-- Unit tests run from the `tests/unit/` directory
+- We also use [chai](https://www.chaijs.com/) to help with our test assertions in Mocha.
+- We use [Sinon](https://sinonjs.org/) for test stubs, spies, and mocks.
+- Unit tests are located in the `tests/unit/` directory
 - Run unit tests with `yarn test:unit`
+- Configuration for Mocha is defined in `.mocharc.json`
 
 **To set-up locally**
 
@@ -47,7 +49,7 @@ This command will first run the unit tests with Mocha and then run the end-to-en
 yarn install
 ```
 
-- run unit test's:
+- Run unit tests:
 
 ```shell
 yarn test:unit
@@ -56,8 +58,27 @@ yarn test:unit
 ## E2E Testing with Playwright
 This project uses [Playwright](https://playwright.dev/) for end-to-end testing. Playwright provides reliable end-to-end testing for modern web apps.
 
-- E2E tests run from the `tests/playwright/tests/` directory
+- E2E tests are located in the `tests/playwright/tests/` directory
+- Playwright configuration is defined in `tests/playwright/playwright.config.ts`
 - Run E2E tests with `yarn test:e2e`
+
+### Custom Fixtures
+
+The project provides custom Playwright fixtures in `tests/playwright/fixtures/index.ts`:
+
+- **`checkAccessibility`** - Performs automated accessibility scanning using [axe-core](https://github.com/dequelabs/axe-core)
+- **`pages`** - Provides a Page Object Factory for creating reusable page objects across tests
+
+Example usage:
+
+```typescript
+import { test } from '../fixtures/index.js';
+
+test('example test', async ({ page, pages, checkAccessibility }) => {
+  await pages.homePage.navigate();
+  await checkAccessibility();
+});
+```
 
 ### Running Tests Locally
 
@@ -75,6 +96,9 @@ yarn playwright test --config=tests/playwright/playwright.config.ts tests/playwr
 
 # Run in UI mode with Playwright Test Explorer
 yarn playwright test --config=tests/playwright/playwright.config.ts --ui
+
+# Run with debug mode
+yarn playwright test --config=tests/playwright/playwright.config.ts --debug
 ```
 
 ### Configuration
@@ -85,15 +109,22 @@ Key configuration points:
 - Tests are located in `tests/playwright/tests/` directory
 - Only Chromium browser is used for testing
 - Test retries are enabled in CI environments (2 retries)
-- Traces are automatically captured on test failures for debugging
+- Traces and videos are automatically captured on test failures for debugging
+- The web server starts automatically with MSW (Mock Service Worker) for API mocking
+- Tests run in parallel (5 workers in CI, unlimited locally)
 
 ### CI/CD Integration
 
-The tests are automatically run in our GitHub Actions workflow (`.github/workflows/playwright.yml`) during pull requests and deployments to UAT.
+The tests are automatically run in GitHub Actions workflows:
 
-- The workflow installs only the Chromium browser to optimise CI runtime
-- Traces are captured for all test runs in CI for easier debugging
-- Test artifacts (traces, videos) are preserved for 14 days in GitHub Actions
+- **`.github/workflows/playwright.yml`** : Runs E2E tests and accessibility tests in parallel
+  - Functional tests job: Runs all tests except accessibility tests (`--grep-invert @accessibility`)
+  - Accessibility tests job: Runs only tests tagged with `@accessibility` (`--grep @accessibility`)
+  - The web server is built and started automatically for testing
+  - Traces are enabled in CI (`PLAYWRIGHT_TRACING: "on"`)
+  - Test artifacts (traces, videos) are preserved for 14 days in GitHub Actions
+
+- **`.github/workflows/mocha.yml`** : Runs unit tests with code coverage
 
 ### Debugging Failed Tests
 
@@ -118,7 +149,8 @@ When tests fail in CI:
 This provides a timeline view of the test execution with screenshots, DOM snapshots, and network requests to help diagnose issues.
 
 ### Route Coverage Analysis
-The `scripts/e2e_coverage/route-coverage-analysis.sh` script analyses which Express routes have corresponding E2E tests, helping ensure comprehensive test coverage.
+
+The `scripts/e2e_coverage/route-coverage-analysis.sh` script analyzes which Express routes have corresponding E2E tests, helping ensure comprehensive test coverage.
 
 ```shell
 # Run the route coverage analysis (with tests)
@@ -130,7 +162,7 @@ The `scripts/e2e_coverage/route-coverage-analysis.sh` script analyses which Expr
 
 The script:
 - Extracts all registered Express routes from the application
-- Runs E2E tests with debug logging to capture visited routes (unless --skip-tests is used)
+- Runs E2E tests with debug logging to capture visited routes (unless `--skip-tests` is used)
 - Compares the two lists and reports coverage percentage
 - Shows which routes are missing E2E tests
 
@@ -138,15 +170,15 @@ Use this to identify gaps in your E2E test coverage and ensure all user-facing r
 
 ## Accessibility Testing
 
-This project includes automated accessibility testing using [axe-core](https://github.com/dequelabs/axe-core) integrated with Playwright to ensure WCAG 2.2 AA compliance.
+This project includes automated accessibility testing using [axe-core](https://github.com/dequelabs/axe-core) integrated with Playwright to ensure WCAG 2.2 compliance.
 
 ### How Accessibility Tests Work
 
-- Accessibility tests run automatically as part of the CI pipeline in a separate parallel job
-- Tests scan each page for WCAG violations using axe-core rules: `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`, `wcag22aa`
+- Accessibility tests run automatically as part of the CI pipeline in a separate parallel job (see `.github/workflows/playwright.yml`)
+- Tests scan each page for WCAG violations using axe-core with the following rule sets: `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`, `wcag22a`, `wcag22aa`
 - Accessibility tests use the `@accessibility` tag so CI can run them separately from functional tests
-- Each rendered page has a dedicated accessibility test: the homepage (`/`) and change person form (`/change/person`)
-- Add a tagged accessibility test for each new page as it is introduced; JSON API and plain-text health-check routes are not pages
+- Each rendered page should have a dedicated accessibility test (e.g., homepage `/` and change person form `/change/person`)
+- Add a tagged accessibility test for each new page as it is introduced; JSON API and plain-text health-check routes do not need page tests
 
 ### Running Accessibility Tests Locally
 
@@ -163,10 +195,10 @@ yarn test:accessibility --ui
 
 ### CI Integration
 
-Accessibility tests run in parallel with functional E2E tests in the GitHub Actions workflow:
+Accessibility tests run in parallel with functional E2E tests in the GitHub Actions workflow (`.github/workflows/playwright.yml`):
 
-- **Functional Tests Job**: Runs all E2E tests except accessibility tests
-- **Accessibility Tests Job**: Runs only tests tagged `@accessibility`
+- **Functional Tests Job**: Runs all E2E tests except accessibility tests (using `--grep-invert @accessibility`)
+- **Accessibility Tests Job**: Runs only tests tagged `@accessibility` (using `--grep @accessibility`)
 
 Both jobs must pass for deployment to proceed.
 
@@ -184,7 +216,7 @@ When accessibility tests fail in CI:
    - Open `playwright-report/index.html` in your browser
    - This provides an interactive report with:
      - List of all accessibility violations found
-     - WCAG rule details and impact levels (serious, moderate, minor)
+     - WCAG rule details and impact levels (critical, serious, moderate, minor)
      - Affected DOM elements with selectors
      - Screenshots showing the violations
      - Remediation guidance
@@ -192,7 +224,7 @@ When accessibility tests fail in CI:
 3. **Understanding Violations**:
    Each violation includes:
    - **Rule ID**: The specific WCAG rule violated (e.g., `color-contrast`, `document-title`)
-   - **Impact**: Severity level (serious, moderate, minor, critical)
+   - **Impact**: Severity level (critical, serious, moderate, minor)
    - **Description**: What the rule checks for
    - **Help**: How to fix the issue
    - **Elements**: Specific HTML elements that failed the rule
@@ -203,32 +235,59 @@ To add accessibility testing to a new page:
 
 ```typescript
 // In your test file: tests/playwright/tests/your-page.spec.ts
-import { test } from '../fixtures/index.js';
+import { test, expect } from '../fixtures/index.js';
 
-test('page name should be accessible', { tag: '@accessibility' }, async ({ page, checkAccessibility }) => {
-  await page.goto('/your-page-url');
+test('page name should be accessible', { tag: '@accessibility' }, async ({ pages, checkAccessibility }) => {
+  await pages.yourPage.navigate();
   await checkAccessibility();
 });
 ```
 
-The `checkAccessibility` fixture is available in all test files. Calling it scans the current page for WCAG 2.2 Level A and AA violations. Tag each accessibility test with `@accessibility` so the CI accessibility job discovers it.
+The `checkAccessibility` fixture is available in all test files. Calling it scans the current page for WCAG violations. Tag each accessibility test with `@accessibility` so the CI accessibility job discovers it.
 
 ## Code coverage - unit tests
-We use the library [c8](https://github.com/bcoe/c8) which output unit test coverage reports using Node.js' built in coverage.
 
-- Devs can run this locally:
+We use the library [c8](https://github.com/bcoe/c8) which outputs unit test coverage reports using Node.js' built-in coverage.
+
+### Running Coverage Locally
+
+Developers can run coverage locally:
+
 ```bash
 yarn coverage
 ```
 
-- To open the report, after running locally:
+To open the report after running locally:
+
 ```bash
 open coverage/index.html
 ```
 
-When coverage fails in CI:
+### Coverage Configuration
+
+The coverage configuration is defined in `.c8rc.json` and includes:
+
+- **Included paths**: `src/**/*.ts`, `routes/**/*.ts`, `middleware/**/*.ts`, `utils/**/*.ts`
+- **Excluded files**: Test files, declaration files, specific utility and configuration files
+- **Coverage thresholds**:
+  - Lines: 20%
+  - Functions: 60%
+  - Branches: 70%
+  - Statements: 20%
+
+### CI Integration
+
+Coverage is automatically checked in the GitHub Actions workflow (`.github/workflows/mocha.yml`):
+
+- Unit tests are run with coverage checking: `yarn c8 yarn test:unit --check-coverage`
+- The coverage report is uploaded as an artifact: `code-coverage-report.zip`
+- The build fails if coverage thresholds are not met
+
+### Viewing Coverage Reports
+
+When coverage checks fail in CI:
 
 1. Check the error message in the GitHub Actions log - in the `Mocha Unit Test` job
-2. Download the trace artifacts (named `code-coverage-report.zip`) from GitHub Actions
+2. Download the artifact named `code-coverage-report.zip` from GitHub Actions
 3. Extract the downloaded ZIP file
-4. Locate the `index.html` file within the `code-coverage-report` folder, and view in you browser
+4. Locate the `index.html` file and view it in your browser to see detailed coverage information

@@ -105,11 +105,10 @@ jobs:
       helm_values_path: ./deploy/your-repo-name/values/uat.yaml
       ecr_repository: ${{ vars.DEV_ECR_REPOSITORY }}
     secrets:
-      inherit
-      # SNYK_CLIENT_ID: ${{ secrets.SNYK_CLIENT_ID }}
-      # SNYK_CLIENT_SECRET: ${{ secrets.SNYK_CLIENT_SECRET }}
-      # ECR_ROLE_TO_ASSUME: ${{ secrets.DEV_ECR_ROLE_TO_ASSUME }}
-      # KUBE_CLUSTER: ${{ secrets.KUBE_CLUSTER }}
-      # KUBE_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
-      # KUBE_TOKEN: ${{ secrets.KUBE_TOKEN }}
-      # KUBE_CERT: ${{ secrets.KUBE_CERT }}
+      SNYK_CLIENT_ID: ${{ secrets.SNYK_CLIENT_ID }}
+      SNYK_CLIENT_SECRET: ${{ secrets.SNYK_CLIENT_SECRET }}
+      ECR_ROLE_TO_ASSUME: ${{ secrets.DEV_ECR_ROLE_TO_ASSUME }}
+      KUBE_CLUSTER: ${{ secrets.KUBE_CLUSTER }}
+      KUBE_NAMESPACE: ${{ secrets.DEV_KUBE_NAMESPACE }}
+      KUBE_TOKEN: ${{ secrets.DEV_KUBE_TOKEN }}
+      KUBE_CERT: ${{ secrets.DEV_KUBE_CERT }}

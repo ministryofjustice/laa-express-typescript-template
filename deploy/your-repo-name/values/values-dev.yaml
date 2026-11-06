@@ -28,6 +28,10 @@ readinessProbe:
 
 containerEnvironment:
   enabled: true
+  secrets:
+    - name: SESSION_SECRET
+      secretName: laa-express-typescript-template
+      key: SESSION_SECRET
   variables:
     PORT: "3000"
     NODE_ENV: "production"

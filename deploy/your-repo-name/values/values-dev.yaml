@@ -25,3 +25,16 @@ readinessProbe:
   httpGet:
     path: /health
     port: http
+
+containerEnvironment:
+  enabled: true
+  variables:
+    PORT: "3000"
+    NODE_ENV: "production"
+    ENABLE_HTTPS_ENFORCEMENT: "true"
+    SESSION_NAME: "sessionId"
+    RATE_LIMIT_MAX: "2500"
+    RATE_WINDOW_MS: "900000"
+    SERVICE_NAME: "laa-express-typescript-template"
+    SERVICE_PHASE: "Beta"
+    DEPARTMENT_NAME: "Legal aid agency"

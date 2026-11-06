@@ -1,3 +1,5 @@
+appName: laa-express-typescript-template
+
 namespace: laa-express-typescript-template-dev
 
 ingress:

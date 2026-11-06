@@ -12,3 +12,6 @@ ingress:
 
 certificate:
   enabled: false
+
+service:
+  port: 3000

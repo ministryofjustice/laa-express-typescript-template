@@ -3,8 +3,11 @@ name: CI
 on:
   push:
     branches:
-      - "**"
-  workflow_dispatch: # Allows manual triggering of the workflow
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
 
 permissions: {}
 
@@ -86,3 +89,26 @@ jobs:
   playwright:
     name: Playwright Tests
     uses: $/.github/workflows/playwright.yml
+
+  cp_build_and_deploy:
+    uses: ministryofjustice/laa-reusable-github-actions/.github/workflows/cp-build-push-deploy.yml@add-snyk-secrets-to-cp-build-and-deploy
+    permissions:
+      contents: read
+      id-token: write
+      actions: read
+      security-events: write
+    with:
+      environment: dev #--Requires multiple Github Environments set up in CP
+      app_name: laa-express-typescript-template
+      helm_release_name: laa-express-typescript-template
+      helm_chart: ./laa-generic-helm-chart
+      helm_values_path: ./deploy/your-repo-name/values/values-dev.yaml
+      ecr_repository: ${{ vars.DEV_ECR_REPOSITORY }}
+    secrets:
+      SNYK_CLIENT_ID: ${{ secrets.SNYK_CLIENT_ID }}
+      SNYK_CLIENT_SECRET: ${{ secrets.SNYK_CLIENT_SECRET }}
+      ECR_ROLE_TO_ASSUME: ${{ secrets.DEV_ECR_ROLE_TO_ASSUME }}
+      KUBE_CLUSTER: ${{ secrets.KUBE_CLUSTER }}
+      KUBE_NAMESPACE: ${{ secrets.DEV_KUBE_NAMESPACE }}
+      KUBE_TOKEN: ${{ secrets.DEV_KUBE_TOKEN }}
+      KUBE_CERT: ${{ secrets.DEV_KUBE_CERT }}

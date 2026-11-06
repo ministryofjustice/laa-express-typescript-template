@@ -6,3 +6,6 @@ ingress:
   green:
     classname: example
     hostname: laa-express-typescript-template-dev.cloud-platorm.service.justice.gov.uk
+
+certificates:
+  enabled: false

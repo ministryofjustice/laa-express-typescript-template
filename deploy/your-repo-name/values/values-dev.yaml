@@ -15,3 +15,13 @@ certificate:
 
 service:
   port: 3000
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: http
+
+readinessProbe:
+  httpGet:
+    path: /health
+    port: http

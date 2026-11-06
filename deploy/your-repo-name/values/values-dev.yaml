@@ -8,7 +8,7 @@ ingress:
       external-dns.alpha.kubernetes.io/aws-weight: "100"
       external-dns.alpha.kubernetes.io/set-identifier: "laa-express-typescript-template-green-laa-express-typescript-template-dev-green"
     classname: laa-express-typescript-template-dev-ingress
-    hostname: laa-express-typescript-template-dev.cloud-platorm.service.justice.gov.uk
+    hostname: laa-express-typescript-template-dev.cloud-platform.service.justice.gov.uk
 
 certificate:
   enabled: false

@@ -103,6 +103,7 @@ jobs:
       helm_release_name: laa-express-typescript-template
       helm_chart: ./laa-generic-helm-chart
       helm_values_path: ./deploy/your-repo-name/values/uat.yaml
+      ecr_repository: ${{ vars.DEV_ECR_REPOSITORY }}
     secrets:
       SNYK_CLIENT_ID: ${{ secrets.SNYK_CLIENT_ID }}
       SNYK_CLIENT_SECRET: ${{ secrets.SNYK_CLIENT_SECRET }}

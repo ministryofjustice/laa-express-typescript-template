@@ -1,6 +1,6 @@
 ---
 title: Centralised Locale System
-last_reviewed_on: 2025-10-02
+last_reviewed_on: 2026-11-04
 review_in: 6 weeks
 ---
 
@@ -23,24 +23,29 @@ locales/
 
 A robust i18next-based loader that:
 
-- ✅ Synchronously initialises i18next for immediate availability
-- ✅ Supports namespace-based organization
-- ✅ Provides interpolation with `{variable}` syntax
-- ✅ Handles missing keys gracefully with fallbacks
-- ✅ Includes comprehensive error handling and logging
-- ✅ Exports type-safe wrapper functions
+- Synchronously initialises i18next using `initializeI18nextSync()` for immediate availability
+- Supports namespace-based organization using dot notation separators
+- Provides interpolation with `{variable}` syntax
+- Handles missing keys gracefully with fallbacks
+- Includes comprehensive error handling and logging
+- Exports type-safe wrapper functions: `t()` and `nunjucksT()`
 
 ### 3. Express Middleware (`middleware/setupLocale.ts`)
 
 Injects locale functions into the Express request/response cycle:
 
-- Makes locale functions available in `res.locals` for templates
-- Adds `req.locale` object for controller access
+- Makes the `t()` function available in `res.locals` for templates as `res.locals.t`
+- Adds `req.locale` object with the `t()` function for controller access
 - Provides `ExpressLocaleLoader` interface for type safety
+- Registers via `setupLocaleMiddleware()` in the Express app initialisation
 
 ### 4. Nunjucks Integration (`utils/nunjucksSetup.ts`)
 
-Makes locale functions globally available in all Nunjucks templates via the `nunjucksT` function.
+Makes locale functions globally available in all Nunjucks templates:
+
+- Registers the `nunjucksT()` function as a global function with the name `t`
+- Enables template access via `{{ t('key.path') }}` syntax across all templates
+- No need to pass locale data to individual template renders
 
 ## Usage
 
@@ -70,67 +75,86 @@ Locale functions are **globally available** through the `t` function:
 
 ```nunjucks
 {# Standard translation calls #}
-<h1>{{ t('pages.home.title') }}</h1>
+<h1>{{ t('pages.home.defaultHeading') }}</h1>
 <button>{{ t('common.save') }}</button>
 <a href="/">{{ t('common.back') }}</a>
+
 {# Interpolation with variables #}
-<p>{{ t('messages.welcome', { name: user.name }) }}</p>
-<title>{{ t('pages.yourCases.title', { serviceName: config.SERVICE_NAME }) }}</title>
+<title>{{ t('forms.name.pageTitle', { serviceName: 'LAA Digital' }) }}</title>
+<p>{{ t('pages.error.pageTitle', { SERVICE_NAME: config.SERVICE_NAME }) }}</p>
+
 {# GOV.UK component integration #}
 {{ govukInput({
-  label: { text: t('forms.clientDetails.name.label') },
-  hint: { text: t('forms.clientDetails.name.hint') }
+  label: { text: t('forms.name.label') },
+  hint: { text: t('forms.address.label') }
 }) }}
+
 {# Conditional rendering #}
-<p class="govuk-error-message">{{ t('errors.validation.required') }}</p>
+<p class="govuk-error-message">{{ t('forms.name.validationError.notEmpty') }}</p>
 ```
 
 ## Locale File Structure
 
-The locale files follow a nested namespace structure organised by functional areas e.g:
+The locale files follow a nested namespace structure organised by functional areas. The current application uses `locales/en.json` with the following structure:
 
 ```json
 {
   "common": {
     "back": "Back",
+    "change": "Change",
+    "remove": "Remove",
     "save": "Save",
     "cancel": "Cancel",
     "yes": "Yes",
     "no": "No"
   },
+  "navigation": {
+    "footer": {
+      "accessibility": "Accessibility",
+      "cookiePolicy": "Cookies",
+      "privacyPolicy": "Privacy"
+    }
+  },
+  "components": {
+    "phaseBanner": {
+      "feedbackText": "This is a new service. Help us improve it and "
+    }
+  },
   "pages": {
     "home": {
-      "title": "Manage your civil cases"
+      "defaultHeading": "Default page template",
+      "mountainsOfTheWorld": "Mountains of the world"
     },
-    "caseDetails": {
-      "title": "Case details – {serviceName} – GOV.UK",
-      "tabs": {
-        "clientDetails": "Client details"
-      }
+    "error": {
+      "pageTitle": "Sorry, there is a problem with the service – {SERVICE_NAME} – GOV.UK"
     }
   },
   "forms": {
+    "name": {
+      "label": "Full name",
+      "title": "Change your name",
+      "pageTitle": "Change your name – {serviceName} – GOV.UK",
+      "validationError": {
+        "notEmpty": "Enter your full name",
+        "notChanged": "Change your full name, or select 'Cancel'"
+      }
+    },
+    "address": {
+      "label": "Address",
+      "validationError": {
+        "notEmpty": "Enter your address"
+      }
+    },
     "clientDetails": {
       "name": {
-        "label": "Client name",
-        "hint": "Enter the full legal name"
-      },
-      "address": {
+        "label": "Name",
+        "title": "Client name",
+        "pageTitle": "Client name – {caseReference} – {serviceName} – GOV.UK",
         "validationError": {
-          "notChanged": "You must change the address before saving"
+          "notEmpty": "Enter the client name",
+          "notChanged": "Change the client name, or select 'Cancel'"
         }
       }
-    }
-  },
-  "errors": {
-    "http": {
-      "400": "Invalid request. Please check your input and try again.",
-      "404": "Page not found",
-      "default": "Service error ({status}). Please try again later."
-    },
-    "validation": {
-      "required": "This field is required",
-      "invalidFormat": "Please enter a valid {fieldType}"
     }
   }
 }
@@ -138,15 +162,17 @@ The locale files follow a nested namespace structure organised by functional are
 
 ## Key Naming Conventions
 
-- **Namespace organization**: Top-level keys represent functional areas (`common`, `pages`, `forms`, `errors`)
-- **Hierarchical structure**: Use dot notation for nested access (`pages.caseDetails.title`)
+- **Namespace organisation**: Top-level keys represent functional areas (`common`, `navigation`, `components`, `pages`, `forms`)
+- **Hierarchical structure**: Use dot notation for nested access (`pages.home.defaultHeading`, `forms.name.validationError.notEmpty`)
 - **Descriptive naming**: Keys should clearly indicate their purpose and context
-- **Consistent patterns**: Use standard suffixes like `label`, `hint`, `error`, `title`
+- **Consistent patterns**: Use standard suffixes like `label`, `title`, `hint`, `validationError`
 - **Validation grouping**: Group validation messages under `validationError` objects
+- **Page-specific keys**: Use `pageTitle` for browser title tags with GOV.UK formatting
+- **Interpolation variables**: Use uppercase for configuration variables (e.g., `{SERVICE_NAME}`), camelCase for dynamic values (e.g., `{serviceName}`)
 
 ## Interpolation Support
 
-The system uses i18next's interpolation with `{variable}` syntax:
+The system uses i18next's interpolation with `{variable}` syntax. Variables are enclosed in curly braces:
 
 ```json
 {
@@ -155,7 +181,14 @@ The system uses i18next's interpolation with `{variable}` syntax:
     "itemCount": "You have {count} items"
   },
   "pages": {
-    "title": "{pageTitle} – {serviceName} – GOV.UK"
+    "error": {
+      "pageTitle": "Sorry, there is a problem with the service – {SERVICE_NAME} – GOV.UK"
+    }
+  },
+  "forms": {
+    "name": {
+      "pageTitle": "Change your name – {serviceName} – GOV.UK"
+    }
   }
 }
 ```
@@ -168,83 +201,98 @@ t('messages.welcome', { name: 'John' });
 // Result: "Welcome, John!"
 
 // Multiple variables
-t('pages.title', { pageTitle: 'Case Details', serviceName: 'LAA SiLAS' });
-// Result: "Case Details – LAA SiLAS – GOV.UK"
+t('forms.name.pageTitle', { serviceName: 'LAA Digital' });
+// Result: "Change your name – LAA Digital – GOV.UK"
 
 // In templates
 {{ t('messages.itemCount', { count: cases.length }) }}
+
+// With uppercase variables (e.g., from config)
+{{ t('pages.error.pageTitle', { SERVICE_NAME: config.SERVICE_NAME }) }}
 ```
 
 ## System Architecture Details
 
-### Initialization Process
+### Initialisation Process
 
-1. **Synchronous Loading**: `initializeI18nextSync()` runs during app startup
-2. **Resource Loading**: Reads `locales/en.json` using Node.js `fs.readFileSync`
-3. **i18next Configuration**: Sets up namespaces, interpolation, and fallbacks
-4. **Global Availability**: Functions become immediately available across the app
+1. **Application Startup**: The app calls `initializeI18nextSync()` during Initialisation
+2. **Synchronous Loading**: Reads `locales/en.json` using Node.js `fs.readFileSync()`
+3. **Resource Parsing**: Parses JSON and registers all top-level keys as namespaces
+4. **i18next Configuration**: Sets up dot notation for both namespaces and keys
+5. **Global Availability**: Functions become immediately available across the app before any modules that need translations are loaded
+
+### Namespace and Key Separation
+
+The system uses dot notation (`.`) for both separating namespaces and nested keys:
+
+- **Namespace separator**: `.` (e.g., `common.back` = namespace `common`, key `back`)
+- **Key separator**: `.` (e.g., `pages.home.title` = namespace `pages`, nested keys `home.title`)
 
 ### Error Handling
 
-- **Missing Files**: Falls back to empty resources with console warning
-- **Invalid JSON**: Gracefully handles parse errors
-- **Missing Keys**: Returns the key path as fallback text
-- **Development Mode**: Provides detailed logging for debugging
+- **Missing Locale File**: Falls back to empty resources with console warning
+- **Invalid JSON**: Gracefully handles parse errors and initializes with empty resources
+- **Missing Keys**: Returns the key path as fallback text (e.g., "common.back" if translation not found)
+- **Uninitialized i18next**: Falls back to key path if `t()` is called before Initialisation
 
 ### Performance Considerations
 
-- **Synchronous initialization** ensures translations are available immediately
+- **Synchronous Initialisation** ensures translations are available immediately on startup
 - **In-memory caching** via i18next for fast runtime access
 - **Single file loading** keeps startup time minimal
-- **No network requests** - all resources are local
+- **No network requests** - all resources are local files
 
 ## Key Features
 
-### 🚀 **i18next Integration**
+### **i18next Integration**
 
 - Built on the industry-standard i18next library
-- Full support for namespaces and interpolation
+- Synchronous Initialisation using `initializeI18nextSync()`
+- Full support for dot-notation namespaces and key paths
+- Interpolation using `{variable}` syntax
 - Comprehensive error handling and fallbacks
-- Development-friendly logging and debugging
+- Development-friendly logging with `NODE_ENV === 'development'`
 
-### 🌐 **Global Availability**
+### **Global Availability**
 
-- Functions available in all Nunjucks templates via global `t()`
-- Express middleware injects locale into `req.locale` and `res.locals`
-- TypeScript modules can import and use directly
+- Functions available in all Nunjucks templates via global `t()` function
+- Express middleware injects `t()` into `req.locale` and `res.locals.t`
+- TypeScript modules can import and use via `import { t } from '#src/scripts/helpers/index.js'`
 - Consistent API across all application layers
 
-### ⚡ **Performance Optimised**
+### **Performance Optimised**
 
-- Synchronous initialization prevents race conditions
-- File-based loading with caching for optimal performance
+- Synchronous Initialisation prevents race conditions and ensures ready state
+- File-based loading with in-memory i18next caching for optimal performance
 - Minimal runtime overhead with direct function calls
-- No external network dependencies
+- No external network dependencies - all translations are local files
 
-### 🛡️ **Type Safety & Reliability**
+### **Type Safety & Reliability**
 
 - Full TypeScript interface definitions
 - `ExpressLocaleLoader` interface for consistent typing
+- Functions exported from `src/scripts/helpers/index.js`
 - Graceful degradation when keys are missing
 - Comprehensive error boundaries and fallbacks
 
-### 🔧 **Developer Experience**
+### **Developer Experience**
 
-- Simple `t('namespace.key')` syntax
+- Simple `t('namespace.key')` syntax with dot notation
 - Intuitive interpolation: `t('key', { variable: 'value' })`
-- Clear error messages in development mode
-- Hot reload support during development
-- Comprehensive test coverage
+- Clear error messages and console warnings in development mode
+- Hot reload support during development via `tsc --watch`
+- Comprehensive test coverage in `tests/unit/helpers/i18nLoader.spec.ts`
 
 ## Best Practices
 
-1. **Use descriptive namespace paths**: `forms.clientDetails.name.label`
-2. **Leverage interpolation** for dynamic content: `t('welcome', { name })`
-3. **Group related translations** in logical namespace hierarchies
-4. **Test interpolation variables** to ensure proper substitution
-5. **Keep translation keys** focused and context-specific
-6. **Validate locale changes** across all usage points
-7. **Follow consistent naming patterns** throughout the locale file
+1. **Use fully-qualified keys with namespaces**: Always include the full path with dot notation (e.g., `common.back`, `forms.name.validationError.notEmpty`)
+2. **Leverage interpolation for dynamic content**: Use `t('key', { variable: 'value' })` for dynamic values instead of string concatenation
+3. **Group related translations** in logical namespace hierarchies under functional areas
+4. **Name interpolation variables clearly**: Use camelCase for dynamic values (e.g., `{serviceName}`) and UPPERCASE for config values (e.g., `{SERVICE_NAME}`)
+5. **Test interpolation variables** to ensure proper substitution in both TypeScript and templates
+6. **Keep translation keys focused** and context-specific for better maintainability
+7. **Validate locale changes** across all usage points after updating `locales/en.json`
+8. **Follow consistent naming patterns** for suffixes: `label`, `title`, `hint`, `validationError`, `pageTitle`
 
 ## Troubleshooting
 
@@ -254,14 +302,21 @@ t('pages.title', { pageTitle: 'Case Details', serviceName: 'LAA SiLAS' });
 // ❌ Wrong: Missing namespace or incorrect key
 const text = t('back'); // Should be t('common.back')
 
-// ✅ Correct: Full namespace path
+// ✅ Correct: Full namespace path with dot notation
 const text = t('common.back');
 
-// ❌ Wrong: Incorrect interpolation syntax
-const msg = t('welcome', { user: 'John' }); // Variable name doesn't match
+// ❌ Wrong: Incorrect interpolation variable name
+const msg = t('forms.name.validationError.notEmpty', { field: 'name' });
+// Variable 'field' is not used in the translation string
 
-// ✅ Correct: Match the variable names in locale file
-const msg = t('messages.welcome', { name: 'John' });
+// ✅ Correct: Provide the actual variables used in the locale file
+const msg = t('forms.name.validationError.notChanged');
+
+// ❌ Wrong: Using object notation instead of function
+const text = t.common.back; // i18next is not an object with nested properties
+
+// ✅ Correct: Always use function call with string key
+const text = t('common.back');
 ```
 
 ### Validation and Testing
@@ -269,23 +324,28 @@ const msg = t('messages.welcome', { name: 'John' });
 ```typescript
 // Check if translations work as expected
 console.log(t('common.back')); // Should output: "Back"
+console.log(t('common.change')); // Should output: "Change"
 
-// Test interpolation
-console.log(t('messages.welcome', { name: 'Test' })); // Should output: "Welcome, Test!"
+// Test interpolation with the actual strings
+console.log(t('forms.name.pageTitle', { serviceName: 'Test Service' })); 
+// Should output: "Change your name – Test Service – GOV.UK"
 ```
 
 ### Development vs Production
 
-- **Development**: Missing keys and errors logged to console with warnings
-- **Production**: Missing keys return the key path silently for graceful degradation
-- **Testing**: Use `initialiseI18nextSync()` in test setup for consistent state
+- **Development** (`NODE_ENV === 'development'`): Detailed logging enabled in i18next, missing keys and errors logged to console
+- **Production**: Missing keys return the key path silently for graceful degradation, logging disabled
+- **Testing**: Call `initializeI18nextSync()` in test setup to ensure i18next is initialized before tests run
 
 ## Migration Guide
 
 If migrating from a previous locale system:
 
-1. **Update import statements** to use the new i18nLoader functions
-2. **Replace object notation** `t.common.back` with function calls `t('common.back')`
+1. **Update import statements** to use the helper exports: `import { t } from '#src/scripts/helpers/index.js'`
+2. **Replace object notation** with function calls - use `t('common.back')` instead of `t.common.back`
 3. **Update interpolation syntax** to use the standard `{variable}` format
-4. **Add namespace prefixes** to all translation keys
-5. **Test all templates and controllers** to ensure proper function calls
+4. **Add namespace prefixes** to all translation keys to match the locale file structure
+5. **Update middleware registration** to use `setupLocaleMiddleware` from `#middleware/index.js`
+6. **Ensure Nunjucks setup** imports and registers `nunjucksT` from `#src/scripts/helpers/index.js`
+7. **Test all templates and controllers** to ensure proper function calls
+8. **Run the locale loader test** to validate the setup: `yarn test:unit tests/unit/helpers/i18nLoader.spec.ts`

@@ -1,6 +1,6 @@
 ---
 title: Scripts helpers
-last_reviewed_on: 2025-10-02
+last_reviewed_on: 2026-11-04
 review_in: 6 weeks
 ---
 
@@ -24,7 +24,7 @@ import { formatDate } from '#src/scripts/helpers/dateFormatter.js';
 
 ## Available Helpers
 
-### 📝 Development Logging (`devLogger.ts`)
+### Development Logging (`devLogger.ts`)
 
 Environment-aware logging utilities that only output to console in development mode, keeping production logs clean.
 
@@ -66,7 +66,7 @@ Logs are suppressed when:
 
 ---
 
-### 🔧 Data Transformers (`dataTransformers.ts`)
+### Data Transformers (`dataTransformers.ts`)
 
 Type-safe utilities for transforming and validating data from JSON fixtures and API responses.
 
@@ -109,7 +109,7 @@ All functions handle `null`, `undefined`, and unexpected types gracefully, retur
 
 ---
 
-### 📅 Date Formatter (`dateFormatter.ts`)
+### Date Formatter (`dateFormatter.ts`)
 
 Consistent date formatting utilities for UI components and tables.
 
@@ -139,7 +139,81 @@ const displayDate = formatDate('2023-01-06T00:00:00.000Z');
 
 ---
 
-### ⚠️ Error Handler (`errorHandler.ts`)
+### Session Helpers (`sessionHelpers.ts`)
+
+Utilities for managing session data with type-safe storage and retrieval.
+
+#### Functions
+
+- `storeSessionData(req: Request, namespace: string, data: Record<string, string>): void` - Store key-value pairs in session under a namespace
+- `getSessionData(req: Request, namespace: string): Record<string, string> | null` - Retrieve data from session namespace
+- `clearSessionData(req: Request, namespace: string): void` - Clear data from specific session namespace
+- `storeOriginalFormData(req: Request, namespace: string, formData: Record<string, unknown>): void` - Store form data as strings for comparison
+- `clearAllOriginalFormData(req: Request): void` - Clear all session data containing "Original" in the key
+
+#### Usage
+
+```typescript
+import { 
+  storeSessionData, 
+  getSessionData, 
+  clearSessionData,
+  storeOriginalFormData
+} from '#src/scripts/helpers/index.js';
+
+// Store form data for later comparison
+storeOriginalFormData(req, 'personDetailsOriginal', {
+  name: 'John Doe',
+  email: 'john@example.com'
+});
+
+// Retrieve session data
+const originalData = getSessionData(req, 'personDetailsOriginal');
+
+// Clear specific session namespace
+clearSessionData(req, 'personDetailsOriginal');
+```
+
+#### Use Cases
+
+- Storing pre-population data for form change detection
+- Maintaining session state across multiple form steps
+- Implementing form "Cancel" functionality
+- Comparing form values to detect unsaved changes
+
+---
+
+### i18n Loader (`i18nLoader.ts`)
+
+Internationalization and translation utilities powered by i18next.
+
+#### Functions
+
+- `initializeI18nextSync(): void` - Synchronously initialize i18next (called at app startup)
+- `t(key: string, options?: Record<string, unknown>): string` - Translate key with optional interpolation
+- `nunjucksT(key: string, options?: Record<string, unknown>): string` - Nunjucks template translation function
+- `i18next` - Direct access to i18next instance for advanced usage
+
+#### Usage
+
+```typescript
+import { t, initializeI18nextSync, i18next } from '#src/scripts/helpers/index.js';
+
+// Initialize at app startup
+initializeI18nextSync();
+
+// Translate in TypeScript
+const greeting = t('common.hello');
+const message = t('pages.welcome', { name: 'John' });
+
+// Or use in Nunjucks templates
+// {{ t('common.back') }}
+// {{ t('forms.name.label') }}
+```
+
+For detailed documentation, see the [Centralised Locale System](locales.html) page.
+
+---
 
 Comprehensive error handling utilities for API requests and network operations, providing user-friendly error messages and structured logging.
 
@@ -222,7 +296,7 @@ try {
 - Includes structured logging for debugging
 - Type-safe error detection with proper type guards
 
-### 🔧 Error Handling Function Selection Guide
+### Error Handling Function Selection Guide
 
 Choose the appropriate error handling function based on your use case:
 
@@ -253,7 +327,7 @@ Choose the appropriate error handling function based on your use case:
   - Template rendering where only message text is needed
   - Basic error display in UI components
 
-### 📋 Error Handling Pattern Examples
+### Error Handling Pattern Examples
 
 ```typescript
 // Service Layer Pattern
@@ -293,7 +367,7 @@ function displayError(error: unknown) {
 
 ## Implementation Guidelines
 
-### 🎯 Best Practices
+### Best Practices
 
 **Use the centralised index import**
 
@@ -326,7 +400,7 @@ function displayError(error: unknown) {
    import * as helpers from '#src/scripts/helpers/index.js';
    ```
 
-### 🔄 Usage Patterns
+### Usage Patterns
 
 #### Replacing Console Calls
 
@@ -397,7 +471,7 @@ async function fetchUserData() {
 }
 ```
 
-### 🧪 Testing
+### Testing
 
 All helpers should be thoroughly tested:
 
@@ -406,19 +480,32 @@ All helpers should be thoroughly tested:
 - Use Chai assertions and Sinon for mocking
 - Include edge cases and error conditions
 
-### 📁 File Organization
+### File Organization
 
 ```text
 src/scripts/helpers/
-├── index.ts                  # Central export file
-├── dataTransformers.ts       # Data validation and transformation
-├── dateFormatter.ts          # Date formatting utilities
-├── devLogger.ts             # Development logging
-├── errorHandler.ts          # Error handling and user-friendly messages
-└── [future-helper].ts       # Additional helpers as needed
+├── index.ts                  # Central export file with all helpers
+├── dataTransformers.ts       # Data validation and transformation utilities
+├── dateFormatter.ts          # Date formatting utilities  
+├── devLogger.ts              # Development logging utilities
+├── errorHandler.ts           # Error handling and user-friendly messages
+├── sessionHelpers.ts         # Session data management utilities
+├── i18nLoader.ts            # Internationalization and translation
+└── [future-helper].ts        # Additional helpers as needed
 ```
 
-### 🚀 Adding New Helpers
+### Helper Coverage
+
+The following helpers are exported from `index.ts` for easy access:
+
+- **Development Logging**: `devLog`, `devWarn`, `devError`, `devDebug`, `isDevelopment`
+- **Data Transformation**: `safeString`, `safeOptionalString`, `booleanToString`, `isRecord`, `safeStringFromRecord`, `hasProperty`, `capitaliseFirst`, `safeBodyString`, `extractFormFields`, `safeApiField`, `safeNestedField`, `extractCurrentFields`, `normaliseSelectedCheckbox`, `isYes`
+- **Date Formatting**: `formatDate`, `dateStringFromThreeFields`
+- **Session Management**: `storeSessionData`, `getSessionData`, `clearSessionData`, `clearAllOriginalFormData`, `storeOriginalFormData`
+- **Internationalization**: `initializeI18nextSync`, `i18next`, `t`, `nunjucksT`, `ExpressLocaleLoader` (type)
+- **Error Handling**: `extractErrorMessage`, `isHttpError`, `isAuthError`, `isForbiddenError`, `isNotFoundError`, `isServerError`, `createProcessedError`, `extractAndLogError`
+
+### Adding New Helpers
 
 When creating new helpers:
 

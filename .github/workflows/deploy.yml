@@ -51,7 +51,7 @@ jobs:
     uses: $/.github/workflows/playwright.yml
 
   cp_build_and_deploy:
-    uses: ministryofjustice/laa-reusable-github-actions/.github/workflows/cp-build-push-deploy.yml@add-snyk-secrets-to-cp-build-and-deploy
+    uses: ministryofjustice/laa-reusable-github-actions/.github/workflows/cp-build-push-deploy.yml@8e902f54ebf3350ad43dbdc1f475322cc31967c6 # v0.2.0
     permissions:
       contents: read
       id-token: write

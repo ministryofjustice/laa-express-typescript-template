@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD
 
 on:
   push:
@@ -50,7 +50,8 @@ jobs:
     name: Playwright Tests
     uses: $/.github/workflows/playwright.yml
 
-  cp_build_and_deploy:
+  cp-build-push-scan-and-deploy:
+    name: Build, Push, Scan and Deploy to Cloud Platform
     uses: ministryofjustice/laa-reusable-github-actions/.github/workflows/cp-build-push-deploy.yml@8e902f54ebf3350ad43dbdc1f475322cc31967c6 # v0.2.0
     permissions:
       contents: read
@@ -58,7 +59,6 @@ jobs:
       actions: read
       security-events: write
     with:
-      environment: dev #--Requires multiple Github Environments set up in CP
       app_name: laa-express-typescript-template
       helm_release_name: laa-express-typescript-template
       helm_chart: ./laa-generic-helm-chart

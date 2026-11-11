@@ -1,10 +1,10 @@
-name: CI
+name: CI/CD
 
 on:
   push:
     branches:
-      - "**"
-  workflow_dispatch: # Allows manual triggering of the workflow
+      - main
+  workflow_dispatch:
 
 permissions: {}
 
@@ -39,46 +39,6 @@ jobs:
       - name: Run security audit
         run: yarn npm audit
 
-  snyk:
-    name: Snyk Security Scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Build local Docker image
-        working-directory: ${{ github.workspace }}
-        run: |
-          docker build -t laa-manage-your-civil-cases ./
-          docker save laa-manage-your-civil-cases -o image.tar
-
-      - name: Authenticate with Snyk
-        id: snyk-auth
-        uses: ministryofjustice/laa-reusable-github-actions/.github/actions/snyk-auth@29411bff7835740bdb7005f64b73f05f8a2ffd10 # main
-        with:
-          client_id: ${{ secrets.SNYK_CLIENT_ID }}
-          client_secret: ${{ secrets.SNYK_CLIENT_SECRET }}
-
-      - name: Validate and mask Snyk OAuth token
-        env:
-          SNYK_OAUTH_TOKEN: ${{ steps.snyk-auth.outputs.token }}
-        run: |
-          if [ -z "$SNYK_OAUTH_TOKEN" ] || [ "$SNYK_OAUTH_TOKEN" = "null" ]; then
-            echo "::error::Failed to obtain Snyk OAuth token"
-            exit 1
-          fi
-          echo "::add-mask::$SNYK_OAUTH_TOKEN"
-
-      - name: Run Snyk to scan Docker image from tarball
-        uses: snyk/actions/docker@9adf32b1121593767fc3c057af55b55db032dc04 # v1.0.0
-        with:
-          image: image.tar
-          args: --docker --severity-threshold=high
-        env:
-          SNYK_OAUTH_TOKEN: ${{ steps.snyk-auth.outputs.token }}
-
   mocha-unit-tests:
     name: Mocha Unit Tests
     uses: $/.github/workflows/mocha.yml
@@ -86,3 +46,26 @@ jobs:
   playwright:
     name: Playwright Tests
     uses: $/.github/workflows/playwright.yml
+
+  cp-build-push-scan-and-deploy:
+    name: Build, Push, Scan and Deploy to Cloud Platform
+    uses: ministryofjustice/laa-reusable-github-actions/.github/workflows/cp-build-push-deploy.yml@8e902f54ebf3350ad43dbdc1f475322cc31967c6 # v0.2.0
+    permissions:
+      contents: read
+      id-token: write
+      actions: read
+      security-events: write
+    with:
+      app_name: laa-express-typescript-template
+      helm_release_name: laa-express-typescript-template
+      helm_chart: ./laa-generic-helm-chart
+      helm_values_path: ./deploy/your-repo-name/values/values-dev.yaml
+      ecr_repository: ${{ vars.DEV_ECR_REPOSITORY }}
+    secrets:
+      SNYK_CLIENT_ID: ${{ secrets.SNYK_CLIENT_ID }}
+      SNYK_CLIENT_SECRET: ${{ secrets.SNYK_CLIENT_SECRET }}
+      ECR_ROLE_TO_ASSUME: ${{ secrets.DEV_ECR_ROLE_TO_ASSUME }}
+      KUBE_CLUSTER: ${{ secrets.KUBE_CLUSTER }}
+      KUBE_NAMESPACE: ${{ secrets.DEV_KUBE_NAMESPACE }}
+      KUBE_TOKEN: ${{ secrets.DEV_KUBE_TOKEN }}
+      KUBE_CERT: ${{ secrets.DEV_KUBE_CERT }}

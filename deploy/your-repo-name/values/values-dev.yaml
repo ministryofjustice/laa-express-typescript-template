@@ -1,0 +1,44 @@
+appName: laa-express-typescript-template
+
+namespace: laa-express-typescript-template-dev
+
+ingress:
+  green:
+    annotations:
+      external-dns.alpha.kubernetes.io/aws-weight: "100"
+      external-dns.alpha.kubernetes.io/set-identifier: "laa-express-typescript-template-green-laa-express-typescript-template-dev-green"
+    classname: laa-express-typescript-template-dev-ingress
+    hostname: laa-express-typescript-template-dev.cloud-platform.service.justice.gov.uk
+
+certificate:
+  enabled: false
+
+service:
+  port: 3000
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: http
+
+readinessProbe:
+  httpGet:
+    path: /health
+    port: http
+
+containerEnvironment:
+  enabled: true
+  secrets:
+    - name: SESSION_SECRET
+      secretName: laa-express-typescript-template
+      key: SESSION_SECRET
+  variables:
+    PORT: "3000"
+    NODE_ENV: "production"
+    ENABLE_HTTPS_ENFORCEMENT: "true"
+    SESSION_NAME: "sessionId"
+    RATE_LIMIT_MAX: "2500"
+    RATE_WINDOW_MS: "900000"
+    SERVICE_NAME: "laa-express-typescript-template"
+    SERVICE_PHASE: "Beta"
+    DEPARTMENT_NAME: "Legal aid agency"

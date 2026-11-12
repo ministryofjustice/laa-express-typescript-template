@@ -1,0 +1,147 @@
+/*
+Use Case ID: MON-5603
+Rule Name: Power Platform - EUCS - Possible OAuth Token Replay Activity
+Description: Detects non-interactive Power Platform Primary Refresh Token activity exhibiting multiple network or geographic replay indicators.
+*/
+
+/*
+Threat Model: TM-EUCSPP-007
+Severity: High
+Service Name: EUCS Power Platform
+Service Owner: Power Platform Squad
+Resolver Group: Power Platform Group MOJ PRODUCTION Instance
+*/
+
+/* -------------------- Non-interactive token activity -------------------- */
+
+dataset = msft_azure_ad_raw
+| filter isinteractive = false
+| filter incomingtokentype = "primaryRefreshToken"
+
+/* -------------------- Power Platform applications -------------------- */
+
+| filter (
+    appdisplayname contains "PowerApps"
+    or appdisplayname contains "Power Automate"
+)
+
+/* -------------------- Normalize attributes -------------------- */
+
+| alter user_object_id = userid
+| alter source_ip = ipaddress
+| alter asn = autonomoussystemnumber
+
+| alter country = to_string(
+    json_extract_scalar(location, "$.countryOrRegion")
+)
+
+| alter city = to_string(
+    json_extract_scalar(location, "$.city")
+)
+
+/* -------------------- Filter invalid events -------------------- */
+
+| filter user_object_id != null
+| filter source_ip != null
+| filter asn != null
+| filter country != null
+| filter country != ""
+| filter city != null
+| filter city != ""
+
+/* -------------------- Create normalized location -------------------- */
+
+| alter location_name = concat(
+    country,
+    " - ",
+    city
+)
+
+/* -------------------- Aggregate authentication activity -------------------- */
+
+| comp count() as sign_in_count,
+       count_distinct(source_ip) as distinct_ips,
+       count_distinct(location_name) as distinct_locations,
+       count_distinct(asn) as distinct_asns,
+       values(source_ip) as source_ips,
+       values(location_name) as locations,
+       values(appdisplayname) as applications,
+       values(correlationid) as correlation_ids,
+       min(source_ip) as representative_source_ip,
+       min(location_name) as representative_location,
+       min(_time) as first_seen,
+       max(_time) as last_seen
+  by user_object_id
+
+/* -------------------- Calculate elapsed time -------------------- */
+
+| alter elapsed_minutes = timestamp_diff(
+    last_seen,
+    first_seen,
+    "MINUTE"
+)
+
+/* -------------------- Calculate replay risk score -------------------- */
+
+| alter replay_score = if(
+    distinct_asns >= 2 and distinct_locations >= 2,
+    4,
+    if(
+        distinct_asns >= 2 and distinct_ips >= 3,
+        3,
+        if(
+            distinct_locations >= 2 and distinct_ips >= 3,
+            3,
+            if(
+                distinct_asns >= 2 or distinct_locations >= 2,
+                2,
+                if(
+                    distinct_ips >= 3,
+                    1,
+                    0
+                )
+            )
+        )
+    )
+)
+
+/* Require multiple supporting replay indicators. */
+
+| filter replay_score >= 3
+
+/* -------------------- Detection reason -------------------- */
+
+| alter detection_reason = if(
+    distinct_asns >= 2 and distinct_locations >= 2,
+    "Multiple ASNs and geographic locations",
+    if(
+        distinct_asns >= 2 and distinct_ips >= 3,
+        "Multiple ASNs and source IP addresses",
+        if(
+            distinct_locations >= 2 and distinct_ips >= 3,
+            "Multiple geographic locations and source IP addresses",
+            "Multiple token replay indicators detected"
+        )
+    )
+)
+
+/* -------------------- Output -------------------- */
+
+| fields user_object_id,
+         detection_reason,
+         replay_score,
+         sign_in_count,
+         distinct_ips,
+         distinct_locations,
+         distinct_asns,
+         first_seen,
+         last_seen,
+         elapsed_minutes,
+         representative_source_ip,
+         representative_location,
+         source_ips,
+         locations,
+         applications,
+         correlation_ids
+
+| sort desc replay_score

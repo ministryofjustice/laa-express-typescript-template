@@ -41,7 +41,7 @@
     "govuk-frontend": "^6.6.0",
     "helmet": "^8.3.0",
     "http-errors": "~2.0.1",
-    "i18next": "^26.7.1",
+    "i18next": "^27.1.1",
     "middleware-axios": "^3.0.0",
     "moment": "^2.31.0",
     "morgan": "~1.12.1",

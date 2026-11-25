@@ -115,6 +115,17 @@ Prerequisites, Docker Desktop
   docker stop {container_id}
   ```
 
+### Logging
+
+Logging uses [pino](https://getpino.io), based on the setup in [Manage your civil cases](https://github.com/ministryofjustice/laa-manage-your-civil-cases/pull/1021).
+
+- Import the logger with `import { logger } from '#src/scripts/helpers/index.js';`
+- Logs are JSON in deployed environments and pretty-printed in development
+- The level is `debug` when `NODE_ENV` is `development` or not set, and `info` everywhere else
+- Every request gets a correlation ID, returned in the `X-Correlation-ID` header and added to every log line for that request
+- Each request is logged once with method, path, status and response time, at `error` for 5xx, `warn` for 4xx and `info` otherwise. Query strings are not logged
+- Do not log personal data or full API request or response bodies
+
 ### GitHub Actions
 - The `Publish documentation` workflow has been disabled in this GitHub template repo. Make sure you enable it and change config as required, when setting up your project. 
 

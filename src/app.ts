@@ -1,11 +1,10 @@
 import type { Request, Response } from 'express';
 import express from 'express';
-import morgan from 'morgan';
 import compression from 'compression';
 import { setupCsrf, setupMiddlewares, setupConfig, setupLocaleMiddleware } from '#middleware/index.js';
 import session from 'express-session';
 import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware } from '#utils/index.js';
-import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
+import { initializeI18nextSync, logger } from '#src/scripts/helpers/index.js';
 import config from '#config.js';
 import indexRouter from '#routes/index.js';
 import livereload from 'connect-livereload';
@@ -72,15 +71,6 @@ const createApp = (): express.Application => {
 	// Set up application-specific configurations
 	setupConfig(app);
 
-	// Set up request logging based on environment
-	if (process.env.NODE_ENV === 'production') {
-		// Use combined format for production (more structured, less verbose)
-		app.use(morgan('combined'));
-	} else {
-		// Use dev format for development (colored, more readable)
-		app.use(morgan('dev'));
-	}
-
 	// Register the main router
 	app.use('/', indexRouter);
 
@@ -91,7 +81,7 @@ const createApp = (): express.Application => {
 
 	// Starts the Express server on the specified port
 	app.listen(config.app.port, () => {
-		console.log(`${config.SERVICE_NAME ?? 'Service'} is listening at http://localhost:${config.app.port}`);
+		logger.info(`${config.SERVICE_NAME ?? 'Service'} is listening at http://localhost:${config.app.port}`);
 	});
 
 	return app;

@@ -5,17 +5,28 @@
  * This allows for cleaner imports throughout the application.
  *
  * Usage:
- * import { devLog, safeString, formatDate } from '#src/scripts/helpers';
+ * import { safeString, formatDate, isDevelopment, logger } from '#src/scripts/helpers';
  */
 
-// Development logging utilities
+// Development logging utilities (replaced by logger in the next commit)
 export {
   devLog,
   devWarn,
   devError,
-  devDebug,
-  isDevelopment
+  devDebug
 } from './devLogger.js';
+
+// Environment utilities
+export {
+  isDevelopment,
+  isProduction,
+  isTest
+} from './environmentUtils.js';
+
+// Logging utilities
+export {
+  logger
+} from './logging.js';
 
 // Data transformation utilities
 export {

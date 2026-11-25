@@ -2,6 +2,8 @@ import type { Application } from 'express';
 import express from 'express';
 import bodyParser from 'body-parser';
 import config from '../config.js';
+import { httpLogger } from '#src/scripts/helpers/logging.js';
+import { correlationIdMiddleware } from './correlationIdMiddleware.js';
 
 /**
  * Sets up common middlewares for the given Express application.
@@ -10,6 +12,12 @@ import config from '../config.js';
  * @returns {void} Sets up various middleware on the provided app instance.
  */
 export const setupMiddlewares = (app: Application): void => {
+  // Set up correlation ID middleware early so every request and log line gets a correlation ID
+  app.use(correlationIdMiddleware);
+
+  // Set up request logging
+  app.use(httpLogger);
+
   // Parses URL-encoded bodies (form submissions)
   app.use(bodyParser.urlencoded({ extended: true }));
 

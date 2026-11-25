@@ -8,7 +8,7 @@
  * - Structured logging
  */
 
-import { devError } from './index.js';
+import { logger } from './logging.js';
 
 // HTTP Status Code Constants
 const HTTP_BAD_REQUEST = 400;
@@ -129,7 +129,7 @@ export function extractErrorMessage(error: unknown): string {
   // Handle Axios errors with response
   if (isAxiosError(error)) {
     const { response } = error;
-    devError(`API HTTP Error ${response.status}: ${response.statusText ?? 'Unknown'}`);
+    logger.debug(`API HTTP Error ${response.status}: ${response.statusText ?? 'Unknown'}`);
 
     // Try to extract error message from response data
     const responseMessage = extractResponseMessage(response.data);
@@ -142,24 +142,24 @@ export function extractErrorMessage(error: unknown): string {
 
   // Handle network errors
   if (isNetworkError(error)) {
-    devError(`Network Error: ${error.code}`);
+    logger.debug(`Network Error: ${error.code}`);
     return getNetworkErrorMessage(error.code);
   }
 
   // Handle standard Error objects
   if (error instanceof Error) {
-    devError(`Error: ${error.message}`);
+    logger.debug(`Error: ${error.message}`);
     return 'An unexpected error occurred. Please try again.';
   }
 
   // Handle string errors
   if (typeof error === 'string') {
-    devError(`String Error: ${error}`);
+    logger.debug(`String Error: ${error}`);
     return 'An error occurred. Please try again.';
   }
 
   // Fallback for unknown error types
-  devError(`Unknown Error: ${String(error)}`);
+  logger.debug(`Unknown Error: ${String(error)}`);
   return 'An unexpected error occurred. Please try again.';
 }
 
@@ -220,7 +220,7 @@ export function createProcessedError(originalError: unknown, context: string): E
   const userFriendlyMessage = extractErrorMessage(originalError);
   
   // Log the error with context
-  devError(`Error ${context}: ${userFriendlyMessage}`);
+  logger.debug(`Error ${context}: ${userFriendlyMessage}`);
   
   // Create processed error with user-friendly message
   const processedError = new Error(userFriendlyMessage);
@@ -237,6 +237,6 @@ export function createProcessedError(originalError: unknown, context: string): E
  */
 export function extractAndLogError(error: unknown, context: string): string {
   const userFriendlyMessage = extractErrorMessage(error);
-  devError(`${context}: ${userFriendlyMessage}`);
+  logger.debug(`${context}: ${userFriendlyMessage}`);
   return userFriendlyMessage;
 }

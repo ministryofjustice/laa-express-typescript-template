@@ -100,7 +100,7 @@ describe('BaseApiService', () => {
 
   describe('Logging Methods', () => {
     it('should log API calls when logging is enabled', () => {
-      // Note: In actual tests, you might want to mock devLog
+      // Note: In actual tests, you might want to mock logger
       // This test verifies the method runs without error
       expect(() => {
         testService.testLogApiCall('GET', '/test');

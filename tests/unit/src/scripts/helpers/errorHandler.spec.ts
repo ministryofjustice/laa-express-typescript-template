@@ -100,7 +100,7 @@ describe('errorHandler', () => {
   });
 
   describe('extractAndLogError', () => {
-    it('returns message and logs context (no assertion on devError)', () => {
+    it('returns message and logs context (no assertion on logger)', () => {
       const error = { response: { status: 403 } };
       const result = extractAndLogError(error, 'testing context');
       assert.strictEqual(result, 'You do not have permission to access this resource.');

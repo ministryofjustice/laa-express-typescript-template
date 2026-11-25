@@ -8,14 +8,6 @@
  * import { safeString, formatDate, isDevelopment, logger } from '#src/scripts/helpers';
  */
 
-// Development logging utilities (replaced by logger in the next commit)
-export {
-  devLog,
-  devWarn,
-  devError,
-  devDebug
-} from './devLogger.js';
-
 // Environment utilities
 export {
   isDevelopment,

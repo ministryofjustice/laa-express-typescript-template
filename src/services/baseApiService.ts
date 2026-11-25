@@ -12,11 +12,10 @@
 
 import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
 import type { AxiosResponse } from 'axios';
-import { devLog, extractAndLogError } from '#src/scripts/helpers/index.js';
+import { extractAndLogError, logger } from '#src/scripts/helpers/index.js';
 
 // Constants to avoid magic numbers
 const DEFAULT_TIMEOUT_MS = 5000;
-const JSON_STRINGIFY_INDENT = 2;
 
 // Base configuration interface for API services
 export interface BaseApiConfig {
@@ -102,20 +101,21 @@ export abstract class BaseApiService {
    */
   protected logApiCall(method: string, endpoint: string): void {
     if (this.config.enableLogging) {
-      devLog(`API: ${method} ${this.config.apiPrefix}${endpoint}`);
+      logger.debug(`API: ${method} ${this.config.apiPrefix}${endpoint}`);
     }
   }
 
   /**
-   * Log API response using MCC's logging pattern
+   * Log that an API response was received.
+   * The response body is not logged because it may contain personal data.
    * 
    * @param {string} method - HTTP method  
    * @param {string} endpoint - API endpoint
-   * @param {unknown} data - Response data
+   * @param {unknown} _data - Response data (not logged)
    */
-  protected logApiResponse(method: string, endpoint: string, data: unknown): void {
+  protected logApiResponse(method: string, endpoint: string, _data: unknown): void {
     if (this.config.enableLogging) {
-      devLog(`API: ${method} ${this.config.apiPrefix}${endpoint} response: ${JSON.stringify(data, null, JSON_STRINGIFY_INDENT)}`);
+      logger.debug(`API: ${method} ${this.config.apiPrefix}${endpoint} response received`);
     }
   }
 

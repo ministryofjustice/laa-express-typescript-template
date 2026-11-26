@@ -3346,15 +3346,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:^26.7.1":
-  version: 26.7.1
-  resolution: "i18next@npm:26.7.1"
+"i18next@npm:^27.2.1":
+  version: 27.2.1
+  resolution: "i18next@npm:27.2.1"
   peerDependencies:
     typescript: ^5 || ^6 || ^7
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/742c0d5ea25a68e0380de3be5c4b7d1f2a9ab9da81d5f2a85ea2892a500f60ba1a87a2c1fd6e0cd16588f37175dc88da817d3b26dda1963044f045bd86202960
+  checksum: 10c0/79bbe064010797ff1ca99f147eeae3223b5439c53a88d78b614c788822d9b395bb8f5defdd7bd97121a7bde12e5d45edfcd377a122944d6a01e3e96f8ab9c6bf
   languageName: node
   linkType: hard
 
@@ -3657,7 +3657,7 @@ __metadata:
     helmet: "npm:^8.3.0"
     http-errors: "npm:~2.0.1"
     husky: "npm:^9.1.7"
-    i18next: "npm:^26.7.1"
+    i18next: "npm:^27.2.1"
     lint-staged: "npm:^17.6.0"
     middleware-axios: "npm:^3.0.0"
     mocha: "npm:^12.0.3"
